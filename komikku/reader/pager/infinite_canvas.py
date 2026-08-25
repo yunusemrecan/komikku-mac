@@ -86,6 +86,9 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
     @interactive.setter
     def interactive(self, value):
+        if value == self.interactive:
+            return
+
         self.__interactive = value
 
         if value:
@@ -94,9 +97,9 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
                 self.vadjustment.props.value = self.vadjustment_value
             self.connect_signals()
 
-            self.gesture_drag.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-            self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-            self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+            self.gesture_drag.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+            self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+            self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
         else:
             # Save value
             self.vadjustment_value = self.vadjustment.props.value
