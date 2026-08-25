@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 0.30.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 00:54+0200\n"
+"POT-Creation-Date: 2026-08-26 01:16+0200\n"
 "PO-Revision-Date: 2026-07-20 17:01+0000\n"
 "Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/"
@@ -81,117 +81,117 @@ msgstr ""
 msgid "Categories to organize your library"
 msgstr "Categorías para organizar su biblioteca"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:22
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr ""
 "Seguimiento automático de series con AniList, MangaUpdates y MyAnimeList"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic update of series"
 msgstr "Actualización automática de series"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
 msgid "Automatic download of new chapters"
 msgstr "Descarga automática de nuevos capítulos"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
 msgid "Reading history"
 msgstr "Historial de lectura"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
 msgid "Light and dark themes"
 msgstr "Temas claro y oscuro"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:31
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
 msgid "reader"
 msgstr "lector"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
 msgid "viewer"
 msgstr "visualizador"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
 msgid "scanlation"
 msgstr "Scanlation"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
 msgid "comic"
 msgstr "cómic"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "manga"
 msgstr "manga"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manhwa"
 msgstr "manhwa"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhua"
 msgstr "manhua"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "webtoon"
 msgstr "webtoon"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
 msgid "webcomic"
 msgstr "webcomic"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
 msgid "book"
 msgstr "libro"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
 msgid "ebook"
 msgstr "libro electrónico (Ebook)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
 msgid "offline"
 msgstr "fuera de linea"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:62
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:63
 msgid "The Library page"
 msgstr "Página de la biblioteca"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:66
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:67
 msgid "The Library page with the category sidebar open"
 msgstr ""
 "La página de la biblioteca con la barra lateral de las categorías abiertas"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:70
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:71
 msgid "The Preferences page (General settings)"
 msgstr "La página de Preferencias (Ajustes generales)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:74
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:75
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "La página del explorador en formato móvil (Lista de servidores)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:78
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:79
 msgid "The Details page"
 msgstr "Página de los detalles"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:82
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:83
 msgid "The Details page (chapters list)"
 msgstr "La página de los detalles (lista de los capítulos)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:86
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:87
 msgid "The Reader page"
 msgstr "La página del lector"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:90
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:91
 msgid "The Reader page in mobile format"
 msgstr "La página del lector en formato móvil"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:94
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
 msgid "The Category editor page in mobile format"
 msgstr "La página del editor de las categorías en formato móvil"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:98
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
 msgid "The Reading history page in mobile format"
 msgstr "La página historial de lectura en formato móvil"
 
-#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:423
+#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:429
 msgid "Got it!"
 msgstr "¡Entendido!"
 
@@ -273,7 +273,7 @@ msgid "Latest Updates"
 msgstr "Últimas actualizaciones"
 
 #: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:220
-#: ../data/ui/preferences.blp:471
+#: ../data/ui/preferences.blp:477
 msgid "Servers"
 msgstr "Servidores"
 
@@ -765,47 +765,55 @@ msgid "OCR Language"
 msgstr ""
 
 #: ../data/ui/preferences.blp:411
-msgid "Default language used for OCR text recognitions"
+msgid "Default language to use for OCR text recognitions"
 msgstr ""
 
-#: ../data/ui/preferences.blp:418
+#: ../data/ui/preferences.blp:415
+msgid "Translator Language"
+msgstr ""
+
+#: ../data/ui/preferences.blp:416
+msgid "Default language to use as target language for translations"
+msgstr ""
+
+#: ../data/ui/preferences.blp:424
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: ../data/ui/preferences.blp:422
+#: ../data/ui/preferences.blp:428
 msgid "A setting has changed that requires a restart to take effect"
 msgstr ""
 "Se ha modificado un ajuste que requiere un reinicio para que surta efecto"
 
-#: ../data/ui/preferences.blp:428
+#: ../data/ui/preferences.blp:434
 msgid "Data"
 msgstr "Datos"
 
-#: ../data/ui/preferences.blp:429
+#: ../data/ui/preferences.blp:435
 msgid "Data not saved in the library"
 msgstr "Datos no guardados en la biblioteca"
 
-#: ../data/ui/preferences.blp:432
+#: ../data/ui/preferences.blp:438
 msgid "Clear Chapters Cache and Database"
 msgstr "Borrar la caché y la base de datos de los capítulos"
 
-#: ../data/ui/preferences.blp:447
+#: ../data/ui/preferences.blp:453
 msgid "Clear Chapters Cache and Database on Exit"
 msgstr "Borrar la caché y la base de datos de los capítulos al salir"
 
-#: ../data/ui/preferences.blp:452 ../data/ui/webview.blp:10
+#: ../data/ui/preferences.blp:458 ../data/ui/webview.blp:10
 msgid "WebView"
 msgstr "Vista Web"
 
-#: ../data/ui/preferences.blp:455
+#: ../data/ui/preferences.blp:461
 msgid "Clear Data"
 msgstr "Borrar datos"
 
-#: ../data/ui/preferences.blp:474
+#: ../data/ui/preferences.blp:480
 msgid "Use Up-to-date Servers Modules"
 msgstr "Utilizar módulos de servidores actualizados"
 
-#: ../data/ui/preferences.blp:475
+#: ../data/ui/preferences.blp:481
 msgid ""
 "An alternative version of the servers modules, installed from the source "
 "code repository and updated at each startup, is used instead of the one "
@@ -815,11 +823,11 @@ msgstr ""
 "desde el repositorio de código fuente y actualizada en cada inicio, en lugar "
 "de la que se entrega con la aplicación."
 
-#: ../data/ui/preferences.blp:479
+#: ../data/ui/preferences.blp:485
 msgid "Suggest Submitting a Bug Report in Case of Error"
 msgstr "Sugerir enviar un informe de error en caso de fallo"
 
-#: ../data/ui/preferences.blp:480
+#: ../data/ui/preferences.blp:486
 msgid ""
 "If an error occurs with a server (it has been updated or an unexpected case "
 "has arisen), you will be prompted to create a bug report using a pre-"
@@ -829,27 +837,27 @@ msgstr ""
 "inesperado), se te pedirá que crees un informe de error usando un texto "
 "preformateado para copiar y pegar."
 
-#: ../data/ui/preferences.blp:485
+#: ../data/ui/preferences.blp:491
 msgid "Credentials Storage"
 msgstr "Almacenamiento de credenciales"
 
-#: ../data/ui/preferences.blp:488
+#: ../data/ui/preferences.blp:494
 msgid "Allow Plaintext Storage as Fallback"
 msgstr "Permitir el almacenamiento de texto plano como respaldo"
 
-#: ../data/ui/preferences.blp:489
+#: ../data/ui/preferences.blp:495
 msgid "Used when no keyring backends are found"
 msgstr "Se usa cuando no se encuentran soportes de claves"
 
-#: ../data/ui/preferences.blp:494
+#: ../data/ui/preferences.blp:500
 msgid "Tweaks"
 msgstr "Ajustes"
 
-#: ../data/ui/preferences.blp:497
+#: ../data/ui/preferences.blp:503
 msgid "Disable Animations"
 msgstr "Desactivar animaciones"
 
-#: ../data/ui/preferences.blp:498
+#: ../data/ui/preferences.blp:504
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
@@ -858,7 +866,7 @@ msgstr ""
 "entrecortadas y desagradables (debido a la baja frecuencia de actualización "
 "de la pantalla)"
 
-#: ../data/ui/preferences.blp:502
+#: ../data/ui/preferences.blp:508
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot toggle reduced motion animations globally "
@@ -891,6 +899,14 @@ msgstr "Conmutar el modo de pantalla completa"
 
 #: ../data/ui/reader.blp:47
 msgid "Toggle OCR Translator"
+msgstr ""
+
+#: ../data/ui/reader.blp:104 ../data/ui/reader.blp:158
+msgid "Copy"
+msgstr ""
+
+#: ../data/ui/reader.blp:122
+msgid "Translate"
 msgstr ""
 
 #: ../data/ui/reader_settings.blp:9
@@ -1233,8 +1249,8 @@ msgid "Filters"
 msgstr "Filtros"
 
 #: ../komikku/card/__init__.py:220 ../komikku/library/__init__.py:338
-#: ../komikku/preferences/__init__.py:163
-#: ../komikku/preferences/__init__.py:186
+#: ../komikku/preferences/__init__.py:166
+#: ../komikku/preferences/__init__.py:189
 msgid "Clear?"
 msgstr "¿Limpiar?"
 
@@ -1243,8 +1259,8 @@ msgid "Are you sure you want to clear all chapters?"
 msgstr "¿Estás seguro que deseas vaciar todos los capítulos?"
 
 #: ../komikku/card/__init__.py:222 ../komikku/card/chapters_list.py:724
-#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:165
-#: ../komikku/preferences/__init__.py:188
+#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:168
+#: ../komikku/preferences/__init__.py:191
 msgid "Clear"
 msgstr "Limpiar"
 
@@ -1913,27 +1929,27 @@ msgstr "Suspendido"
 msgid "Hiatus"
 msgstr "Hiato"
 
-#: ../komikku/preferences/__init__.py:164
+#: ../komikku/preferences/__init__.py:167
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 "¿Está seguro de que quiere borrar la caché y la base de datos de los "
 "capítulos?"
 
-#: ../komikku/preferences/__init__.py:183
+#: ../komikku/preferences/__init__.py:186
 msgid "Failed to clear WebView data"
 msgstr "No se pudo borrar los datos del WebView"
 
-#: ../komikku/preferences/__init__.py:187
+#: ../komikku/preferences/__init__.py:190
 msgid "Are you sure you want to clear WebView data (cache, storage, cookies)?"
 msgstr ""
 "¿Estás seguro de que quieres borrar los datos del WebView (caché, "
 "almacenamiento, cookies)?"
 
-#: ../komikku/preferences/__init__.py:212
+#: ../komikku/preferences/__init__.py:215
 msgid "Disable animations?"
 msgstr "¿Desactivar animaciones?"
 
-#: ../komikku/preferences/__init__.py:213
+#: ../komikku/preferences/__init__.py:216
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
@@ -1943,7 +1959,7 @@ msgstr ""
 "\n"
 "La navegación por gestos en el lector dejará de funcionar correctamente."
 
-#: ../komikku/preferences/__init__.py:214
+#: ../komikku/preferences/__init__.py:217
 msgid "Disable"
 msgstr "Desactivar"
 
@@ -2016,25 +2032,30 @@ msgstr "Webview está en uso. Por favor, vuelva a intentarlo más tarde."
 msgid "Disconnect from {}"
 msgstr "Desconectar de {}"
 
-#: ../komikku/reader/__init__.py:321
+#: ../komikku/reader/__init__.py:329
 msgid "Page successfully saved"
 msgstr "Página guardada correctamente"
+
+#: ../komikku/reader/ocr_translator.py:154
+#: ../komikku/reader/ocr_translator.py:159
+msgid "Copied to clipboard"
+msgstr ""
 
 #: ../komikku/reader/pager/__init__.py:179
 msgid "Failed to sync read progress with server"
 msgstr "Fallo en la sincronización del progreso de lectura con el servidor"
 
-#: ../komikku/reader/pager/__init__.py:489
+#: ../komikku/reader/pager/__init__.py:499
 #: ../komikku/reader/pager/webtoon.py:104
 msgid "There is no previous chapter."
 msgstr "Sin capítulo anterior."
 
-#: ../komikku/reader/pager/__init__.py:491
+#: ../komikku/reader/pager/__init__.py:501
 #: ../komikku/reader/pager/webtoon.py:102
 msgid "It was the last chapter."
 msgstr "Era el último capítulo."
 
-#: ../komikku/reader/pager/__init__.py:662
+#: ../komikku/reader/pager/__init__.py:672
 #: ../komikku/reader/pager/webtoon.py:180
 msgid "This chapter is inaccessible."
 msgstr "Este capítulo es inaccesible."
@@ -3132,6 +3153,14 @@ msgstr "Por favor, espere…"
 msgid "Please complete CAPTCHA"
 msgstr "Por favor, complete el CAPTCHA"
 
+#~ msgid "Hide NSFW Content"
+#~ msgstr "Ocultar contenido NSFW"
+
+#~ msgid "Hide NSFW content from popular, latest, and search lists"
+#~ msgstr ""
+#~ "Ocultar contenido NSFW (explícito) en listas populares, últimas y de "
+#~ "búsqueda"
+
 #~ msgid "Releasing"
 #~ msgstr "En publicación"
 
@@ -3153,14 +3182,6 @@ msgstr "Por favor, complete el CAPTCHA"
 
 #~ msgid "Synopsis"
 #~ msgstr "Sinopsis"
-
-#~ msgid "Hide NSFW Content"
-#~ msgstr "Ocultar contenido NSFW"
-
-#~ msgid "Hide NSFW content from popular, latest, and search lists"
-#~ msgstr ""
-#~ "Ocultar contenido NSFW (explícito) en listas populares, últimas y de "
-#~ "búsqueda"
 
 #~ msgid "The Preferences page (Library settings)"
 #~ msgstr "La página de las preferencias (Configuración de la biblioteca)"

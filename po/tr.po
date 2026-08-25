@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 00:54+0200\n"
+"POT-Creation-Date: 2026-08-26 01:16+0200\n"
 "PO-Revision-Date: 2026-02-27 13:11+0000\n"
 "Last-Translator: Ahmet <teaqaria@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/"
@@ -83,115 +83,115 @@ msgstr ""
 msgid "Categories to organize your library"
 msgstr "Kitaplığınızı düzenlemek için kategoriler"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:22
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr "Serilerin AniList, MangaUpdates ve MyAnimeList ile otomatik takibi"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic update of series"
 msgstr "Serilerin kendiliğinden güncellenmesi"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
 msgid "Automatic download of new chapters"
 msgstr "Yeni bölümleri kendiliğinden indirme"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
 msgid "Reading history"
 msgstr "Okuma geçmişi"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
 msgid "Light and dark themes"
 msgstr "Açık ve koyu tema"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:31
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
 msgid "reader"
 msgstr "Okuyucu"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
 msgid "viewer"
 msgstr "İzleyici"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
 msgid "scanlation"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
 msgid "comic"
 msgstr "Çizgi roman"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "manga"
 msgstr "Manga"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manhwa"
 msgstr "Manwha"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhua"
 msgstr "Manhua"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "webtoon"
 msgstr "Webtoon"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
 msgid "webcomic"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
 msgid "book"
 msgstr "Kitap"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
 msgid "ebook"
 msgstr "E-kitap"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
 msgid "offline"
 msgstr "Çevrimdışı"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:62
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:63
 msgid "The Library page"
 msgstr "Kitaplık sayfası"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:66
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:67
 msgid "The Library page with the category sidebar open"
 msgstr "Kitaplık sayfası kategori kenar çubuğu açık"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:70
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:71
 msgid "The Preferences page (General settings)"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:74
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:75
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "Keşfet sayfası mobil biçimde (Sunucu listesi)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:78
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:79
 msgid "The Details page"
 msgstr "Ayrıntılar sayfası"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:82
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:83
 msgid "The Details page (chapters list)"
 msgstr "Ayrıntılar sayfası (böümler listesi)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:86
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:87
 msgid "The Reader page"
 msgstr "Okuyucu sayfası"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:90
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:91
 msgid "The Reader page in mobile format"
 msgstr "Okuyucu sayfası mobil biçimde"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:94
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
 msgid "The Category editor page in mobile format"
 msgstr "Kategori üzenleyici sayfası mobil biçimde"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:98
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
 msgid "The Reading history page in mobile format"
 msgstr "Okuma geçmişi sayfası mobil biçimde"
 
-#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:423
+#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:429
 msgid "Got it!"
 msgstr "Anladım!"
 
@@ -273,7 +273,7 @@ msgid "Latest Updates"
 msgstr "Son Güncellemeler"
 
 #: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:220
-#: ../data/ui/preferences.blp:471
+#: ../data/ui/preferences.blp:477
 msgid "Servers"
 msgstr "Sunucular"
 
@@ -765,46 +765,54 @@ msgid "OCR Language"
 msgstr ""
 
 #: ../data/ui/preferences.blp:411
-msgid "Default language used for OCR text recognitions"
+msgid "Default language to use for OCR text recognitions"
 msgstr ""
 
-#: ../data/ui/preferences.blp:418
+#: ../data/ui/preferences.blp:415
+msgid "Translator Language"
+msgstr ""
+
+#: ../data/ui/preferences.blp:416
+msgid "Default language to use as target language for translations"
+msgstr ""
+
+#: ../data/ui/preferences.blp:424
 msgid "Advanced"
 msgstr "Gelişmiş"
 
-#: ../data/ui/preferences.blp:422
+#: ../data/ui/preferences.blp:428
 msgid "A setting has changed that requires a restart to take effect"
 msgstr ""
 
-#: ../data/ui/preferences.blp:428
+#: ../data/ui/preferences.blp:434
 msgid "Data"
 msgstr "Veri"
 
-#: ../data/ui/preferences.blp:429
+#: ../data/ui/preferences.blp:435
 msgid "Data not saved in the library"
 msgstr "Veriler kitaplığa kaydedilmedi"
 
-#: ../data/ui/preferences.blp:432
+#: ../data/ui/preferences.blp:438
 msgid "Clear Chapters Cache and Database"
 msgstr "Bölüm Önbelleğini ve Veri Tabanını Temizle"
 
-#: ../data/ui/preferences.blp:447
+#: ../data/ui/preferences.blp:453
 msgid "Clear Chapters Cache and Database on Exit"
 msgstr "Çıkışta Bölüm Önbelleğini ve Veri Tabanını Temizle"
 
-#: ../data/ui/preferences.blp:452 ../data/ui/webview.blp:10
+#: ../data/ui/preferences.blp:458 ../data/ui/webview.blp:10
 msgid "WebView"
 msgstr ""
 
-#: ../data/ui/preferences.blp:455
+#: ../data/ui/preferences.blp:461
 msgid "Clear Data"
 msgstr ""
 
-#: ../data/ui/preferences.blp:474
+#: ../data/ui/preferences.blp:480
 msgid "Use Up-to-date Servers Modules"
 msgstr "Güncel Sunucu Modüllerini Kullan"
 
-#: ../data/ui/preferences.blp:475
+#: ../data/ui/preferences.blp:481
 msgid ""
 "An alternative version of the servers modules, installed from the source "
 "code repository and updated at each startup, is used instead of the one "
@@ -813,38 +821,38 @@ msgstr ""
 "Sunucu modüllerinin kaynak kod deposundan yüklenen ve her başlangıçta "
 "güncellenen alternatif sürümü, uygulamayla birlikte gelen yerine kullanılır."
 
-#: ../data/ui/preferences.blp:479
+#: ../data/ui/preferences.blp:485
 msgid "Suggest Submitting a Bug Report in Case of Error"
 msgstr ""
 
-#: ../data/ui/preferences.blp:480
+#: ../data/ui/preferences.blp:486
 msgid ""
 "If an error occurs with a server (it has been updated or an unexpected case "
 "has arisen), you will be prompted to create a bug report using a pre-"
 "formatted text to copy/paste."
 msgstr ""
 
-#: ../data/ui/preferences.blp:485
+#: ../data/ui/preferences.blp:491
 msgid "Credentials Storage"
 msgstr "Kimlik Bilgileri Depolama"
 
-#: ../data/ui/preferences.blp:488
+#: ../data/ui/preferences.blp:494
 msgid "Allow Plaintext Storage as Fallback"
 msgstr "Geri Uyumluluk Olarak Düz Metin Depolamaya İzin Ver"
 
-#: ../data/ui/preferences.blp:489
+#: ../data/ui/preferences.blp:495
 msgid "Used when no keyring backends are found"
 msgstr "Anahtarlık arka ucu bulunmadığında kullanılır"
 
-#: ../data/ui/preferences.blp:494
+#: ../data/ui/preferences.blp:500
 msgid "Tweaks"
 msgstr "İnce Ayarlar"
 
-#: ../data/ui/preferences.blp:497
+#: ../data/ui/preferences.blp:503
 msgid "Disable Animations"
 msgstr "Animasyonları Devre Dışı Bırak"
 
-#: ../data/ui/preferences.blp:498
+#: ../data/ui/preferences.blp:504
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
@@ -852,7 +860,7 @@ msgstr ""
 "Çok dalgalı ve hoş olmayan animasyonlardan kaçınmak için E-Ink e-"
 "okuyucularda kullanışlıdır (ekranın düşük yenileme hızından dolayı)"
 
-#: ../data/ui/preferences.blp:502
+#: ../data/ui/preferences.blp:508
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot toggle reduced motion animations globally "
@@ -881,6 +889,14 @@ msgstr "Tam ekran modunu aç/kapa"
 
 #: ../data/ui/reader.blp:47
 msgid "Toggle OCR Translator"
+msgstr ""
+
+#: ../data/ui/reader.blp:104 ../data/ui/reader.blp:158
+msgid "Copy"
+msgstr ""
+
+#: ../data/ui/reader.blp:122
+msgid "Translate"
 msgstr ""
 
 #: ../data/ui/reader_settings.blp:9
@@ -1215,8 +1231,8 @@ msgid "Filters"
 msgstr "Süzgeçler"
 
 #: ../komikku/card/__init__.py:220 ../komikku/library/__init__.py:338
-#: ../komikku/preferences/__init__.py:163
-#: ../komikku/preferences/__init__.py:186
+#: ../komikku/preferences/__init__.py:166
+#: ../komikku/preferences/__init__.py:189
 msgid "Clear?"
 msgstr "Temizlensin Mi?"
 
@@ -1225,8 +1241,8 @@ msgid "Are you sure you want to clear all chapters?"
 msgstr ""
 
 #: ../komikku/card/__init__.py:222 ../komikku/card/chapters_list.py:724
-#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:165
-#: ../komikku/preferences/__init__.py:188
+#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:168
+#: ../komikku/preferences/__init__.py:191
 msgid "Clear"
 msgstr "Temizle"
 
@@ -1885,24 +1901,24 @@ msgstr "Askıya alındı"
 msgid "Hiatus"
 msgstr "Ara"
 
-#: ../komikku/preferences/__init__.py:164
+#: ../komikku/preferences/__init__.py:167
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 "Bölümler önbelleğini ve veri tabanını temizlemek istediğinizden emin misiniz?"
 
-#: ../komikku/preferences/__init__.py:183
+#: ../komikku/preferences/__init__.py:186
 msgid "Failed to clear WebView data"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:187
+#: ../komikku/preferences/__init__.py:190
 msgid "Are you sure you want to clear WebView data (cache, storage, cookies)?"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:212
+#: ../komikku/preferences/__init__.py:215
 msgid "Disable animations?"
 msgstr "Animasyonlar devre dışı bırakılsın mı?"
 
-#: ../komikku/preferences/__init__.py:213
+#: ../komikku/preferences/__init__.py:216
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
@@ -1912,7 +1928,7 @@ msgstr ""
 "\n"
 "Okuyucudaki hareketle gezinme özelliği artık düzgün çalışmayacaktır."
 
-#: ../komikku/preferences/__init__.py:214
+#: ../komikku/preferences/__init__.py:217
 msgid "Disable"
 msgstr "Devre Dışı Bırak"
 
@@ -1984,25 +2000,30 @@ msgstr "Webview kullanımda. Lütfen sonra yeniden deneyin."
 msgid "Disconnect from {}"
 msgstr "{} bağlantısını kes"
 
-#: ../komikku/reader/__init__.py:321
+#: ../komikku/reader/__init__.py:329
 msgid "Page successfully saved"
+msgstr ""
+
+#: ../komikku/reader/ocr_translator.py:154
+#: ../komikku/reader/ocr_translator.py:159
+msgid "Copied to clipboard"
 msgstr ""
 
 #: ../komikku/reader/pager/__init__.py:179
 msgid "Failed to sync read progress with server"
 msgstr "Sunucuyla okuma ilerlemesi eşitlenemedi"
 
-#: ../komikku/reader/pager/__init__.py:489
+#: ../komikku/reader/pager/__init__.py:499
 #: ../komikku/reader/pager/webtoon.py:104
 msgid "There is no previous chapter."
 msgstr "Önceki bölüm yok."
 
-#: ../komikku/reader/pager/__init__.py:491
+#: ../komikku/reader/pager/__init__.py:501
 #: ../komikku/reader/pager/webtoon.py:102
 msgid "It was the last chapter."
 msgstr "Bu son bölümdü."
 
-#: ../komikku/reader/pager/__init__.py:662
+#: ../komikku/reader/pager/__init__.py:672
 #: ../komikku/reader/pager/webtoon.py:180
 msgid "This chapter is inaccessible."
 msgstr "Bu bölüme erişilemiyor."

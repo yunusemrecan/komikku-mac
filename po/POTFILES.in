@@ -51,6 +51,7 @@ komikku/preferences/__init__.py
 komikku/preferences/servers.py
 komikku/preferences/trackers.py
 komikku/reader/__init__.py
+komikku/reader/ocr_translator.py
 komikku/reader/pager/__init__.py
 komikku/reader/pager/page.py
 komikku/reader/pager/webtoon.py

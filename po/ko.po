@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.96.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 00:54+0200\n"
+"POT-Creation-Date: 2026-08-26 01:16+0200\n"
 "PO-Revision-Date: 2026-08-04 05:49+0000\n"
 "Last-Translator: on9686 <on9686@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/komikku/main/ko/"
@@ -76,115 +76,115 @@ msgstr ""
 msgid "Categories to organize your library"
 msgstr "카테고리 설정을 통한 라이브러리 정리"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:22
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr "AniList, MangaUpdates 및 MyAnimeList를 통한 시리즈 자동 트래킹"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic update of series"
 msgstr "시리즈 자동 업데이트"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
 msgid "Automatic download of new chapters"
 msgstr "신규 챕터 자동 다운로드"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
 msgid "Reading history"
 msgstr "독서 이력"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
 msgid "Light and dark themes"
 msgstr "라이트 및 다크 테마"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:31
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
 msgid "reader"
 msgstr "리더"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
 msgid "viewer"
 msgstr "뷰어"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
 msgid "scanlation"
 msgstr "스캔레이션"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
 msgid "comic"
 msgstr "코믹"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "manga"
 msgstr "일본만화"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manhwa"
 msgstr "한국만화"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhua"
 msgstr "중국만화"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "webtoon"
 msgstr "웹툰"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
 msgid "webcomic"
 msgstr "웹 코믹"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
 msgid "book"
 msgstr "도서"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
 msgid "ebook"
 msgstr "전자책"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
 msgid "offline"
 msgstr "오프라인"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:62
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:63
 msgid "The Library page"
 msgstr "라이브러리 페이지"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:66
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:67
 msgid "The Library page with the category sidebar open"
 msgstr "카테고리 사이드바가 열린 라이브러리 페이지"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:70
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:71
 msgid "The Preferences page (General settings)"
 msgstr "설정 페이지 (일반 설정)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:74
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:75
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "모바일 형식 탐색 페이지 (서버 리스트)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:78
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:79
 msgid "The Details page"
 msgstr "세부 정보 페이지"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:82
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:83
 msgid "The Details page (chapters list)"
 msgstr "세부 정보 페이지 (챕터 리스트)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:86
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:87
 msgid "The Reader page"
 msgstr "리더 페이지"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:90
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:91
 msgid "The Reader page in mobile format"
 msgstr "모바일 형식 리더 페이지"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:94
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
 msgid "The Category editor page in mobile format"
 msgstr "모바일 형식 카테고리 편집 페이지"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:98
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
 msgid "The Reading history page in mobile format"
 msgstr "모바일 형식 독서 이력 페이지"
 
-#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:423
+#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:429
 msgid "Got it!"
 msgstr "알겠습니다!"
 
@@ -266,7 +266,7 @@ msgid "Latest Updates"
 msgstr "최신 업데이트"
 
 #: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:220
-#: ../data/ui/preferences.blp:471
+#: ../data/ui/preferences.blp:477
 msgid "Servers"
 msgstr "서버"
 
@@ -750,46 +750,54 @@ msgid "OCR Language"
 msgstr ""
 
 #: ../data/ui/preferences.blp:411
-msgid "Default language used for OCR text recognitions"
+msgid "Default language to use for OCR text recognitions"
 msgstr ""
 
-#: ../data/ui/preferences.blp:418
+#: ../data/ui/preferences.blp:415
+msgid "Translator Language"
+msgstr ""
+
+#: ../data/ui/preferences.blp:416
+msgid "Default language to use as target language for translations"
+msgstr ""
+
+#: ../data/ui/preferences.blp:424
 msgid "Advanced"
 msgstr "고급"
 
-#: ../data/ui/preferences.blp:422
+#: ../data/ui/preferences.blp:428
 msgid "A setting has changed that requires a restart to take effect"
 msgstr "재시작이 필요한 설정이 변경되었습니다"
 
-#: ../data/ui/preferences.blp:428
+#: ../data/ui/preferences.blp:434
 msgid "Data"
 msgstr "데이터"
 
-#: ../data/ui/preferences.blp:429
+#: ../data/ui/preferences.blp:435
 msgid "Data not saved in the library"
 msgstr "데이터가 라이브러리가 저장되지 않았습니다"
 
-#: ../data/ui/preferences.blp:432
+#: ../data/ui/preferences.blp:438
 msgid "Clear Chapters Cache and Database"
 msgstr "화차 캐시 및 데이터베이스 비우기"
 
-#: ../data/ui/preferences.blp:447
+#: ../data/ui/preferences.blp:453
 msgid "Clear Chapters Cache and Database on Exit"
 msgstr "종료 시 화차 캐시 및 데이터베이스 비우기"
 
-#: ../data/ui/preferences.blp:452 ../data/ui/webview.blp:10
+#: ../data/ui/preferences.blp:458 ../data/ui/webview.blp:10
 msgid "WebView"
 msgstr "WebView"
 
-#: ../data/ui/preferences.blp:455
+#: ../data/ui/preferences.blp:461
 msgid "Clear Data"
 msgstr "데이터 정리"
 
-#: ../data/ui/preferences.blp:474
+#: ../data/ui/preferences.blp:480
 msgid "Use Up-to-date Servers Modules"
 msgstr "최신 서버 모듈 사용"
 
-#: ../data/ui/preferences.blp:475
+#: ../data/ui/preferences.blp:481
 msgid ""
 "An alternative version of the servers modules, installed from the source "
 "code repository and updated at each startup, is used instead of the one "
@@ -798,11 +806,11 @@ msgstr ""
 "앱에 기본 포함된 버전 대신 소스 코드 리포지토리에서 설치하여 시작할 때마다 업"
 "데이트되는 대체 서버 모듈을 사용합니다."
 
-#: ../data/ui/preferences.blp:479
+#: ../data/ui/preferences.blp:485
 msgid "Suggest Submitting a Bug Report in Case of Error"
 msgstr "오류 발생 시 버그 리포트 제출하기"
 
-#: ../data/ui/preferences.blp:480
+#: ../data/ui/preferences.blp:486
 msgid ""
 "If an error occurs with a server (it has been updated or an unexpected case "
 "has arisen), you will be prompted to create a bug report using a pre-"
@@ -811,27 +819,27 @@ msgstr ""
 "서버에 오류가 발생하면(업데이트되었거나 예외가 발생한 경우), 복사해 붙여넣을 "
 "수 있는 양식화된 텍스트로 버그 리포트를 작성하도록 안내합니다."
 
-#: ../data/ui/preferences.blp:485
+#: ../data/ui/preferences.blp:491
 msgid "Credentials Storage"
 msgstr "인증 정보 저장소"
 
-#: ../data/ui/preferences.blp:488
+#: ../data/ui/preferences.blp:494
 msgid "Allow Plaintext Storage as Fallback"
 msgstr "대체 수단으로 평문 저장 허용"
 
-#: ../data/ui/preferences.blp:489
+#: ../data/ui/preferences.blp:495
 msgid "Used when no keyring backends are found"
 msgstr "키링 백엔드를 찾을 수 없을 때 사용됩니다"
 
-#: ../data/ui/preferences.blp:494
+#: ../data/ui/preferences.blp:500
 msgid "Tweaks"
 msgstr "미세 조정"
 
-#: ../data/ui/preferences.blp:497
+#: ../data/ui/preferences.blp:503
 msgid "Disable Animations"
 msgstr "애니메이션 비활성화"
 
-#: ../data/ui/preferences.blp:498
+#: ../data/ui/preferences.blp:504
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
@@ -839,7 +847,7 @@ msgstr ""
 "애니메이션이 끊기고 부자연스럽게 보일 때 전자책(E-Ink) 끼리 사용하면 유용합니"
 "다. (화면 주사율이 낮을 때)"
 
-#: ../data/ui/preferences.blp:502
+#: ../data/ui/preferences.blp:508
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot toggle reduced motion animations globally "
@@ -871,6 +879,14 @@ msgstr "전체 화면 모드"
 
 #: ../data/ui/reader.blp:47
 msgid "Toggle OCR Translator"
+msgstr ""
+
+#: ../data/ui/reader.blp:104 ../data/ui/reader.blp:158
+msgid "Copy"
+msgstr ""
+
+#: ../data/ui/reader.blp:122
+msgid "Translate"
 msgstr ""
 
 #: ../data/ui/reader_settings.blp:9
@@ -1210,8 +1226,8 @@ msgid "Filters"
 msgstr "필터"
 
 #: ../komikku/card/__init__.py:220 ../komikku/library/__init__.py:338
-#: ../komikku/preferences/__init__.py:163
-#: ../komikku/preferences/__init__.py:186
+#: ../komikku/preferences/__init__.py:166
+#: ../komikku/preferences/__init__.py:189
 msgid "Clear?"
 msgstr ""
 
@@ -1220,8 +1236,8 @@ msgid "Are you sure you want to clear all chapters?"
 msgstr "모든 챕터(화)를 정리하시겠습니까?"
 
 #: ../komikku/card/__init__.py:222 ../komikku/card/chapters_list.py:724
-#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:165
-#: ../komikku/preferences/__init__.py:188
+#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:168
+#: ../komikku/preferences/__init__.py:191
 msgid "Clear"
 msgstr "정리"
 
@@ -1871,30 +1887,30 @@ msgstr ""
 msgid "Hiatus"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:164
+#: ../komikku/preferences/__init__.py:167
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:183
+#: ../komikku/preferences/__init__.py:186
 msgid "Failed to clear WebView data"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:187
+#: ../komikku/preferences/__init__.py:190
 msgid "Are you sure you want to clear WebView data (cache, storage, cookies)?"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:212
+#: ../komikku/preferences/__init__.py:215
 msgid "Disable animations?"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:213
+#: ../komikku/preferences/__init__.py:216
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:214
+#: ../komikku/preferences/__init__.py:217
 msgid "Disable"
 msgstr ""
 
@@ -1961,25 +1977,30 @@ msgstr ""
 msgid "Disconnect from {}"
 msgstr ""
 
-#: ../komikku/reader/__init__.py:321
+#: ../komikku/reader/__init__.py:329
 msgid "Page successfully saved"
+msgstr ""
+
+#: ../komikku/reader/ocr_translator.py:154
+#: ../komikku/reader/ocr_translator.py:159
+msgid "Copied to clipboard"
 msgstr ""
 
 #: ../komikku/reader/pager/__init__.py:179
 msgid "Failed to sync read progress with server"
 msgstr ""
 
-#: ../komikku/reader/pager/__init__.py:489
+#: ../komikku/reader/pager/__init__.py:499
 #: ../komikku/reader/pager/webtoon.py:104
 msgid "There is no previous chapter."
 msgstr ""
 
-#: ../komikku/reader/pager/__init__.py:491
+#: ../komikku/reader/pager/__init__.py:501
 #: ../komikku/reader/pager/webtoon.py:102
 msgid "It was the last chapter."
 msgstr ""
 
-#: ../komikku/reader/pager/__init__.py:662
+#: ../komikku/reader/pager/__init__.py:672
 #: ../komikku/reader/pager/webtoon.py:180
 msgid "This chapter is inaccessible."
 msgstr ""

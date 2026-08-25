@@ -67,7 +67,7 @@ class OCRTranslator(GObject.GObject):
 
             list_store_expression = Gtk.PropertyExpression.new(LangCodeNamePair, None, 'name')
             items = [LangCodeNamePair(code='auto', name='Auto')]
-            items += [LangCodeNamePair(code=k, name=v) for k, v in TRANSLATOR_LANGUAGES.items()]
+            items += [LangCodeNamePair(code=k, name=v) for k, v in self.translator_languages.items()]
 
             # Source
             model = Gio.ListStore(item_type=LangCodeNamePair)
@@ -85,7 +85,7 @@ class OCRTranslator(GObject.GObject):
             self.dst_dropdown.set_expression(list_store_expression)
             self.dst_dropdown.set_model(model)
             lang = Settings.get_default().translators_langs.get('google', 'en')
-            self.dst_dropdown.set_selected(list(TRANSLATOR_LANGUAGES.keys()).index(lang))
+            self.dst_dropdown.set_selected(list(self.translator_languages.keys()).index(lang))
 
             self.dst_text = TextView(editable=False, bottom_margin=9, left_margin=9, right_margin=9, top_margin=9)
             self.dst_text.buffer.connect('changed', self.on_dst_text_changed)
@@ -206,7 +206,7 @@ class OCRTranslator(GObject.GObject):
     def translate(self, _btn):
         def on_complete(result, src):
             if src == 'auto' and result['src_detected']:
-                lang_detected = TRANSLATOR_LANGUAGES[result['src_detected']]
+                lang_detected = self.translator_languages[result['src_detected']]
                 self.src_dropdown.get_model().splice(
                     0, 1, [LangCodeNamePair(code='auto', name=f'Auto ({lang_detected})')]
                 )

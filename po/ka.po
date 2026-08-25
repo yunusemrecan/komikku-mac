@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 50.5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 00:54+0200\n"
+"POT-Creation-Date: 2026-08-26 01:16+0200\n"
 "PO-Revision-Date: 2026-07-28 14:01+0000\n"
 "Last-Translator: David Gogniashvili <gogniashvili.dg@gmail.com>\n"
 "Language-Team: Georgian <https://hosted.weblate.org/projects/komikku/main/ka/"
@@ -81,116 +81,116 @@ msgstr ""
 msgid "Categories to organize your library"
 msgstr "კატეგორიები ბიბლიოთეკის მოსაწესრიგებლად"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:22
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr ""
 "სერიების ავტომატური თვალყურის დევნება - AniList, MangaUpdates და MyAnimeList"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic update of series"
 msgstr "სერიების ავტომატური განახლება"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
 msgid "Automatic download of new chapters"
 msgstr "ახალი თავების ავტომატური ჩამოტვირთვა"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
 msgid "Reading history"
 msgstr "კითხვის ისტორია"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
 msgid "Light and dark themes"
 msgstr "ნათელი და ბნელი თემები"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:31
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
 msgid "reader"
 msgstr "მკითხველი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
 msgid "viewer"
 msgstr "მნახველი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
 msgid "scanlation"
 msgstr "სკანლაცია"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
 msgid "comic"
 msgstr "კომიქსი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "manga"
 msgstr "მანგა"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manhwa"
 msgstr "მანჰვა"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhua"
 msgstr "მანჰუა"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "webtoon"
 msgstr "ვებ-ტუნი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
 msgid "webcomic"
 msgstr "ვებ-კომიქსი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
 msgid "book"
 msgstr "წიგნი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
 msgid "ebook"
 msgstr "ელ-წიგნი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
 msgid "offline"
 msgstr "გათიშული"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:62
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:63
 msgid "The Library page"
 msgstr "ბიბლიოთეკის გვერდი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:66
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:67
 msgid "The Library page with the category sidebar open"
 msgstr "ბიბლიოთეკის გვერდი ღია კატეგორიების პანელით"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:70
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:71
 msgid "The Preferences page (General settings)"
 msgstr "მორგების გვერდი (ზოგადი პარამეტრები)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:74
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:75
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "გვერდების დათვალიერება მობილურ ფორმატში (სერვერების სია)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:78
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:79
 msgid "The Details page"
 msgstr "დეტალების გვერდი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:82
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:83
 msgid "The Details page (chapters list)"
 msgstr "დეტალების გვერდი (თავების სია)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:86
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:87
 msgid "The Reader page"
 msgstr "მკითხველის გვერდი"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:90
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:91
 msgid "The Reader page in mobile format"
 msgstr "მკითხველის გვერდი მობილურ ფორმატში"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:94
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
 msgid "The Category editor page in mobile format"
 msgstr "კატეგორიების ჩასწორების გვერდი მობილურ ფორმატში"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:98
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
 msgid "The Reading history page in mobile format"
 msgstr "კითხვის ისტორიის გვერდი მობილურ ფორმატში"
 
-#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:423
+#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:429
 msgid "Got it!"
 msgstr "გავიგე!"
 
@@ -272,7 +272,7 @@ msgid "Latest Updates"
 msgstr "უახლესი განახლებები"
 
 #: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:220
-#: ../data/ui/preferences.blp:471
+#: ../data/ui/preferences.blp:477
 msgid "Servers"
 msgstr "სერვერები"
 
@@ -761,46 +761,54 @@ msgid "OCR Language"
 msgstr ""
 
 #: ../data/ui/preferences.blp:411
-msgid "Default language used for OCR text recognitions"
+msgid "Default language to use for OCR text recognitions"
 msgstr ""
 
-#: ../data/ui/preferences.blp:418
+#: ../data/ui/preferences.blp:415
+msgid "Translator Language"
+msgstr ""
+
+#: ../data/ui/preferences.blp:416
+msgid "Default language to use as target language for translations"
+msgstr ""
+
+#: ../data/ui/preferences.blp:424
 msgid "Advanced"
 msgstr "გაფართოებული"
 
-#: ../data/ui/preferences.blp:422
+#: ../data/ui/preferences.blp:428
 msgid "A setting has changed that requires a restart to take effect"
 msgstr "შეიცვალა პარამეტრი რომელიც საჭიროებს გადატვირთვას ეფექტის მისაღებად"
 
-#: ../data/ui/preferences.blp:428
+#: ../data/ui/preferences.blp:434
 msgid "Data"
 msgstr "მონაცემები"
 
-#: ../data/ui/preferences.blp:429
+#: ../data/ui/preferences.blp:435
 msgid "Data not saved in the library"
 msgstr "მონაცემი არ შეინახა ბიბლიოთეკაში"
 
-#: ../data/ui/preferences.blp:432
+#: ../data/ui/preferences.blp:438
 msgid "Clear Chapters Cache and Database"
 msgstr "თავების ქეშის და მონაცემების გასუფთავება"
 
-#: ../data/ui/preferences.blp:447
+#: ../data/ui/preferences.blp:453
 msgid "Clear Chapters Cache and Database on Exit"
 msgstr "გასვლისას თავების ქეშის და მონაცემების გასუფთავება"
 
-#: ../data/ui/preferences.blp:452 ../data/ui/webview.blp:10
+#: ../data/ui/preferences.blp:458 ../data/ui/webview.blp:10
 msgid "WebView"
 msgstr "ვებ-ხედი"
 
-#: ../data/ui/preferences.blp:455
+#: ../data/ui/preferences.blp:461
 msgid "Clear Data"
 msgstr "მონაცემთა გასუფავება"
 
-#: ../data/ui/preferences.blp:474
+#: ../data/ui/preferences.blp:480
 msgid "Use Up-to-date Servers Modules"
 msgstr "განახლებული სერვერების მოდულების გამოყენება"
 
-#: ../data/ui/preferences.blp:475
+#: ../data/ui/preferences.blp:481
 msgid ""
 "An alternative version of the servers modules, installed from the source "
 "code repository and updated at each startup, is used instead of the one "
@@ -810,11 +818,11 @@ msgstr ""
 "დაყენებული და ყოველ ჩართვაზე განახლებადი, ვერსია აპლიკაციასათნ ერთად "
 "მოწყოლილის ნაცვლად."
 
-#: ../data/ui/preferences.blp:479
+#: ../data/ui/preferences.blp:485
 msgid "Suggest Submitting a Bug Report in Case of Error"
 msgstr "შეცდომის შემთხვევაში ხარვეზის მოხსენების გაგზავნის რჩევა"
 
-#: ../data/ui/preferences.blp:480
+#: ../data/ui/preferences.blp:486
 msgid ""
 "If an error occurs with a server (it has been updated or an unexpected case "
 "has arisen), you will be prompted to create a bug report using a pre-"
@@ -824,28 +832,28 @@ msgstr ""
 "გამოჩნდა), წაქეზებულ იქნებით ხარვეზის მოხსენების შესაქმნელად დაფორმატებული, "
 "დაკოპირება-ჩასმადი ტექსტის გამოყენებით."
 
-#: ../data/ui/preferences.blp:485
+#: ../data/ui/preferences.blp:491
 msgid "Credentials Storage"
 msgstr "ავტორიზაციის მონაცემების საცავი"
 
-#: ../data/ui/preferences.blp:488
+#: ../data/ui/preferences.blp:494
 msgid "Allow Plaintext Storage as Fallback"
 msgstr "სათადარიგოდ ღია ტექსტური საცავის ნებართვა"
 
-#: ../data/ui/preferences.blp:489
+#: ../data/ui/preferences.blp:495
 msgid "Used when no keyring backends are found"
 msgstr ""
 "გამოიყენება მაშინ როდესაც გასაღებთა ასხმულის სისტემური მხარეები არ იძებნება"
 
-#: ../data/ui/preferences.blp:494
+#: ../data/ui/preferences.blp:500
 msgid "Tweaks"
 msgstr "მცირე ცვლილებები"
 
-#: ../data/ui/preferences.blp:497
+#: ../data/ui/preferences.blp:503
 msgid "Disable Animations"
 msgstr "ანიმაციების გათიშვა"
 
-#: ../data/ui/preferences.blp:498
+#: ../data/ui/preferences.blp:504
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
@@ -854,7 +862,7 @@ msgstr ""
 "ანიმაციების თავიდან ასაცილებლად (ეკრანის დაბალი განახლების სიხშირით "
 "გამოწვეული)"
 
-#: ../data/ui/preferences.blp:502
+#: ../data/ui/preferences.blp:508
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot toggle reduced motion animations globally "
@@ -887,6 +895,14 @@ msgstr "სრული ეკრანის რეჟიმის გადა
 
 #: ../data/ui/reader.blp:47
 msgid "Toggle OCR Translator"
+msgstr ""
+
+#: ../data/ui/reader.blp:104 ../data/ui/reader.blp:158
+msgid "Copy"
+msgstr ""
+
+#: ../data/ui/reader.blp:122
+msgid "Translate"
 msgstr ""
 
 #: ../data/ui/reader_settings.blp:9
@@ -1229,8 +1245,8 @@ msgid "Filters"
 msgstr "ფილტრები"
 
 #: ../komikku/card/__init__.py:220 ../komikku/library/__init__.py:338
-#: ../komikku/preferences/__init__.py:163
-#: ../komikku/preferences/__init__.py:186
+#: ../komikku/preferences/__init__.py:166
+#: ../komikku/preferences/__init__.py:189
 msgid "Clear?"
 msgstr "გავასუფთაო?"
 
@@ -1239,8 +1255,8 @@ msgid "Are you sure you want to clear all chapters?"
 msgstr "დარწმუნებული ხართ რომ ყველა თავის გასუფთავება გსურთ?"
 
 #: ../komikku/card/__init__.py:222 ../komikku/card/chapters_list.py:724
-#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:165
-#: ../komikku/preferences/__init__.py:188
+#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:168
+#: ../komikku/preferences/__init__.py:191
 msgid "Clear"
 msgstr "გასუფთავება"
 
@@ -1905,26 +1921,26 @@ msgstr "გაჩერებულია"
 msgid "Hiatus"
 msgstr "წყვეტა"
 
-#: ../komikku/preferences/__init__.py:164
+#: ../komikku/preferences/__init__.py:167
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 "დარწმუნებული ხართ რომ გსურთ თავების ქეშის და მონაცემთა ბაზის გასუფთავება?"
 
-#: ../komikku/preferences/__init__.py:183
+#: ../komikku/preferences/__init__.py:186
 msgid "Failed to clear WebView data"
 msgstr "WebView მონაცემების გასუფთავება ვერ მოხერხდა"
 
-#: ../komikku/preferences/__init__.py:187
+#: ../komikku/preferences/__init__.py:190
 msgid "Are you sure you want to clear WebView data (cache, storage, cookies)?"
 msgstr ""
 "დარწმუნებული ხართ რომ გსურთ WebView მონაცემების გასუფთავება (ქეში, საცავი, "
 "ქუქიები)?"
 
-#: ../komikku/preferences/__init__.py:212
+#: ../komikku/preferences/__init__.py:215
 msgid "Disable animations?"
 msgstr "გამოვრთო ანიმაციები?"
 
-#: ../komikku/preferences/__init__.py:213
+#: ../komikku/preferences/__init__.py:216
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
@@ -1934,7 +1950,7 @@ msgstr ""
 "\n"
 "ჟესტებით ანიმაცია არაღ იმუშავებს წესიერად მკითხველში."
 
-#: ../komikku/preferences/__init__.py:214
+#: ../komikku/preferences/__init__.py:217
 msgid "Disable"
 msgstr "გამორთვა"
 
@@ -2007,25 +2023,30 @@ msgstr "WebView ამჟამად გამოყენებაშია. �
 msgid "Disconnect from {}"
 msgstr "{}-სგან გამოთიშვა"
 
-#: ../komikku/reader/__init__.py:321
+#: ../komikku/reader/__init__.py:329
 msgid "Page successfully saved"
 msgstr "გვერდი წარმატებით შეინახა"
+
+#: ../komikku/reader/ocr_translator.py:154
+#: ../komikku/reader/ocr_translator.py:159
+msgid "Copied to clipboard"
+msgstr ""
 
 #: ../komikku/reader/pager/__init__.py:179
 msgid "Failed to sync read progress with server"
 msgstr "კითხვის პროგრესის სერვერთან სინქრონიზაცია ვერ მოხერხდა"
 
-#: ../komikku/reader/pager/__init__.py:489
+#: ../komikku/reader/pager/__init__.py:499
 #: ../komikku/reader/pager/webtoon.py:104
 msgid "There is no previous chapter."
 msgstr "წინა თავი არ არის."
 
-#: ../komikku/reader/pager/__init__.py:491
+#: ../komikku/reader/pager/__init__.py:501
 #: ../komikku/reader/pager/webtoon.py:102
 msgid "It was the last chapter."
 msgstr "ბოლო თავი იყო."
 
-#: ../komikku/reader/pager/__init__.py:662
+#: ../komikku/reader/pager/__init__.py:672
 #: ../komikku/reader/pager/webtoon.py:180
 msgid "This chapter is inaccessible."
 msgstr "ეს თავი მიუწვდომელია."
