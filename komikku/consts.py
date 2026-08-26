@@ -268,24 +268,13 @@ CREDITS = dict(
 )
 
 RELEASE_NOTES = """
-<p>This is a bugfix version.</p>
 <ul>
-    <li>[Reader] RTL/LTR/Vertical pager: Fixed keyboard/mouse navigation</li>
-    <li>[Reader] OCR Translator: Improvements in Translator</li>
-    <li>[L10n] Updated Russian and Ukrainian translations</li>
-</ul>
-
-<p>Changes in previous version 50.12.0</p>
-<ul>
-    <li>[Reader] Added an OCR translator</li>
-    <li>[Reader] Moved settings from Menu to Settings dialog</li>
-    <li>[Servers] Added MangaLivre (pt_BR)</li>
-    <li>[Servers] Desu (RU): Update</li>
+    <li>[Preferences] OCR Translator: Added default language to use as target language for translations</li>
+    <li>[Reader] OCR Translator: Added a button to copy the source text</li>
+    <li>[Reader] Webtoon pager: Fixed keayboard navigation</li>
     <li>[Servers] JManga (JA): Update</li>
-    <li>[Servers] MangaFire (EN/ES/FR/JA/PT/pt_BR): Update</li>
-    <li>[Servers] Rncalation (ES): Update</li>
-    <li>[Servers] Weeb Central (EN): Update</li>
-    <li>[L10n] Updated Bengali, French, Korean, Polish, Russian and Ukrainian translations</li>
+    <li>[Servers] MangaFreak (EN): Update</li>
+    <li>[L10n] Updated French, Russian and Ukrainian translations</li>
 </ul>
 <p>Happy reading.</p>
 """

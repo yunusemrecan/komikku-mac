@@ -115,6 +115,19 @@
     <url type="donation">https://febvre.info/donate.html</url>
 
     <releases>
+        <release version="50.13.0" date="2026-08-26">
+            <description translate="no">
+                <ul>
+                    <li>[Preferences] OCR Translator: Added default language to use as target language for translations</li>
+                    <li>[Reader] OCR Translator: Added a button to copy the source text</li>
+                    <li>[Reader] Webtoon pager: Fixed keayboard navigation</li>
+                    <li>[Servers] JManga (JA): Update</li>
+                    <li>[Servers] MangaFreak (EN): Update</li>
+                    <li>[L10n] Updated French, Russian and Ukrainian translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="50.12.1" date="2026-08-18">
             <description translate="no">
                 <p>This is a bugfix version.</p>
