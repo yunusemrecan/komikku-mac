@@ -623,9 +623,6 @@ class LibraryPage(Adw.NavigationPage):
             self.categories_list.set_edit_mode(False)
 
     def on_resize(self):
-        if self.page == 'start_page':
-            return
-
         def do_resize():
             if self.populating:
                 return GLib.SOURCE_CONTINUE
