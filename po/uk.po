@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-26 01:16+0200\n"
-"PO-Revision-Date: 2026-08-21 04:03+0000\n"
+"PO-Revision-Date: 2026-09-01 09:51+0000\n"
 "Last-Translator: Димко <Dymkovych@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
 "uk/>\n"
@@ -757,7 +757,7 @@ msgstr "Множник чутливості прокручування пере�
 
 #: ../data/ui/preferences.blp:407 ../data/ui/reader_settings.blp:54
 msgid "OCR Translator"
-msgstr "OCR-перекладач"
+msgstr "Розпізнавання і переклад"
 
 #: ../data/ui/preferences.blp:410 ../data/ui/reader_settings.blp:57
 msgid "OCR Language"
@@ -765,15 +765,15 @@ msgstr "Мова розпізнавання"
 
 #: ../data/ui/preferences.blp:411
 msgid "Default language to use for OCR text recognitions"
-msgstr ""
+msgstr "Типова мова для зчитування тексту"
 
 #: ../data/ui/preferences.blp:415
 msgid "Translator Language"
-msgstr ""
+msgstr "Перекладна мова"
 
 #: ../data/ui/preferences.blp:416
 msgid "Default language to use as target language for translations"
-msgstr ""
+msgstr "Цільова мова для виведення результату"
 
 #: ../data/ui/preferences.blp:424
 msgid "Advanced"
@@ -898,11 +898,11 @@ msgstr "Перекладач"
 
 #: ../data/ui/reader.blp:104 ../data/ui/reader.blp:158
 msgid "Copy"
-msgstr ""
+msgstr "Копіювати"
 
 #: ../data/ui/reader.blp:122
 msgid "Translate"
-msgstr ""
+msgstr "Перекласти"
 
 #: ../data/ui/reader_settings.blp:9
 msgid "Reader Settings"
@@ -2024,7 +2024,7 @@ msgstr "Сторінку успішно збережено"
 #: ../komikku/reader/ocr_translator.py:154
 #: ../komikku/reader/ocr_translator.py:159
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "Скопійовано до буфера"
 
 #: ../komikku/reader/pager/__init__.py:179
 msgid "Failed to sync read progress with server"
