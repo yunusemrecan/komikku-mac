@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: Komikku 50.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-26 01:16+0200\n"
-"PO-Revision-Date: 2026-08-17 17:59+0000\n"
+"PO-Revision-Date: 2026-09-01 09:51+0000\n"
 "Last-Translator: Bhalet Chakma <bhalet002@gmail.com>\n"
-"Language-Team: Bengali <https://hosted.weblate.org/projects/komikku/main/bn/"
-">\n"
+"Language-Team: Bengali <https://hosted.weblate.org/projects/komikku/main/bn/>"
+"\n"
 "Language: bn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -312,7 +312,7 @@ msgstr "নাম, সার্ভার বা ধরণ দিয়ে খু
 #: ../data/ui/library.blp:113
 msgctxt "Library: verb"
 msgid "Update"
-msgstr ""
+msgstr "আপডেট"
 
 #: ../data/ui/library.blp:202
 msgid "Discover Comics"
@@ -397,7 +397,7 @@ msgstr "কিবোর্ড শর্টকাট"
 
 #: ../data/ui/menu/main.xml:68
 msgid "About Komikku"
-msgstr ""
+msgstr "কমিকুর সম্পর্কে"
 
 #: ../data/ui/menu/reader.xml:49
 msgid "Save Page"
