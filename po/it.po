@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Komikku 0.25.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-26 01:16+0200\n"
-"PO-Revision-Date: 2026-08-30 22:26+0000\n"
+"PO-Revision-Date: 2026-09-03 08:51+0000\n"
 "Last-Translator: cas9 <cas9@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/komikku/main/it/>"
 "\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.9.dev0\n"
+"X-Generator: Weblate 2026.9\n"
 
 #: ../data/info.febvre.Komikku.desktop.in:2
 msgid "@prettyname@"
@@ -61,6 +61,7 @@ msgstr "Lettura online e offline da decine di server"
 msgid ""
 "Support for locally stored series (in CBZ/CBR/CBT, EPUB and PDF formats)"
 msgstr ""
+"Supporto per serie salvate localmente (nei formati CBZ/CBR/CBT, EPUB e PDF)"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
@@ -85,6 +86,7 @@ msgstr "Categorie per organizzare la libreria"
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr ""
+"Tracciamento automatico delle serie con AniList, MangaUpdates e MyAnimeList"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic update of series"
@@ -744,11 +746,11 @@ msgstr "Distanza Scorrimento"
 
 #: ../data/ui/preferences.blp:383
 msgid "Percentage of page height to scroll on click or Page Up/Down"
-msgstr ""
+msgstr "Percentuale di altezza pagina da scorrere per click o con PaginaSu/Giù"
 
 #: ../data/ui/preferences.blp:394
 msgid "Drag Sensitivity"
-msgstr ""
+msgstr "Sensibilità Trascinamento"
 
 #: ../data/ui/preferences.blp:395
 msgid "Multiplier for drag scrolling sensitivity"
@@ -764,7 +766,7 @@ msgstr "Lingua OCR"
 
 #: ../data/ui/preferences.blp:411
 msgid "Default language to use for OCR text recognitions"
-msgstr ""
+msgstr "Lingua di default da usare per i riconoscimenti testo OCR"
 
 #: ../data/ui/preferences.blp:415
 msgid "Translator Language"
@@ -886,7 +888,7 @@ msgstr "Passa alla modalità schermo intero"
 
 #: ../data/ui/reader.blp:47
 msgid "Toggle OCR Translator"
-msgstr ""
+msgstr "Attiva/Disattiva Traduttore OCR"
 
 #: ../data/ui/reader.blp:104 ../data/ui/reader.blp:158
 msgid "Copy"
@@ -1037,7 +1039,7 @@ msgstr "Ripristina Zoom"
 #: ../data/ui/shortcuts.blp:124
 msgctxt "Shortcut window description"
 msgid "Toggle OCR Translator"
-msgstr ""
+msgstr "Attiva/Disattiva Traduttore OCR"
 
 #: ../data/ui/shortcuts.blp:131
 msgctxt "Shortcut window description"
