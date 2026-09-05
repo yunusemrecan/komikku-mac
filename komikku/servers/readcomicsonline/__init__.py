@@ -220,27 +220,17 @@ class Readcomicsonline(Server):
 
     @CompleteChallenge()
     def search(self, term, status=None, type=None):
-        r = self.session_get(self.search_url)
-        if r.status_code != 200:
-            return None
-
-        soup = BeautifulSoup(r.text, 'lxml')
-
-        if input := soup.select_one('input[name="_token"]'):
-            token = input.get('value')
-        else:
-            return None
-
-        r = self.session_post(
+        r = self.session_get(
             self.search_url,
             params={
-                '_token': token,
                 'name':	term,
                 'status_id': status if status is not None else '',
                 'type_id': type if type is not None else '',
                 'category':	'',
             }
         )
+        if r.status_code != 200:
+            return None
 
         soup = BeautifulSoup(r.text, 'lxml')
 
