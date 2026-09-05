@@ -13,10 +13,12 @@ from komikku.consts import BORDERS_CROP_THRESHOLDS
 from komikku.consts import PROGRESSBAR_THEMES
 from komikku.models import Settings
 from komikku.models.database import clear_cached_data
+from komikku.models.keyring import KeyringHelper
 from komikku.preferences.servers import PreferencesServersLanguagesSubPage
 from komikku.preferences.servers import PreferencesServersSettingsSubPage
 from komikku.preferences.trackers import TrackerRow
 from komikku.reader.ocr_translator import LangCodeNamePair
+from komikku.reader.ocr_translator import TranslatorIdNamePair
 from komikku.utils import folder_size
 from komikku.utils import get_cached_data_dir
 from komikku.utils import get_webview_data_dir
@@ -66,7 +68,8 @@ class PreferencesDialog(Adw.PreferencesDialog):
     scroll_click_percentage_adjustment = Gtk.Template.Child('scroll_click_percentage_adjustment')
     scroll_drag_factor_adjustment = Gtk.Template.Child('scroll_drag_factor_adjustment')
     ocr_lang_row = Gtk.Template.Child('ocr_lang_row')
-    translator_lang_row = Gtk.Template.Child('translator_lang_row')
+    translator_row = Gtk.Template.Child('translator_row')
+    translator_params_button = Gtk.Template.Child('translator_params_button')
 
     advanced_banner = Gtk.Template.Child('advanced_banner')
     clear_cached_data_actionrow = Gtk.Template.Child('clear_cached_data_actionrow')
@@ -350,10 +353,18 @@ class PreferencesDialog(Adw.PreferencesDialog):
     def on_tracking_changed(self, switch_button, _gparam):
         self.settings.tracking = switch_button.get_active()
 
-    def on_translator_lang_changed(self, row, _gparam):
-        translators_langs = self.settings.translators_langs
-        translators_langs['google'] = row.get_selected_item().code
-        self.settings.translators_langs = translators_langs
+    def on_translator_changed(self, row, _gparam):
+        index = row.get_selected()
+        translators_data = self.settings.translators
+        translators_data['active'] = list(self.window.reader.ocr_translator.translators_classes.keys())[index]
+        self.settings.translators = translators_data
+
+        self.window.reader.ocr_translator.init_translator()
+
+    def on_translator_params_button_clicked(self, _button):
+        translator_id = self.translator_row.get_selected_item().id
+        translator_class = self.window.reader.ocr_translator.translators_classes[translator_id]
+        self.push_subpage(PreferencesTranslatorParamsSubPage(self, translator_class))
 
     def on_update_at_startup_changed(self, switch_button, _gparam):
         if switch_button.get_active():
@@ -550,21 +561,27 @@ class PreferencesDialog(Adw.PreferencesDialog):
         else:
             self.ocr_lang_row.set_sensitive(False)
 
-        # Translator target language
+        # Translator
         if self.window.reader.ocr_translator.enabled:
-            list_store_expression = Gtk.PropertyExpression.new(LangCodeNamePair, None, 'name')
-            self.translator_lang_row.set_expression(list_store_expression)
+            self.translator_params_button.connect('clicked', self.on_translator_params_button_clicked)
 
-            model = Gio.ListStore(item_type=LangCodeNamePair)
-            languages = self.window.reader.ocr_translator.translator_languages
-            items = [LangCodeNamePair(code=k, name=v) for k, v in languages.items()]
+            list_store_expression = Gtk.PropertyExpression.new(TranslatorIdNamePair, None, 'name')
+            self.translator_row.set_expression(list_store_expression)
+
+            model = Gio.ListStore(item_type=TranslatorIdNamePair)
+            translators_classes = self.window.reader.ocr_translator.translators_classes
+            items = [
+                TranslatorIdNamePair(id=id, name=class_.name)
+                for id, class_ in translators_classes.items()
+            ]
             model.splice(0, 0, items)
-            self.translator_lang_row.set_model(model)
-            lang = self.settings.translators_langs.get('google', 'en')
-            self.translator_lang_row.set_selected(list(languages.keys()).index(lang))
-            self.translator_lang_row.connect('notify::selected', self.on_translator_lang_changed)
+            self.translator_row.set_model(model)
+            self.translator_row.set_selected(
+                list(translators_classes.keys()).index(self.settings.translators.get('active', 'google'))
+            )
+            self.translator_row.connect('notify::selected', self.on_translator_changed)
         else:
-            self.translator_lang_row.set_sensitive(False)
+            self.translator_row.set_sensitive(False)
 
         #
         # Advanced
@@ -619,3 +636,140 @@ class PreferencesDialog(Adw.PreferencesDialog):
     def update_webview_data_size(self):
         size = folder_size(get_webview_data_dir(), exclude='cookies.sqlite')
         self.clear_webview_data_actionrow.set_subtitle(size or '-')
+
+
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/preferences_translator_params.ui')
+class PreferencesTranslatorParamsSubPage(Adw.NavigationPage):
+    __gtype_name__ = 'PreferencesTranslatorParamsSubPage'
+
+    headerbar = Gtk.Template.Child('headerbar')
+
+    credential_group = Gtk.Template.Child()
+    instance_url_row = Gtk.Template.Child()
+    api_key_row = Gtk.Template.Child()
+    warning_row = Gtk.Template.Child()
+    validate_button = Gtk.Template.Child()
+    translator_lang_row = Gtk.Template.Child()
+
+    def __init__(self, parent, translator_class):
+        Adw.NavigationPage.__init__(self)
+
+        self.parent = parent
+        self.window = parent.window
+
+        self.keyring_helper = KeyringHelper()
+        self.settings = Settings.get_default()
+        self.translator = translator_class()
+
+        self.populate()
+
+    def on_translator_lang_changed(self, row, _gparam):
+        translators_data = self.settings.translators
+        translator_data = translators_data.get(self.translator.id, {})
+        translator_data['lang'] = row.get_selected_item().code
+        translators_data[self.translator.id] = translator_data
+        self.settings.translators = translators_data
+        self.window.reader.ocr_translator.init_translator(force=True)
+
+    def populate(self):
+        self.headerbar.get_title_widget().set_subtitle(self.translator.name)
+
+        # Credential
+        if self.translator.api_key_required or self.translator.instance_url_required:
+            self.instance_url_row.set_visible(self.translator.instance_url_required)
+            self.api_key_row.set_visible(self.translator.api_key_required)
+            self.credential_group.set_visible(True)
+
+            if credential := self.keyring_helper.get(self.translator.id):
+                if self.translator.instance_url_required and credential.address:
+                    self.instance_url_row.set_text(credential.address)
+                if self.translator.api_key_required and credential.password:
+                    self.api_key_row.set_text(credential.password)
+
+            plaintext_checkbutton = None
+            if self.keyring_helper.is_disabled or not self.keyring_helper.has_recommended_backend:
+                self.warning_row.set_visible(True)
+
+                label = Gtk.Label(hexpand=True, wrap=True)
+                if self.keyring_helper.is_disabled:
+                    label.add_css_class('dimmed')
+                    label.add_css_class('warning')
+                    label.set_text(_('System keyring service is disabled. Credential cannot be saved.'))
+                    self.warning_row.set_child(label)
+                elif not self.keyring_helper.has_recommended_backend:
+                    if not self.settings.credentials_storage_plaintext_fallback:
+                        plaintext_checkbutton = Gtk.CheckButton(hexpand=True)
+                        label.set_text(_('No keyring backends were found to store credential. Use plaintext storage as fallback.'))
+                        plaintext_checkbutton.set_child(label)
+                        self.warning_row.set_child(plaintext_checkbutton)
+                    else:
+                        label.add_css_class('dimmed')
+                        label.add_css_class('warning')
+                        label.set_text(_('No keyring backends were found to store credential. Plaintext storage will be used as fallback.'))
+                        self.warning_row.set_child(label)
+
+            # Hide Adw.ButtonContent icon
+            self.validate_button.get_child().get_first_child().get_first_child().set_visible(False)
+            self.validate_button.connect('clicked', self.validate_credential, plaintext_checkbutton)
+
+        # Behavior
+        # Default target language
+        list_store_expression = Gtk.PropertyExpression.new(LangCodeNamePair, None, 'name')
+        self.translator_lang_row.set_expression(list_store_expression)
+
+        model = Gio.ListStore(item_type=LangCodeNamePair)
+        languages = self.translator.get_languages()['dst']
+        items = [LangCodeNamePair(code=k, name=v) for k, v in languages.items()]
+        model.splice(0, 0, items)
+        self.translator_lang_row.set_model(model)
+        translator_data = self.settings.translators.get(self.translator.id, {})
+        lang = translator_data.get('lang', 'en')
+        self.translator_lang_row.set_selected(list(languages.keys()).index(lang))
+        self.translator_lang_row.connect('notify::selected', self.on_translator_lang_changed)
+
+    def validate_credential(self, _btn, plaintext_checkbutton):
+        instance_url = None
+        instance_url_error_msg = None
+        if self.translator.instance_url_required:
+            try:
+                if self.translator.validate_instance_url(self.instance_url_row.get_text()):
+                    instance_url = self.api_key_row.get_text()
+                else:
+                    instance_url_error_msg = _('Invalid instance URL')
+            except Exception:
+                instance_url_error_msg = _('Unavailable service')
+
+            if instance_url_error_msg:
+                self.parent.add_toast(Adw.Toast.new(instance_url_error_msg))
+
+        api_key = None
+        api_key_error_msg = None
+        if self.translator.api_key_required:
+            try:
+                if self.translator.validate_api_key(self.api_key_row.get_text()):
+                    api_key = self.api_key_row.get_text()
+                else:
+                    api_key_error_msg = _('Invalid API key')
+            except Exception:
+                api_key_error_msg = _('Unavailable service')
+
+            if api_key_error_msg:
+                self.parent.add_toast(Adw.Toast.new(api_key_error_msg))
+
+        # Show Adw.ButtonContent icon
+        self.validate_button.get_child().get_first_child().get_first_child().set_visible(True)
+
+        if instance_url_error_msg is None and api_key_error_msg is None:
+            self.validate_button.get_child().props.icon_name = 'checkmark-symbolic'
+
+            if self.keyring_helper.is_disabled or plaintext_checkbutton is not None and not plaintext_checkbutton.get_active():
+                return
+
+            if plaintext_checkbutton is not None and plaintext_checkbutton.get_active():
+                # Save user agrees to save credentials in plaintext
+                self.parent.credentials_storage_plaintext_fallback_switch.set_active(True)
+
+            self.keyring_helper.store(self.translator.id, 'api', api_key, instance_url)
+            self.window.reader.ocr_translator.init_translator(force=True)
+        else:
+            self.validate_button.get_child().props.icon_name = 'computer-fail-symbolic'

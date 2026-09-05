@@ -411,10 +411,23 @@ template $PreferencesDialog : Adw.PreferencesDialog {
         subtitle: _("Default language to use for OCR text recognitions");
       }
 
-      Adw.ComboRow translator_lang_row {
-        title: _("Translator Language");
-        subtitle: _("Default language to use as target language for translations");
-        enable-search: true;
+      Adw.ComboRow translator_row {
+        title: _("Translator");
+        subtitle: _("Service to use for translations");
+
+        Separator {
+          margin-start: 12;
+          margin-top: 12;
+          margin-bottom: 12;
+        }
+
+        Button translator_params_button {
+          icon-name: "server-settings-symbolic";
+          valign: center;
+          styles [
+            "flat"
+          ]
+        }
       }
     }
   }

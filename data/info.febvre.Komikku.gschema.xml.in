@@ -296,10 +296,9 @@
             <summary>OCR Language</summary>
             <description>Default language used for OCR text recognitions</description>
         </key>
-        <key type="s" name="translators-langs">
+        <key type="s" name="translators">
             <default>"{}"</default>
-            <summary>Translators target languages</summary>
-            <description>Default target languages of translators</description>
+            <summary>Translators data</summary>
         </key>
 
         <!-- Preferences: Advanced -->

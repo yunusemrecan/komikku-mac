@@ -1,0 +1,79 @@
+// SPDX-FileCopyrightText: 2019-2026 Valéry Febvre
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+using Gtk 4.0;
+using Adw 1;
+
+template $PreferencesTranslatorParamsSubPage : Adw.NavigationPage {
+  tag: "preferences.translator_params";
+  title: _("Translator Settings");
+
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar headerbar {
+      title-widget: Adw.WindowTitle {
+        title: _("Translator Settings");
+      };
+    }
+
+    content: Adw.PreferencesPage {
+      Adw.PreferencesGroup credential_group {
+        title: _("Service");
+        separate-rows: true;
+        visible: false;
+
+        Adw.EntryRow instance_url_row {
+          title: _("Instance URL");
+
+          [prefix]
+          Image {
+            icon-name: "network-server-symbolic";
+          }
+        }
+
+        Adw.PasswordEntryRow api_key_row {
+          title: _("API Key");
+
+          [prefix]
+          Image {
+            icon-name: "dialog-password-symbolic";
+          }
+        }
+
+        Box {
+          orientation: vertical;
+
+          Adw.Bin warning_row {
+            margin-top: 12;
+            visible: false;
+          }
+
+          Button validate_button {
+            margin-top: 12;
+
+            child: Adw.ButtonContent {
+              label: _("Validate");
+              margin-top: 8;
+              margin-bottom: 8;
+            };
+
+            styles [
+              "suggested-action"
+            ]
+          }
+        }
+      }
+
+      Adw.PreferencesGroup {
+        title: _("Behavior");
+
+        Adw.ComboRow translator_lang_row {
+          title: _("Translator Language");
+          subtitle: _("Default language to use as target language for translations");
+          enable-search: true;
+        }
+      }
+    };
+  };
+}

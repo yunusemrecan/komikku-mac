@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2019-2025 Valéry Febvre
+# SPDX-FileCopyrightText: 2019-2026 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -65,10 +65,10 @@ class PreferencesServerParamsSupPage(Adw.NavigationPage):
 
         plaintext_checkbutton = None
         if self.keyring_helper.is_disabled or not self.keyring_helper.has_recommended_backend:
-            label = Gtk.Label(hexpand=True)
-            label.set_wrap(True)
+            label = Gtk.Label(hexpand=True, wrap=True)
             if self.keyring_helper.is_disabled:
                 label.add_css_class('dimmed')
+                label.add_css_class('warning')
                 label.set_text(_('System keyring service is disabled. Credential cannot be saved.'))
                 box.append(label)
             elif not self.keyring_helper.has_recommended_backend:
@@ -79,11 +79,13 @@ class PreferencesServerParamsSupPage(Adw.NavigationPage):
                     box.append(plaintext_checkbutton)
                 else:
                     label.add_css_class('dimmed')
+                    label.add_css_class('warning')
                     label.set_text(_('No keyring backends were found to store credential. Plaintext storage will be used as fallback.'))
                     box.append(label)
 
         btn = Gtk.Button()
-        btn_hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        btn.add_css_class('suggested-action')
+        btn_hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_top=8, margin_bottom=8, spacing=6)
         btn_hbox.set_halign(Gtk.Align.CENTER)
         btn.icon = Gtk.Image(visible=False)
         btn_hbox.append(btn.icon)
@@ -414,9 +416,10 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
 
                 if server_data['params'] or server_data['has_login']:
                     params_btn = Gtk.Button(icon_name='server-settings-symbolic', valign=Gtk.Align.CENTER)
-                    params_btn.add_css_class('circular')
-                    params_btn.props.margin_end = 33
+                    params_btn.add_css_class('flat')
+                    # params_btn.props.margin_end = 33
                     params_btn.connect('clicked', self.push_server_params_subpage, server_data)
+                    row.add_suffix(Gtk.Separator(margin_top=12, margin_bottom=12, margin_end=6))
                     row.add_suffix(params_btn)
 
                 self.group.add(row)
@@ -449,10 +452,11 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
 
                 if server_data['params'] or server_data['has_login']:
                     params_btn = Gtk.Button(icon_name='server-settings-symbolic', valign=Gtk.Align.CENTER)
-                    params_btn.add_css_class('circular')
-                    params_btn.props.margin_end = 6
+                    params_btn.add_css_class('flat')
+                    # params_btn.props.margin_end = 6
                     params_btn.connect('clicked', self.push_server_params_subpage, server_data)
                     row.add_suffix(params_btn)
+                    row.add_suffix(Gtk.Separator(margin_top=12, margin_bottom=12, margin_end=12))
 
                 switch = Gtk.Switch(valign=Gtk.Align.CENTER)
                 switch.set_active(server_enabled and server_allowed and lang_enabled)

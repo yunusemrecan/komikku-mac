@@ -20,13 +20,18 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
+from komikku.models.keyring import KeyringHelper
 from komikku.models.settings import Settings
-from komikku.translators import Google
-from komikku.translators import LANGUAGES as TRANSLATOR_LANGUAGES
+from komikku.translators.utils import get_translators_classes
 
 
 class LangCodeNamePair(GObject.Object):
     code = GObject.Property(type=str, flags=GObject.ParamFlags.READWRITE, default='')
+    name = GObject.Property(type=str, nick='Name', blurb='Name', flags=GObject.ParamFlags.READWRITE, default='')
+
+
+class TranslatorIdNamePair(GObject.Object):
+    id = GObject.Property(type=str, flags=GObject.ParamFlags.READWRITE, default='')
     name = GObject.Property(type=str, nick='Name', blurb='Name', flags=GObject.ParamFlags.READWRITE, default='')
 
 
@@ -37,7 +42,10 @@ class OCRTranslator(GObject.GObject):
         self.__active = False
         self.enabled = True
 
+        self.keyring_helper = KeyringHelper()
         self.reader = reader
+        self.translator = None
+        self.translators_classes = get_translators_classes()
         self.window = reader.window
 
         self.togglebutton = self.reader.ocr_translator_togglebutton
@@ -65,37 +73,23 @@ class OCRTranslator(GObject.GObject):
 
             self.togglebutton.connect('toggled', self.toggle)
 
-            list_store_expression = Gtk.PropertyExpression.new(LangCodeNamePair, None, 'name')
-            items = [LangCodeNamePair(code='auto', name='Auto')]
-            items += [LangCodeNamePair(code=k, name=v) for k, v in self.translator_languages.items()]
-
-            # Source
-            model = Gio.ListStore(item_type=LangCodeNamePair)
-            model.splice(0, 0, items)
-            self.src_dropdown.set_expression(list_store_expression)
-            self.src_dropdown.set_model(model)
-
+            # Translator text source
             self.src_text = TextView(editable=True, bottom_margin=9, left_margin=9, right_margin=9, top_margin=9)
             self.src_text.buffer.connect('changed', self.on_src_text_changed)
             self.src_scrolledwindow.set_child(self.src_text)
 
-            # Destination
-            model = Gio.ListStore(item_type=LangCodeNamePair)
-            model.splice(0, 0, items[1:])
-            self.dst_dropdown.set_expression(list_store_expression)
-            self.dst_dropdown.set_model(model)
-            lang = Settings.get_default().translators_langs.get('google', 'en')
-            self.dst_dropdown.set_selected(list(self.translator_languages.keys()).index(lang))
-
+            # Translator text destination (translated)
             self.dst_text = TextView(editable=False, bottom_margin=9, left_margin=9, right_margin=9, top_margin=9)
             self.dst_text.buffer.connect('changed', self.on_dst_text_changed)
             self.dst_scrolledwindow.set_child(self.dst_text)
 
-            # Buttons
+            # Translator buttons
             self.src_clear_button.connect('clicked', self.src_text.clear_text)
             self.src_copy_button.connect('clicked', self.copy_src)
             self.translate_button.connect('clicked', self.translate)
             self.dst_copy_button.connect('clicked', self.copy_dst)
+
+            self.init_translator()
 
     @GObject.Property(type=bool, default=False)
     def active(self):
@@ -146,7 +140,7 @@ class OCRTranslator(GObject.GObject):
 
     @property
     def translator_languages(self):
-        return TRANSLATOR_LANGUAGES
+        return self.translator.get_languages()
 
     def copy_dst(self, _btn):
         if display := Gdk.Display.get_default():
@@ -158,6 +152,42 @@ class OCRTranslator(GObject.GObject):
             display.get_clipboard().set(self.src_text.get_text())
             self.reader.window.add_notification(_('Copied to clipboard'))
 
+    def init_translator(self, force=False):
+        if not self.enabled:
+            return
+
+        active_translator_id = Settings.get_default().translators.get('active', 'google')
+        if not force and self.translator and self.translator.id == active_translator_id:
+            return
+
+        translator_class = self.translators_classes[active_translator_id]
+        kwargs = {}
+        if credential := self.keyring_helper.get(translator_class.id):
+            if translator_class.instance_url_required:
+                kwargs['instance_url'] = credential.address
+            if translator_class.api_key_required:
+                kwargs['api_key'] = credential.password
+        self.translator = translator_class(**kwargs)
+
+        list_store_expression = Gtk.PropertyExpression.new(LangCodeNamePair, None, 'name')
+        items = [LangCodeNamePair(code='auto', name='Auto')]
+        items += [LangCodeNamePair(code=k, name=v) for k, v in self.translator_languages['src'].items()]
+
+        # Language source
+        model = Gio.ListStore(item_type=LangCodeNamePair)
+        model.splice(0, 0, items)
+        self.src_dropdown.set_expression(list_store_expression)
+        self.src_dropdown.set_model(model)
+
+        # Language destination
+        model = Gio.ListStore(item_type=LangCodeNamePair)
+        model.splice(0, 0, items[1:])
+        self.dst_dropdown.set_expression(list_store_expression)
+        self.dst_dropdown.set_model(model)
+        translator_data = Settings.get_default().translators.get(self.translator.id, {})
+        lang = translator_data.get('lang', 'en')
+        self.dst_dropdown.set_selected(list(self.translator_languages['dst'].keys()).index(lang))
+
     def on_dst_text_changed(self, _buffer):
         text = self.dst_text.get_text()
         self.dst_copy_button.set_sensitive(text and not text.isspace())
@@ -165,7 +195,7 @@ class OCRTranslator(GObject.GObject):
     def on_src_text_changed(self, _buffer):
         text = self.src_text.get_text()
         self.src_copy_button.set_sensitive(text and not text.isspace())
-        self.chars_counter_label.set_text(f'{len(text)}/2000')
+        self.chars_counter_label.set_text(f'{len(text)}/{self.translator.chars_limit}')
         self.translate_button.set_sensitive(text and not text.isspace())
 
     def open_sheet(self, text):
@@ -206,7 +236,7 @@ class OCRTranslator(GObject.GObject):
     def translate(self, _btn):
         def on_complete(result, src):
             if src == 'auto' and result['src_detected']:
-                lang_detected = self.translator_languages[result['src_detected']]
+                lang_detected = self.translator_languages['src'][result['src_detected']]
                 self.src_dropdown.get_model().splice(
                     0, 1, [LangCodeNamePair(code='auto', name=f'Auto ({lang_detected})')]
                 )
@@ -220,12 +250,10 @@ class OCRTranslator(GObject.GObject):
 
         def run(text, src, dst):
             try:
-                result = Google().translate(text, src=src, dst=dst)
+                result = self.translator.translate(text[:self.translator.chars_limit], src=src, dst=dst)
+                GLib.idle_add(on_complete, result, src)
             except Exception as e:
                 GLib.idle_add(on_error, e.message)
-                return
-
-            GLib.idle_add(on_complete, result, src)
 
         text = self.src_text.get_text().strip()
         src = self.src_dropdown.get_selected_item().code
