@@ -45,6 +45,7 @@ template $PreferencesDialog : Adw.PreferencesDialog {
 
         [overlay]
         Button support_close_button {
+          tooltip-text: _("Close");
           icon-name: "window-close-symbolic";
           halign: end;
           valign: start;
@@ -424,6 +425,8 @@ template $PreferencesDialog : Adw.PreferencesDialog {
         Button translator_params_button {
           icon-name: "server-settings-symbolic";
           valign: center;
+          tooltip-text: _("Edit Translator Settings");
+
           styles [
             "flat"
           ]

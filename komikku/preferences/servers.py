@@ -416,6 +416,7 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
 
                 if server_data['params'] or server_data['has_login']:
                     params_btn = Gtk.Button(icon_name='server-settings-symbolic', valign=Gtk.Align.CENTER)
+                    params_btn.set_tooltip_text(_('Edit Server Settings'))
                     params_btn.add_css_class('flat')
                     # params_btn.props.margin_end = 33
                     params_btn.connect('clicked', self.push_server_params_subpage, server_data)
@@ -452,6 +453,7 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
 
                 if server_data['params'] or server_data['has_login']:
                     params_btn = Gtk.Button(icon_name='server-settings-symbolic', valign=Gtk.Align.CENTER)
+                    params_btn.set_tooltip_text(_('Edit Server Settings'))
                     params_btn.add_css_class('flat')
                     # params_btn.props.margin_end = 6
                     params_btn.connect('clicked', self.push_server_params_subpage, server_data)
