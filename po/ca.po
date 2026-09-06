@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 01:16+0200\n"
+"POT-Creation-Date: 2026-09-06 22:56+0200\n"
 "PO-Revision-Date: 2025-05-27 09:01+0000\n"
 "Last-Translator: Roger VC <rogervilarasau@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/komikku/main/ca/"
@@ -182,7 +182,7 @@ msgstr "Pàgina d'editor de categories en format mòbil"
 msgid "The Reading history page in mobile format"
 msgstr "Pàgina de l'historial de lectura en format mòbil"
 
-#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:429
+#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:445
 msgid "Got it!"
 msgstr "Rebut!"
 
@@ -217,7 +217,7 @@ msgstr "Mida al disc"
 msgid "No Categories"
 msgstr "No hi ha categories"
 
-#: ../data/ui/card_tracking.blp:9 ../data/ui/preferences.blp:109
+#: ../data/ui/card_tracking.blp:9 ../data/ui/preferences.blp:110
 msgid "Tracking"
 msgstr "Seguiment"
 
@@ -263,8 +263,8 @@ msgstr "El més popular"
 msgid "Latest Updates"
 msgstr "Últimes actualitzacions"
 
-#: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:220
-#: ../data/ui/preferences.blp:477
+#: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:221
+#: ../data/ui/preferences.blp:493
 msgid "Servers"
 msgstr "Servidors"
 
@@ -288,7 +288,7 @@ msgstr "Historial"
 msgid "No History"
 msgstr "Sense historial"
 
-#: ../data/ui/library.blp:10 ../data/ui/preferences.blp:119
+#: ../data/ui/library.blp:10 ../data/ui/preferences.blp:120
 msgid "Library"
 msgstr "Biblioteca"
 
@@ -419,270 +419,270 @@ msgid ""
 "general."
 msgstr ""
 
-#: ../data/ui/preferences.blp:58
+#: ../data/ui/preferences.blp:59
 msgid "Appearance"
 msgstr ""
 
-#: ../data/ui/preferences.blp:61
+#: ../data/ui/preferences.blp:62
 msgid "Theme"
 msgstr "Tema"
 
-#: ../data/ui/preferences.blp:64
+#: ../data/ui/preferences.blp:65
 msgid "Light"
 msgstr "Clar"
 
-#: ../data/ui/preferences.blp:65
+#: ../data/ui/preferences.blp:66
 msgid "Dark"
 msgstr "Fosc"
 
-#: ../data/ui/preferences.blp:66
+#: ../data/ui/preferences.blp:67
 msgid "Follow System"
 msgstr "Seguir el sistema"
 
-#: ../data/ui/preferences.blp:72
+#: ../data/ui/preferences.blp:73
 msgid "Night Light"
 msgstr "Llum nocturna"
 
-#: ../data/ui/preferences.blp:73
+#: ../data/ui/preferences.blp:74
 msgid "Automatically enable dark theme at night"
 msgstr "Activa automàticament el tema fosc a la nit"
 
-#: ../data/ui/preferences.blp:78
+#: ../data/ui/preferences.blp:79
 msgid "Use system accent colors"
 msgstr "Utilitzeu colors d'accent del sistema"
 
-#: ../data/ui/preferences.blp:82
+#: ../data/ui/preferences.blp:83
 msgid "Progress Bars Theme"
 msgstr ""
 
-#: ../data/ui/preferences.blp:83
+#: ../data/ui/preferences.blp:84
 msgid "Theme to use for progress bars"
 msgstr ""
 
-#: ../data/ui/preferences.blp:87
+#: ../data/ui/preferences.blp:88
 msgid "Backdrop in Details Page"
 msgstr "Rerefons en la Pàgina de Detalls"
 
-#: ../data/ui/preferences.blp:88
+#: ../data/ui/preferences.blp:89
 msgid "Method used to recolor background to match cover"
 msgstr ""
 
-#: ../data/ui/preferences.blp:92
+#: ../data/ui/preferences.blp:93
 msgid "Linear gradient"
 msgstr ""
 
-#: ../data/ui/preferences.blp:93
+#: ../data/ui/preferences.blp:94
 msgid "Blurred cover"
 msgstr ""
 
-#: ../data/ui/preferences.blp:103
+#: ../data/ui/preferences.blp:104
 msgid "Desktop Notifications"
 msgstr "Notificacions d'escriptori"
 
-#: ../data/ui/preferences.blp:104
+#: ../data/ui/preferences.blp:105
 msgid "Use desktop notifications for downloads and library updates"
 msgstr ""
 "Utilitza les notificacions d'escriptori per a les baixades i les "
 "actualitzacions de la biblioteca"
 
-#: ../data/ui/preferences.blp:112
+#: ../data/ui/preferences.blp:113
 msgid "Synchronize reading progress"
 msgstr "Sincronitza el progrés de lectura"
 
-#: ../data/ui/preferences.blp:123
+#: ../data/ui/preferences.blp:124
 msgid "Display"
 msgstr "Visualització"
 
-#: ../data/ui/preferences.blp:126
+#: ../data/ui/preferences.blp:127
 msgid "Display Mode"
 msgstr "Mode de visualització"
 
-#: ../data/ui/preferences.blp:129
+#: ../data/ui/preferences.blp:130
 msgid "Grid"
 msgstr "Quadrícula"
 
-#: ../data/ui/preferences.blp:130
+#: ../data/ui/preferences.blp:131
 msgid "Compact Grid"
 msgstr "Quadrícula compacta"
 
-#: ../data/ui/preferences.blp:136
+#: ../data/ui/preferences.blp:137
 msgid "Servers Logo"
 msgstr "Logotip dels servidors"
 
-#: ../data/ui/preferences.blp:137
+#: ../data/ui/preferences.blp:138
 msgid "Display servers logo"
 msgstr "Mostra el logotip dels servidors"
 
-#: ../data/ui/preferences.blp:141
+#: ../data/ui/preferences.blp:142
 msgid "Badges"
 msgstr "Distintius"
 
-#: ../data/ui/preferences.blp:144
+#: ../data/ui/preferences.blp:145
 msgid "Number of Unread Chapters"
 msgstr "Nombre de capítols no llegits"
 
-#: ../data/ui/preferences.blp:164
+#: ../data/ui/preferences.blp:165
 msgid "Number of Downloaded Chapters"
 msgstr "Nombre de capítols descarregats"
 
-#: ../data/ui/preferences.blp:184
+#: ../data/ui/preferences.blp:185
 msgid "Number of Recent and Unread Chapters"
 msgstr "Nombre de capítols recents i sense llegir"
 
-#: ../data/ui/preferences.blp:206
+#: ../data/ui/preferences.blp:207
 msgctxt "Settings: noun"
 msgid "Update"
 msgstr ""
 
-#: ../data/ui/preferences.blp:209
+#: ../data/ui/preferences.blp:210
 msgid "Update at Startup"
 msgstr "Actualització a l'inici"
 
-#: ../data/ui/preferences.blp:210
+#: ../data/ui/preferences.blp:211
 msgid "Automatically update library at startup"
 msgstr "Actualitza automàticament la biblioteca a l'inici"
 
-#: ../data/ui/preferences.blp:214
+#: ../data/ui/preferences.blp:215
 msgid "Auto Download of New Chapters"
 msgstr "Descàrrega automàtica de nous capítols"
 
-#: ../data/ui/preferences.blp:215
+#: ../data/ui/preferences.blp:216
 msgid "Automatically download new chapters"
 msgstr "Descarrega automàticament nous capítols"
 
-#: ../data/ui/preferences.blp:223
+#: ../data/ui/preferences.blp:224
 msgid "Languages"
 msgstr ""
 
-#: ../data/ui/preferences.blp:224
+#: ../data/ui/preferences.blp:225
 msgid "Restrict servers to selected languages"
 msgstr "Restringeix els servidors als idiomes seleccionats"
 
-#: ../data/ui/preferences.blp:232
+#: ../data/ui/preferences.blp:233
 msgid "Settings"
 msgstr ""
 
-#: ../data/ui/preferences.blp:233
+#: ../data/ui/preferences.blp:234
 msgid "Enable/disable and configure servers"
 msgstr "Activar/desactivar i configurar servidors"
 
-#: ../data/ui/preferences.blp:241
+#: ../data/ui/preferences.blp:242
 msgid "Long Strip Detection"
 msgstr "Detecció de tires llargues"
 
-#: ../data/ui/preferences.blp:242
+#: ../data/ui/preferences.blp:243
 msgid "Automatically detect long vertical strip when possible"
 msgstr "Detecta automàticament una franja vertical llarga quan sigui possible"
 
-#: ../data/ui/preferences.blp:248
+#: ../data/ui/preferences.blp:249
 msgid "NSFW Content (18+)"
 msgstr "Contingut NSFW (18+)"
 
-#: ../data/ui/preferences.blp:249
+#: ../data/ui/preferences.blp:250
 msgid "Whether to enable servers with NSFW content"
 msgstr "Si s'han d'habilitar servidors amb contingut NSFW"
 
-#: ../data/ui/preferences.blp:253
+#: ../data/ui/preferences.blp:254
 msgid "NSFW Only Content (18+)"
 msgstr "Només contingut NSFW (18+)"
 
-#: ../data/ui/preferences.blp:254
+#: ../data/ui/preferences.blp:255
 msgid "Whether to enable servers with NSFW only content"
 msgstr "Si s'han d'habilitar servidors amb contingut només NSFW"
 
-#: ../data/ui/preferences.blp:258
+#: ../data/ui/preferences.blp:259
 msgid ""
 "These settings do not prevent potentially incorrectly flagged servers from "
 "surfacing NSFW content."
 msgstr ""
 
-#: ../data/ui/preferences.blp:273 ../data/ui/reader.blp:10
+#: ../data/ui/preferences.blp:274 ../data/ui/reader.blp:10
 msgid "Reader"
 msgstr "Lector"
 
-#: ../data/ui/preferences.blp:278
+#: ../data/ui/preferences.blp:279
 msgid "Reading Mode"
 msgstr "Mode de lectura"
 
-#: ../data/ui/preferences.blp:281
+#: ../data/ui/preferences.blp:282
 msgid "⬅ Right to Left"
 msgstr "⬅ De dreta a esquerra"
 
-#: ../data/ui/preferences.blp:282
+#: ../data/ui/preferences.blp:283
 msgid "➡ Left to Right"
 msgstr "➡ D'esquerra a dreta"
 
-#: ../data/ui/preferences.blp:283
+#: ../data/ui/preferences.blp:284
 msgid "⬇ Vertical"
 msgstr "⬇ Vertical"
 
-#: ../data/ui/preferences.blp:284
+#: ../data/ui/preferences.blp:285
 msgid "⬇ Webtoon"
 msgstr "⬇ Webtoon"
 
-#: ../data/ui/preferences.blp:290 ../data/ui/reader_settings.blp:25
+#: ../data/ui/preferences.blp:291 ../data/ui/reader_settings.blp:25
 msgid "Scaling Filter"
 msgstr "Filtre d'escalat"
 
-#: ../data/ui/preferences.blp:291
+#: ../data/ui/preferences.blp:292
 msgid "Interpolation method used when scaling images"
 msgstr "Mètode d'interpolació utilitzat en l'escalat d'imatges"
 
-#: ../data/ui/preferences.blp:301 ../data/ui/reader_settings.blp:29
+#: ../data/ui/preferences.blp:302 ../data/ui/reader_settings.blp:29
 msgid "Background Color"
 msgstr "Color de fons"
 
-#: ../data/ui/preferences.blp:313
+#: ../data/ui/preferences.blp:314
 msgid "Page Numbering"
 msgstr "Numeració de pàgines"
 
-#: ../data/ui/preferences.blp:314 ../data/ui/reader_settings.blp:49
+#: ../data/ui/preferences.blp:315 ../data/ui/reader_settings.blp:49
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr ""
 "Amaga la numeració de la pàgina a la part inferior de la pantalla mentre "
 "llegiu"
 
-#: ../data/ui/preferences.blp:318
+#: ../data/ui/preferences.blp:319
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
-#: ../data/ui/preferences.blp:319
+#: ../data/ui/preferences.blp:320
 msgid "Automatically enter fullscreen mode"
 msgstr "Entra automàticament al mode de pantalla completa"
 
-#: ../data/ui/preferences.blp:324 ../data/ui/shortcuts.blp:76
+#: ../data/ui/preferences.blp:325 ../data/ui/shortcuts.blp:76
 #: ../data/ui/shortcuts.blp:82 ../data/ui/shortcuts.blp:88
 msgid "Paged Reading Modes"
 msgstr ""
 
-#: ../data/ui/preferences.blp:325
+#: ../data/ui/preferences.blp:326
 msgid "Right to Left / Left to Right / Vertical"
 msgstr ""
 
-#: ../data/ui/preferences.blp:328 ../data/ui/reader_settings.blp:21
+#: ../data/ui/preferences.blp:329 ../data/ui/reader_settings.blp:21
 msgid "Scaling"
 msgstr "Escalat"
 
-#: ../data/ui/preferences.blp:329
+#: ../data/ui/preferences.blp:330
 msgid "Type of scaling to adapt image"
 msgstr "Tipus d'escalat per adaptar la imatge"
 
-#: ../data/ui/preferences.blp:341
+#: ../data/ui/preferences.blp:342
 msgid "Landscape Pages Zoom"
 msgstr "Zoom de pàgines horitzontals"
 
-#: ../data/ui/preferences.blp:342 ../data/ui/reader_settings.blp:34
+#: ../data/ui/preferences.blp:343 ../data/ui/reader_settings.blp:34
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
 msgstr ""
 "Ampliar la pàgina per ajustar-se a l'alçada quan la pàgina és horitzontal "
 "(només s'adapta a l'escalat de pantalla)"
 
-#: ../data/ui/preferences.blp:346
+#: ../data/ui/preferences.blp:347
 msgid "Borders Crop"
 msgstr "Retallar vores"
 
-#: ../data/ui/preferences.blp:347
+#: ../data/ui/preferences.blp:348
 msgid ""
 "Crop white borders of images\n"
 "\n"
@@ -694,108 +694,112 @@ msgstr ""
 "NOTA: requereix més ús de la CPU i pot provocar alentiments de renderització "
 "i animació, especialment en dispositius mòbils."
 
-#: ../data/ui/preferences.blp:351 ../data/ui/reader_settings.blp:43
+#: ../data/ui/preferences.blp:352 ../data/ui/reader_settings.blp:43
 msgid "Borders Cropping Threshold"
 msgstr ""
 
-#: ../data/ui/preferences.blp:352 ../data/ui/reader_settings.blp:44
+#: ../data/ui/preferences.blp:353 ../data/ui/reader_settings.blp:44
 msgid "Control which pixels are classified as 'white' during borders detection"
 msgstr ""
 
-#: ../data/ui/preferences.blp:357 ../data/ui/shortcuts.blp:94
+#: ../data/ui/preferences.blp:358 ../data/ui/shortcuts.blp:94
 #: ../data/ui/shortcuts.blp:100
 msgid "Webtoon Reading Mode"
 msgstr ""
 
-#: ../data/ui/preferences.blp:358
+#: ../data/ui/preferences.blp:359
 msgid "Long Strip aka Infinite Vertical Canvas"
 msgstr ""
 
-#: ../data/ui/preferences.blp:363
+#: ../data/ui/preferences.blp:364
 msgid "Reset to Default"
 msgstr ""
 
-#: ../data/ui/preferences.blp:371
+#: ../data/ui/preferences.blp:372
 msgid "Maximum Width"
 msgstr "Amplada màxima"
 
-#: ../data/ui/preferences.blp:372
+#: ../data/ui/preferences.blp:373
 msgid "Constrain reader's width to a given maximum size"
 msgstr ""
 
-#: ../data/ui/preferences.blp:382
+#: ../data/ui/preferences.blp:383
 msgid "Scroll Distance"
 msgstr ""
 
-#: ../data/ui/preferences.blp:383
+#: ../data/ui/preferences.blp:384
 msgid "Percentage of page height to scroll on click or Page Up/Down"
 msgstr ""
 
-#: ../data/ui/preferences.blp:394
+#: ../data/ui/preferences.blp:395
 msgid "Drag Sensitivity"
 msgstr ""
 
-#: ../data/ui/preferences.blp:395
+#: ../data/ui/preferences.blp:396
 msgid "Multiplier for drag scrolling sensitivity"
 msgstr ""
 
-#: ../data/ui/preferences.blp:407 ../data/ui/reader_settings.blp:54
+#: ../data/ui/preferences.blp:408 ../data/ui/reader_settings.blp:54
 msgid "OCR Translator"
 msgstr ""
 
-#: ../data/ui/preferences.blp:410 ../data/ui/reader_settings.blp:57
+#: ../data/ui/preferences.blp:411 ../data/ui/reader_settings.blp:57
 msgid "OCR Language"
 msgstr ""
 
-#: ../data/ui/preferences.blp:411
+#: ../data/ui/preferences.blp:412
 msgid "Default language to use for OCR text recognitions"
 msgstr ""
 
-#: ../data/ui/preferences.blp:415
-msgid "Translator Language"
-msgstr ""
-
 #: ../data/ui/preferences.blp:416
-msgid "Default language to use as target language for translations"
+msgid "Translator"
 msgstr ""
 
-#: ../data/ui/preferences.blp:424
+#: ../data/ui/preferences.blp:417
+msgid "Service to use for translations"
+msgstr ""
+
+#: ../data/ui/preferences.blp:428
+msgid "Edit Translator Settings"
+msgstr ""
+
+#: ../data/ui/preferences.blp:440
 msgid "Advanced"
 msgstr "Avançat"
 
-#: ../data/ui/preferences.blp:428
+#: ../data/ui/preferences.blp:444
 msgid "A setting has changed that requires a restart to take effect"
 msgstr "Una configuració ha canviat que requereix un reinici per fer efecte"
 
-#: ../data/ui/preferences.blp:434
+#: ../data/ui/preferences.blp:450
 msgid "Data"
 msgstr "Dades"
 
-#: ../data/ui/preferences.blp:435
+#: ../data/ui/preferences.blp:451
 msgid "Data not saved in the library"
 msgstr "Dades no guardades a la biblioteca"
 
-#: ../data/ui/preferences.blp:438
+#: ../data/ui/preferences.blp:454
 msgid "Clear Chapters Cache and Database"
 msgstr "Neteja la memòria cau dels capítols i la base de dades"
 
-#: ../data/ui/preferences.blp:453
+#: ../data/ui/preferences.blp:469
 msgid "Clear Chapters Cache and Database on Exit"
 msgstr "Esborrar la memòria cau dels capítols i la base de dades en sortir"
 
-#: ../data/ui/preferences.blp:458 ../data/ui/webview.blp:10
+#: ../data/ui/preferences.blp:474 ../data/ui/webview.blp:10
 msgid "WebView"
 msgstr ""
 
-#: ../data/ui/preferences.blp:461
+#: ../data/ui/preferences.blp:477
 msgid "Clear Data"
 msgstr ""
 
-#: ../data/ui/preferences.blp:480
+#: ../data/ui/preferences.blp:496
 msgid "Use Up-to-date Servers Modules"
 msgstr "Utilitzeu els mòduls de servidors actualitzats"
 
-#: ../data/ui/preferences.blp:481
+#: ../data/ui/preferences.blp:497
 msgid ""
 "An alternative version of the servers modules, installed from the source "
 "code repository and updated at each startup, is used instead of the one "
@@ -805,38 +809,38 @@ msgstr ""
 "del repositori de codi lliure i actualitzada en cada inici, en comptes de la "
 "lliurada amb l'aplicació."
 
-#: ../data/ui/preferences.blp:485
+#: ../data/ui/preferences.blp:501
 msgid "Suggest Submitting a Bug Report in Case of Error"
 msgstr ""
 
-#: ../data/ui/preferences.blp:486
+#: ../data/ui/preferences.blp:502
 msgid ""
 "If an error occurs with a server (it has been updated or an unexpected case "
 "has arisen), you will be prompted to create a bug report using a pre-"
 "formatted text to copy/paste."
 msgstr ""
 
-#: ../data/ui/preferences.blp:491
+#: ../data/ui/preferences.blp:507
 msgid "Credentials Storage"
 msgstr "Emmagatzematge de credencials"
 
-#: ../data/ui/preferences.blp:494
+#: ../data/ui/preferences.blp:510
 msgid "Allow Plaintext Storage as Fallback"
 msgstr "Permetre l'emmagatzematge de text pla com a alternativa"
 
-#: ../data/ui/preferences.blp:495
+#: ../data/ui/preferences.blp:511
 msgid "Used when no keyring backends are found"
 msgstr "S'utilitza quan no es troben backends de clauers"
 
-#: ../data/ui/preferences.blp:500
+#: ../data/ui/preferences.blp:516
 msgid "Tweaks"
 msgstr "Ajustos"
 
-#: ../data/ui/preferences.blp:503
+#: ../data/ui/preferences.blp:519
 msgid "Disable Animations"
 msgstr "Desactiva les animacions"
 
-#: ../data/ui/preferences.blp:504
+#: ../data/ui/preferences.blp:520
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
@@ -844,7 +848,7 @@ msgstr ""
 "Útil amb els lectors electrònics E Ink per evitar animacions molt picades i "
 "desagradables (a causa de la baixa taxa de refresc de la pantalla)"
 
-#: ../data/ui/preferences.blp:508
+#: ../data/ui/preferences.blp:524
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot toggle reduced motion animations globally "
@@ -862,6 +866,39 @@ msgstr "Configuració dels servidors"
 #: ../data/ui/preferences_servers_languages.blp:17
 msgid "Servers Languages"
 msgstr "Idiomes dels servidors"
+
+#: ../data/ui/preferences_translator_params.blp:10
+#: ../data/ui/preferences_translator_params.blp:16
+msgid "Translator Settings"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:22
+msgid "Service"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:27
+msgid "Instance URL"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:36
+msgid "API Key"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:56
+msgid "Validate"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:69
+msgid "Behavior"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:72
+msgid "Translator Language"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:73
+msgid "Default language to use as target language for translations"
+msgstr ""
 
 #: ../data/ui/reader.blp:27
 msgid "Back"
@@ -1139,7 +1176,7 @@ msgstr "Uniu-vos al xat"
 #: ../komikku/application.py:563 ../komikku/card/__init__.py:162
 #: ../komikku/card/__init__.py:163 ../komikku/categories_editor.py:188
 #: ../komikku/downloader.py:388 ../komikku/downloader.py:389
-#: ../komikku/library/__init__.py:846 ../komikku/library/__init__.py:847
+#: ../komikku/library/__init__.py:843 ../komikku/library/__init__.py:844
 msgid "Cancel"
 msgstr "Cancel·lar"
 
@@ -1210,8 +1247,8 @@ msgid "Filters"
 msgstr "Filtres"
 
 #: ../komikku/card/__init__.py:220 ../komikku/library/__init__.py:338
-#: ../komikku/preferences/__init__.py:166
-#: ../komikku/preferences/__init__.py:189
+#: ../komikku/preferences/__init__.py:169
+#: ../komikku/preferences/__init__.py:192
 msgid "Clear?"
 msgstr "Netejar?"
 
@@ -1220,8 +1257,8 @@ msgid "Are you sure you want to clear all chapters?"
 msgstr ""
 
 #: ../komikku/card/__init__.py:222 ../komikku/card/chapters_list.py:724
-#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:168
-#: ../komikku/preferences/__init__.py:191
+#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:171
+#: ../komikku/preferences/__init__.py:194
 msgid "Clear"
 msgstr "Neteja"
 
@@ -1259,7 +1296,7 @@ msgid "Reset"
 msgstr "Reinicialitzar"
 
 #: ../komikku/card/chapters_list.py:336 ../komikku/downloader.py:533
-#: ../komikku/library/__init__.py:874
+#: ../komikku/library/__init__.py:871
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
@@ -1538,8 +1575,8 @@ msgstr "Darrer capítol: {}"
 msgid "Last Volume: {}"
 msgstr "Darrer volum: {}"
 
-#: ../komikku/explorer/common.py:245 ../komikku/preferences/servers.py:394
-#: ../komikku/preferences/servers.py:446
+#: ../komikku/explorer/common.py:245 ../komikku/preferences/servers.py:396
+#: ../komikku/preferences/servers.py:450
 #: ../komikku/servers/mangatube/__init__.py:150
 msgid "18+"
 msgstr "18+"
@@ -1771,23 +1808,23 @@ msgstr "Recents"
 msgid "Series with new chapters"
 msgstr ""
 
-#: ../komikku/library/__init__.py:687
+#: ../komikku/library/__init__.py:684
 msgid "Welcome to Komikku"
 msgstr "Benvingut a Komikku"
 
-#: ../komikku/library/__init__.py:699
+#: ../komikku/library/__init__.py:696
 msgid "Loading…"
 msgstr "S'està carregant…"
 
-#: ../komikku/library/__init__.py:823
+#: ../komikku/library/__init__.py:820
 msgid "Failed to update reading status"
 msgstr "No s'ha pogut actualitzar l'estat de lectura"
 
-#: ../komikku/library/__init__.py:851
+#: ../komikku/library/__init__.py:848
 msgid "Add New Comic"
 msgstr "Afegeix un nou còmic"
 
-#: ../komikku/library/__init__.py:878 ../komikku/library/categories_list.py:146
+#: ../komikku/library/__init__.py:875 ../komikku/library/categories_list.py:146
 msgid "Uncategorized"
 msgstr "Sense categoria"
 
@@ -1880,25 +1917,25 @@ msgstr "Suspès"
 msgid "Hiatus"
 msgstr "Pausat"
 
-#: ../komikku/preferences/__init__.py:167
+#: ../komikku/preferences/__init__.py:170
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 "Esteu segur que voleu netejar la memòria cau dels capítols i la base de "
 "dades?"
 
-#: ../komikku/preferences/__init__.py:186
+#: ../komikku/preferences/__init__.py:189
 msgid "Failed to clear WebView data"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:190
+#: ../komikku/preferences/__init__.py:193
 msgid "Are you sure you want to clear WebView data (cache, storage, cookies)?"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:215
+#: ../komikku/preferences/__init__.py:218
 msgid "Disable animations?"
 msgstr "Desactivar les animacions?"
 
-#: ../komikku/preferences/__init__.py:216
+#: ../komikku/preferences/__init__.py:219
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
@@ -1908,9 +1945,44 @@ msgstr ""
 "\n"
 "La navegació gestual en el lector ja no funcionarà correctament."
 
-#: ../komikku/preferences/__init__.py:217
+#: ../komikku/preferences/__init__.py:220
 msgid "Disable"
 msgstr "Desactivar"
+
+#: ../komikku/preferences/__init__.py:697 ../komikku/preferences/servers.py:72
+msgid "System keyring service is disabled. Credential cannot be saved."
+msgstr ""
+"El servei de clauers del sistema està desactivat. La credencial no es pot "
+"desar."
+
+#: ../komikku/preferences/__init__.py:702 ../komikku/preferences/servers.py:77
+msgid ""
+"No keyring backends were found to store credential. Use plaintext storage as "
+"fallback."
+msgstr ""
+"No s'han trobat backends de clauers per emmagatzemar credencials. Utilitzeu "
+"l'emmagatzematge de text pla com a alternativa."
+
+#: ../komikku/preferences/__init__.py:708 ../komikku/preferences/servers.py:83
+msgid ""
+"No keyring backends were found to store credential. Plaintext storage will "
+"be used as fallback."
+msgstr ""
+"No s'han trobat backends de clauers per emmagatzemar credencials. "
+"L'emmagatzematge de text pla s'utilitzarà com a alternativa."
+
+#: ../komikku/preferences/__init__.py:738
+msgid "Invalid instance URL"
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:740
+#: ../komikku/preferences/__init__.py:754
+msgid "Unavailable service"
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:752
+msgid "Invalid API key"
+msgstr ""
 
 #: ../komikku/preferences/servers.py:44
 msgid "User Account"
@@ -1928,31 +2000,13 @@ msgstr "Nom d'usuari"
 msgid "Password"
 msgstr "Contrasenya"
 
-#: ../komikku/preferences/servers.py:72
-msgid "System keyring service is disabled. Credential cannot be saved."
-msgstr ""
-"El servei de clauers del sistema està desactivat. La credencial no es pot "
-"desar."
-
-#: ../komikku/preferences/servers.py:77
-msgid ""
-"No keyring backends were found to store credential. Use plaintext storage as "
-"fallback."
-msgstr ""
-"No s'han trobat backends de clauers per emmagatzemar credencials. Utilitzeu "
-"l'emmagatzematge de text pla com a alternativa."
-
-#: ../komikku/preferences/servers.py:82
-msgid ""
-"No keyring backends were found to store credential. Plaintext storage will "
-"be used as fallback."
-msgstr ""
-"No s'han trobat backends de clauers per emmagatzemar credencials. "
-"L'emmagatzematge de text pla s'utilitzarà com a alternativa."
-
-#: ../komikku/preferences/servers.py:90
+#: ../komikku/preferences/servers.py:92
 msgid "Test"
 msgstr "Prova"
+
+#: ../komikku/preferences/servers.py:419 ../komikku/preferences/servers.py:456
+msgid "Edit Server Settings"
+msgstr ""
 
 #: ../komikku/preferences/trackers.py:36 ../komikku/preferences/trackers.py:88
 #: ../komikku/preferences/trackers.py:118
@@ -1985,8 +2039,8 @@ msgstr "Desconnecta de {}"
 msgid "Page successfully saved"
 msgstr "Pàgina desada correctament"
 
-#: ../komikku/reader/ocr_translator.py:154
-#: ../komikku/reader/ocr_translator.py:159
+#: ../komikku/reader/ocr_translator.py:148
+#: ../komikku/reader/ocr_translator.py:153
 msgid "Copied to clipboard"
 msgstr ""
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 01:16+0200\n"
+"POT-Creation-Date: 2026-09-06 22:56+0200\n"
 "PO-Revision-Date: 2026-09-01 09:51+0000\n"
 "Last-Translator: Димко <Dymkovych@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
@@ -193,7 +193,7 @@ msgstr "Редактор категорій в мобільному вигляд
 msgid "The Reading history page in mobile format"
 msgstr "Історія в мобільному вигляді"
 
-#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:429
+#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:445
 msgid "Got it!"
 msgstr "Зрозуміло!"
 
@@ -228,7 +228,7 @@ msgstr "Розмір на диску"
 msgid "No Categories"
 msgstr "Нема категорій"
 
-#: ../data/ui/card_tracking.blp:9 ../data/ui/preferences.blp:109
+#: ../data/ui/card_tracking.blp:9 ../data/ui/preferences.blp:110
 msgid "Tracking"
 msgstr "Відстеження"
 
@@ -274,8 +274,8 @@ msgstr "Найпопулярніші"
 msgid "Latest Updates"
 msgstr "Оновлене"
 
-#: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:220
-#: ../data/ui/preferences.blp:477
+#: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:221
+#: ../data/ui/preferences.blp:493
 msgid "Servers"
 msgstr "Сервери"
 
@@ -299,7 +299,7 @@ msgstr "Історія"
 msgid "No History"
 msgstr "Історія порожня"
 
-#: ../data/ui/library.blp:10 ../data/ui/preferences.blp:119
+#: ../data/ui/library.blp:10 ../data/ui/preferences.blp:120
 msgid "Library"
 msgstr "Бібліотека"
 
@@ -435,178 +435,178 @@ msgstr ""
 "а й продовжувати мою роботу як розробника вільного програмного забезпечення "
 "в цілому."
 
-#: ../data/ui/preferences.blp:58
+#: ../data/ui/preferences.blp:59
 msgid "Appearance"
 msgstr "Вигляд"
 
-#: ../data/ui/preferences.blp:61
+#: ../data/ui/preferences.blp:62
 msgid "Theme"
 msgstr "Тема"
 
-#: ../data/ui/preferences.blp:64
+#: ../data/ui/preferences.blp:65
 msgid "Light"
 msgstr "Світла"
 
-#: ../data/ui/preferences.blp:65
+#: ../data/ui/preferences.blp:66
 msgid "Dark"
 msgstr "Темна"
 
-#: ../data/ui/preferences.blp:66
+#: ../data/ui/preferences.blp:67
 msgid "Follow System"
 msgstr "Системна"
 
-#: ../data/ui/preferences.blp:72
+#: ../data/ui/preferences.blp:73
 msgid "Night Light"
 msgstr "Нічна тема"
 
-#: ../data/ui/preferences.blp:73
+#: ../data/ui/preferences.blp:74
 msgid "Automatically enable dark theme at night"
 msgstr "Вмикати темну тему вночі"
 
-#: ../data/ui/preferences.blp:78
+#: ../data/ui/preferences.blp:79
 msgid "Use system accent colors"
 msgstr "Системний колір акценту"
 
-#: ../data/ui/preferences.blp:82
+#: ../data/ui/preferences.blp:83
 msgid "Progress Bars Theme"
 msgstr "Смужка поступу"
 
-#: ../data/ui/preferences.blp:83
+#: ../data/ui/preferences.blp:84
 msgid "Theme to use for progress bars"
 msgstr "Оберіть вигляд смужки поступу"
 
-#: ../data/ui/preferences.blp:87
+#: ../data/ui/preferences.blp:88
 msgid "Backdrop in Details Page"
 msgstr "Тло за обкладинкою"
 
-#: ../data/ui/preferences.blp:88
+#: ../data/ui/preferences.blp:89
 msgid "Method used to recolor background to match cover"
 msgstr "Спосіб забарвлення тла на сторінці серії під кольори обкладинки"
 
-#: ../data/ui/preferences.blp:92
+#: ../data/ui/preferences.blp:93
 msgid "Linear gradient"
 msgstr "Лінійний градієнт"
 
-#: ../data/ui/preferences.blp:93
+#: ../data/ui/preferences.blp:94
 msgid "Blurred cover"
 msgstr "Розмиття"
 
-#: ../data/ui/preferences.blp:103
+#: ../data/ui/preferences.blp:104
 msgid "Desktop Notifications"
 msgstr "Сповіщення на робочому столі"
 
-#: ../data/ui/preferences.blp:104
+#: ../data/ui/preferences.blp:105
 msgid "Use desktop notifications for downloads and library updates"
 msgstr ""
 "Використовувати сповіщення на робочому столі про завантаження та оновлення "
 "бібліотеки"
 
-#: ../data/ui/preferences.blp:112
+#: ../data/ui/preferences.blp:113
 msgid "Synchronize reading progress"
 msgstr "Суміщати поступ читання"
 
-#: ../data/ui/preferences.blp:123
+#: ../data/ui/preferences.blp:124
 msgid "Display"
 msgstr "Відображення"
 
-#: ../data/ui/preferences.blp:126
+#: ../data/ui/preferences.blp:127
 msgid "Display Mode"
 msgstr "Режим відображення"
 
-#: ../data/ui/preferences.blp:129
+#: ../data/ui/preferences.blp:130
 msgid "Grid"
 msgstr "Сітка"
 
-#: ../data/ui/preferences.blp:130
+#: ../data/ui/preferences.blp:131
 msgid "Compact Grid"
 msgstr "Компактна сітка"
 
-#: ../data/ui/preferences.blp:136
+#: ../data/ui/preferences.blp:137
 msgid "Servers Logo"
 msgstr "Логотип серверів"
 
-#: ../data/ui/preferences.blp:137
+#: ../data/ui/preferences.blp:138
 msgid "Display servers logo"
 msgstr "Відображати логотипи серверів"
 
-#: ../data/ui/preferences.blp:141
+#: ../data/ui/preferences.blp:142
 msgid "Badges"
 msgstr "Лічильники на обкладинках"
 
-#: ../data/ui/preferences.blp:144
+#: ../data/ui/preferences.blp:145
 msgid "Number of Unread Chapters"
 msgstr "Кількість непрочитаних розділів"
 
-#: ../data/ui/preferences.blp:164
+#: ../data/ui/preferences.blp:165
 msgid "Number of Downloaded Chapters"
 msgstr "Кількість завантажених розділів"
 
-#: ../data/ui/preferences.blp:184
+#: ../data/ui/preferences.blp:185
 msgid "Number of Recent and Unread Chapters"
 msgstr "Кількість нових і непрочитаних розділів"
 
-#: ../data/ui/preferences.blp:206
+#: ../data/ui/preferences.blp:207
 msgctxt "Settings: noun"
 msgid "Update"
 msgstr "Оновлення"
 
-#: ../data/ui/preferences.blp:209
+#: ../data/ui/preferences.blp:210
 msgid "Update at Startup"
 msgstr "Оновлення бібліотеки"
 
-#: ../data/ui/preferences.blp:210
+#: ../data/ui/preferences.blp:211
 msgid "Automatically update library at startup"
 msgstr "Освіжувати бібліотеку під час запуску"
 
-#: ../data/ui/preferences.blp:214
+#: ../data/ui/preferences.blp:215
 msgid "Auto Download of New Chapters"
 msgstr "Поповнення бібліотеки"
 
-#: ../data/ui/preferences.blp:215
+#: ../data/ui/preferences.blp:216
 msgid "Automatically download new chapters"
 msgstr "Довантажувати нові розділи"
 
-#: ../data/ui/preferences.blp:223
+#: ../data/ui/preferences.blp:224
 msgid "Languages"
 msgstr "Мови"
 
-#: ../data/ui/preferences.blp:224
+#: ../data/ui/preferences.blp:225
 msgid "Restrict servers to selected languages"
 msgstr "Обмежити сервери вибраними мовами"
 
-#: ../data/ui/preferences.blp:232
+#: ../data/ui/preferences.blp:233
 msgid "Settings"
 msgstr "Налаштування"
 
-#: ../data/ui/preferences.blp:233
+#: ../data/ui/preferences.blp:234
 msgid "Enable/disable and configure servers"
 msgstr "Увімкнення, вимкнення та налаштування серверів"
 
-#: ../data/ui/preferences.blp:241
+#: ../data/ui/preferences.blp:242
 msgid "Long Strip Detection"
 msgstr "Виявлення довгих смуг"
 
-#: ../data/ui/preferences.blp:242
+#: ../data/ui/preferences.blp:243
 msgid "Automatically detect long vertical strip when possible"
 msgstr "Автоматично визначати довгі вертикальні сторінки, коли це можливо"
 
-#: ../data/ui/preferences.blp:248
+#: ../data/ui/preferences.blp:249
 msgid "NSFW Content (18+)"
 msgstr "Вміст для дорослих (18+)"
 
-#: ../data/ui/preferences.blp:249
+#: ../data/ui/preferences.blp:250
 msgid "Whether to enable servers with NSFW content"
 msgstr "Чи вмикати сервери з вмістом для дорослих"
 
-#: ../data/ui/preferences.blp:253
+#: ../data/ui/preferences.blp:254
 msgid "NSFW Only Content (18+)"
 msgstr "Вміст лише для дорослих (18+)"
 
-#: ../data/ui/preferences.blp:254
+#: ../data/ui/preferences.blp:255
 msgid "Whether to enable servers with NSFW only content"
 msgstr "Чи вмикати сервери лише з вмістом для дорослих"
 
-#: ../data/ui/preferences.blp:258
+#: ../data/ui/preferences.blp:259
 msgid ""
 "These settings do not prevent potentially incorrectly flagged servers from "
 "surfacing NSFW content."
@@ -614,91 +614,91 @@ msgstr ""
 "Ці параметри не гарантують відсутність помилково класифікованих мальописів "
 "для дорослих на серверах."
 
-#: ../data/ui/preferences.blp:273 ../data/ui/reader.blp:10
+#: ../data/ui/preferences.blp:274 ../data/ui/reader.blp:10
 msgid "Reader"
 msgstr "Читання"
 
-#: ../data/ui/preferences.blp:278
+#: ../data/ui/preferences.blp:279
 msgid "Reading Mode"
 msgstr "Режим читання"
 
-#: ../data/ui/preferences.blp:281
+#: ../data/ui/preferences.blp:282
 msgid "⬅ Right to Left"
 msgstr "⬅ Справа наліво"
 
-#: ../data/ui/preferences.blp:282
+#: ../data/ui/preferences.blp:283
 msgid "➡ Left to Right"
 msgstr "➡ Зліва направо"
 
-#: ../data/ui/preferences.blp:283
+#: ../data/ui/preferences.blp:284
 msgid "⬇ Vertical"
 msgstr "⬇ Вертикальний"
 
-#: ../data/ui/preferences.blp:284
+#: ../data/ui/preferences.blp:285
 msgid "⬇ Webtoon"
 msgstr "⬇ Вебтун"
 
-#: ../data/ui/preferences.blp:290 ../data/ui/reader_settings.blp:25
+#: ../data/ui/preferences.blp:291 ../data/ui/reader_settings.blp:25
 msgid "Scaling Filter"
 msgstr "Метод інтерполяції"
 
-#: ../data/ui/preferences.blp:291
+#: ../data/ui/preferences.blp:292
 msgid "Interpolation method used when scaling images"
 msgstr "Для масштабування сторінок"
 
-#: ../data/ui/preferences.blp:301 ../data/ui/reader_settings.blp:29
+#: ../data/ui/preferences.blp:302 ../data/ui/reader_settings.blp:29
 msgid "Background Color"
 msgstr "Колір тла"
 
-#: ../data/ui/preferences.blp:313
+#: ../data/ui/preferences.blp:314
 msgid "Page Numbering"
 msgstr "Нумерація сторінок"
 
-#: ../data/ui/preferences.blp:314 ../data/ui/reader_settings.blp:49
+#: ../data/ui/preferences.blp:315 ../data/ui/reader_settings.blp:49
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr "Приховати нумерацію сторінок внизу екрана під час читання"
 
-#: ../data/ui/preferences.blp:318
+#: ../data/ui/preferences.blp:319
 msgid "Fullscreen"
 msgstr "Повноекранний режим"
 
-#: ../data/ui/preferences.blp:319
+#: ../data/ui/preferences.blp:320
 msgid "Automatically enter fullscreen mode"
 msgstr "Під час читання переходити в повноекранний режим"
 
-#: ../data/ui/preferences.blp:324 ../data/ui/shortcuts.blp:76
+#: ../data/ui/preferences.blp:325 ../data/ui/shortcuts.blp:76
 #: ../data/ui/shortcuts.blp:82 ../data/ui/shortcuts.blp:88
 msgid "Paged Reading Modes"
 msgstr "Режим посторінкового читання"
 
-#: ../data/ui/preferences.blp:325
+#: ../data/ui/preferences.blp:326
 msgid "Right to Left / Left to Right / Vertical"
 msgstr "Справа наліво / Зліва направо / Вертикально"
 
-#: ../data/ui/preferences.blp:328 ../data/ui/reader_settings.blp:21
+#: ../data/ui/preferences.blp:329 ../data/ui/reader_settings.blp:21
 msgid "Scaling"
 msgstr "Масштабування"
 
-#: ../data/ui/preferences.blp:329
+#: ../data/ui/preferences.blp:330
 msgid "Type of scaling to adapt image"
 msgstr "Як вмістити сторінку"
 
-#: ../data/ui/preferences.blp:341
+#: ../data/ui/preferences.blp:342
 msgid "Landscape Pages Zoom"
 msgstr "Масштабування ландшафтних сторінок"
 
-#: ../data/ui/preferences.blp:342 ../data/ui/reader_settings.blp:34
+#: ../data/ui/preferences.blp:343 ../data/ui/reader_settings.blp:34
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
 msgstr ""
 "Збільшити сторінку до потрібної висоти, коли сторінка має ландшафтну "
 "орієнтацію (лише для адаптації до масштабу екрана)"
 
-#: ../data/ui/preferences.blp:346
+#: ../data/ui/preferences.blp:347
 msgid "Borders Crop"
 msgstr "Обрізати поля"
 
-#: ../data/ui/preferences.blp:347
+#: ../data/ui/preferences.blp:348
 msgid ""
 "Crop white borders of images\n"
 "\n"
@@ -710,108 +710,112 @@ msgstr ""
 "ПРИМІТКА: Збільшує навантаження на процесор і може спричинити уповільнення "
 "відображення та анімації, особливо на мобільних пристроях."
 
-#: ../data/ui/preferences.blp:351 ../data/ui/reader_settings.blp:43
+#: ../data/ui/preferences.blp:352 ../data/ui/reader_settings.blp:43
 msgid "Borders Cropping Threshold"
 msgstr "Поріг обрізання полів"
 
-#: ../data/ui/preferences.blp:352 ../data/ui/reader_settings.blp:44
+#: ../data/ui/preferences.blp:353 ../data/ui/reader_settings.blp:44
 msgid "Control which pixels are classified as 'white' during borders detection"
 msgstr "Визначає, які пікселі вважатимуться «білими» під час виявлення полів"
 
-#: ../data/ui/preferences.blp:357 ../data/ui/shortcuts.blp:94
+#: ../data/ui/preferences.blp:358 ../data/ui/shortcuts.blp:94
 #: ../data/ui/shortcuts.blp:100
 msgid "Webtoon Reading Mode"
 msgstr "Режим читання вебтунів"
 
-#: ../data/ui/preferences.blp:358
+#: ../data/ui/preferences.blp:359
 msgid "Long Strip aka Infinite Vertical Canvas"
 msgstr "Довга смуга, також відома як нескінченне вертикальне полотно"
 
-#: ../data/ui/preferences.blp:363
+#: ../data/ui/preferences.blp:364
 msgid "Reset to Default"
 msgstr "Скинути до типових значень"
 
-#: ../data/ui/preferences.blp:371
+#: ../data/ui/preferences.blp:372
 msgid "Maximum Width"
 msgstr "Максимальна ширина"
 
-#: ../data/ui/preferences.blp:372
+#: ../data/ui/preferences.blp:373
 msgid "Constrain reader's width to a given maximum size"
 msgstr "Обмежити ширину читача заданим максимальним розміром"
 
-#: ../data/ui/preferences.blp:382
+#: ../data/ui/preferences.blp:383
 msgid "Scroll Distance"
 msgstr "Відстань прокручування"
 
-#: ../data/ui/preferences.blp:383
+#: ../data/ui/preferences.blp:384
 msgid "Percentage of page height to scroll on click or Page Up/Down"
 msgstr "Відсоток висоти сторінки для прокручування при кліці або Page Up/Down"
 
-#: ../data/ui/preferences.blp:394
+#: ../data/ui/preferences.blp:395
 msgid "Drag Sensitivity"
 msgstr "Чутливість до перетягування"
 
-#: ../data/ui/preferences.blp:395
+#: ../data/ui/preferences.blp:396
 msgid "Multiplier for drag scrolling sensitivity"
 msgstr "Множник чутливості прокручування перетягуванням"
 
-#: ../data/ui/preferences.blp:407 ../data/ui/reader_settings.blp:54
+#: ../data/ui/preferences.blp:408 ../data/ui/reader_settings.blp:54
 msgid "OCR Translator"
 msgstr "Розпізнавання і переклад"
 
-#: ../data/ui/preferences.blp:410 ../data/ui/reader_settings.blp:57
+#: ../data/ui/preferences.blp:411 ../data/ui/reader_settings.blp:57
 msgid "OCR Language"
 msgstr "Мова розпізнавання"
 
-#: ../data/ui/preferences.blp:411
+#: ../data/ui/preferences.blp:412
 msgid "Default language to use for OCR text recognitions"
 msgstr "Типова мова для зчитування тексту"
 
-#: ../data/ui/preferences.blp:415
-msgid "Translator Language"
-msgstr "Перекладна мова"
-
 #: ../data/ui/preferences.blp:416
-msgid "Default language to use as target language for translations"
-msgstr "Цільова мова для виведення результату"
+msgid "Translator"
+msgstr ""
 
-#: ../data/ui/preferences.blp:424
+#: ../data/ui/preferences.blp:417
+msgid "Service to use for translations"
+msgstr ""
+
+#: ../data/ui/preferences.blp:428
+msgid "Edit Translator Settings"
+msgstr ""
+
+#: ../data/ui/preferences.blp:440
 msgid "Advanced"
 msgstr "Просунуте"
 
-#: ../data/ui/preferences.blp:428
+#: ../data/ui/preferences.blp:444
 msgid "A setting has changed that requires a restart to take effect"
 msgstr "Змінено налаштування, для застосування якого потрібен перезапуск"
 
-#: ../data/ui/preferences.blp:434
+#: ../data/ui/preferences.blp:450
 msgid "Data"
 msgstr "Дані"
 
-#: ../data/ui/preferences.blp:435
+#: ../data/ui/preferences.blp:451
 msgid "Data not saved in the library"
 msgstr "Дані, не збережені в бібліотеці"
 
-#: ../data/ui/preferences.blp:438
+#: ../data/ui/preferences.blp:454
 msgid "Clear Chapters Cache and Database"
 msgstr "Очистити проміжні дані і базу даних розділів"
 
-#: ../data/ui/preferences.blp:453
+#: ../data/ui/preferences.blp:469
 msgid "Clear Chapters Cache and Database on Exit"
 msgstr "Очищати проміжні дані і базу даних розділів при виході"
 
-#: ../data/ui/preferences.blp:458 ../data/ui/webview.blp:10
+#: ../data/ui/preferences.blp:474 ../data/ui/webview.blp:10
 msgid "WebView"
 msgstr "WebView"
 
-#: ../data/ui/preferences.blp:461
+#: ../data/ui/preferences.blp:477
 msgid "Clear Data"
 msgstr "Очистити дані"
 
-#: ../data/ui/preferences.blp:480
+#: ../data/ui/preferences.blp:496
 msgid "Use Up-to-date Servers Modules"
 msgstr "Використовувати актуальні серверні модулі"
 
-#: ../data/ui/preferences.blp:481
+#: ../data/ui/preferences.blp:497
 msgid ""
 "An alternative version of the servers modules, installed from the source "
 "code repository and updated at each startup, is used instead of the one "
@@ -821,11 +825,11 @@ msgstr ""
 "альтернативна версія зі сховища вихідного коду й оновлюється при кожному "
 "запуску."
 
-#: ../data/ui/preferences.blp:485
+#: ../data/ui/preferences.blp:501
 msgid "Suggest Submitting a Bug Report in Case of Error"
 msgstr "Пропонувати створити звернення про вади у разі помилки"
 
-#: ../data/ui/preferences.blp:486
+#: ../data/ui/preferences.blp:502
 msgid ""
 "If an error occurs with a server (it has been updated or an unexpected case "
 "has arisen), you will be prompted to create a bug report using a pre-"
@@ -835,27 +839,27 @@ msgstr ""
 "ситуація), вам буде запропоновано створити звернення про ваду за допомогою "
 "заздалегідь підготовленого тексту для копіювання та вставки."
 
-#: ../data/ui/preferences.blp:491
+#: ../data/ui/preferences.blp:507
 msgid "Credentials Storage"
 msgstr "Сховище облікових даних"
 
-#: ../data/ui/preferences.blp:494
+#: ../data/ui/preferences.blp:510
 msgid "Allow Plaintext Storage as Fallback"
 msgstr "Дозволити зберігання без шифрування як запасний варіант"
 
-#: ../data/ui/preferences.blp:495
+#: ../data/ui/preferences.blp:511
 msgid "Used when no keyring backends are found"
 msgstr "Коли не знайдено підтримуваних ключниць"
 
-#: ../data/ui/preferences.blp:500
+#: ../data/ui/preferences.blp:516
 msgid "Tweaks"
 msgstr "Докрутки"
 
-#: ../data/ui/preferences.blp:503
+#: ../data/ui/preferences.blp:519
 msgid "Disable Animations"
 msgstr "Вимкнути анімації"
 
-#: ../data/ui/preferences.blp:504
+#: ../data/ui/preferences.blp:520
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
@@ -863,7 +867,7 @@ msgstr ""
 "Корисно для електронних читалок E-Ink, щоб уникнути переривчастої та "
 "неприємної анімації (через низьку частоту оновлення екрану)"
 
-#: ../data/ui/preferences.blp:508
+#: ../data/ui/preferences.blp:524
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot toggle reduced motion animations globally "
@@ -883,6 +887,39 @@ msgstr "Налаштування серверів"
 #: ../data/ui/preferences_servers_languages.blp:17
 msgid "Servers Languages"
 msgstr "Мови серверів"
+
+#: ../data/ui/preferences_translator_params.blp:10
+#: ../data/ui/preferences_translator_params.blp:16
+msgid "Translator Settings"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:22
+msgid "Service"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:27
+msgid "Instance URL"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:36
+msgid "API Key"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:56
+msgid "Validate"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:69
+msgid "Behavior"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:72
+msgid "Translator Language"
+msgstr "Перекладна мова"
+
+#: ../data/ui/preferences_translator_params.blp:73
+msgid "Default language to use as target language for translations"
+msgstr "Цільова мова для виведення результату"
 
 #: ../data/ui/reader.blp:27
 msgid "Back"
@@ -1171,7 +1208,7 @@ msgstr "Приєднатися до чату"
 #: ../komikku/application.py:563 ../komikku/card/__init__.py:162
 #: ../komikku/card/__init__.py:163 ../komikku/categories_editor.py:188
 #: ../komikku/downloader.py:388 ../komikku/downloader.py:389
-#: ../komikku/library/__init__.py:846 ../komikku/library/__init__.py:847
+#: ../komikku/library/__init__.py:843 ../komikku/library/__init__.py:844
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -1245,8 +1282,8 @@ msgid "Filters"
 msgstr "Фільтри"
 
 #: ../komikku/card/__init__.py:220 ../komikku/library/__init__.py:338
-#: ../komikku/preferences/__init__.py:166
-#: ../komikku/preferences/__init__.py:189
+#: ../komikku/preferences/__init__.py:169
+#: ../komikku/preferences/__init__.py:192
 msgid "Clear?"
 msgstr "Очистити?"
 
@@ -1255,8 +1292,8 @@ msgid "Are you sure you want to clear all chapters?"
 msgstr "Впевнені, що хочете видалити всі розділи?"
 
 #: ../komikku/card/__init__.py:222 ../komikku/card/chapters_list.py:724
-#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:168
-#: ../komikku/preferences/__init__.py:191
+#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:171
+#: ../komikku/preferences/__init__.py:194
 msgid "Clear"
 msgstr "Очистити"
 
@@ -1292,7 +1329,7 @@ msgid "Reset"
 msgstr "Скинути"
 
 #: ../komikku/card/chapters_list.py:336 ../komikku/downloader.py:533
-#: ../komikku/library/__init__.py:874
+#: ../komikku/library/__init__.py:871
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
@@ -1573,8 +1610,8 @@ msgstr "Останній розділ: {}"
 msgid "Last Volume: {}"
 msgstr "Останній том: {}"
 
-#: ../komikku/explorer/common.py:245 ../komikku/preferences/servers.py:394
-#: ../komikku/preferences/servers.py:446
+#: ../komikku/explorer/common.py:245 ../komikku/preferences/servers.py:396
+#: ../komikku/preferences/servers.py:450
 #: ../komikku/servers/mangatube/__init__.py:150
 msgid "18+"
 msgstr "18+"
@@ -1809,23 +1846,23 @@ msgstr "Нещодавні"
 msgid "Series with new chapters"
 msgstr "Серія з новими розділами"
 
-#: ../komikku/library/__init__.py:687
+#: ../komikku/library/__init__.py:684
 msgid "Welcome to Komikku"
 msgstr "Ласкаво просимо до Komikku"
 
-#: ../komikku/library/__init__.py:699
+#: ../komikku/library/__init__.py:696
 msgid "Loading…"
 msgstr "Завантаження…"
 
-#: ../komikku/library/__init__.py:823
+#: ../komikku/library/__init__.py:820
 msgid "Failed to update reading status"
 msgstr "Не вдалося оновити статус читання"
 
-#: ../komikku/library/__init__.py:851
+#: ../komikku/library/__init__.py:848
 msgid "Add New Comic"
 msgstr "Додати мальопис"
 
-#: ../komikku/library/__init__.py:878 ../komikku/library/categories_list.py:146
+#: ../komikku/library/__init__.py:875 ../komikku/library/categories_list.py:146
 msgid "Uncategorized"
 msgstr "Без категорії"
 
@@ -1918,25 +1955,25 @@ msgstr "Призупинено"
 msgid "Hiatus"
 msgstr "Перерва"
 
-#: ../komikku/preferences/__init__.py:167
+#: ../komikku/preferences/__init__.py:170
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr "Ви впевнені, що хочете очистити проміжні дані і базу даних розділів?"
 
-#: ../komikku/preferences/__init__.py:186
+#: ../komikku/preferences/__init__.py:189
 msgid "Failed to clear WebView data"
 msgstr "Не вдалося очистити дані WebView"
 
-#: ../komikku/preferences/__init__.py:190
+#: ../komikku/preferences/__init__.py:193
 msgid "Are you sure you want to clear WebView data (cache, storage, cookies)?"
 msgstr ""
 "Ви впевнені, що хочете очистити дані WebView (проміжні дані, сховище, "
 "репʼяшки)?"
 
-#: ../komikku/preferences/__init__.py:215
+#: ../komikku/preferences/__init__.py:218
 msgid "Disable animations?"
 msgstr "Вимкнути анімації?"
 
-#: ../komikku/preferences/__init__.py:216
+#: ../komikku/preferences/__init__.py:219
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
@@ -1946,9 +1983,42 @@ msgstr ""
 "\n"
 "Навігація жестами в читачі більше не буде працювати належним чином."
 
-#: ../komikku/preferences/__init__.py:217
+#: ../komikku/preferences/__init__.py:220
 msgid "Disable"
 msgstr "Вимкнути"
+
+#: ../komikku/preferences/__init__.py:697 ../komikku/preferences/servers.py:72
+msgid "System keyring service is disabled. Credential cannot be saved."
+msgstr "Службу Keyring вимкнено. Обліковий запис не вдається зберегти."
+
+#: ../komikku/preferences/__init__.py:702 ../komikku/preferences/servers.py:77
+msgid ""
+"No keyring backends were found to store credential. Use plaintext storage as "
+"fallback."
+msgstr ""
+"Не знайдено жодного бекенда для зберігання облікових даних. Використовуйте "
+"сховище відкритого тексту як запасний варіант."
+
+#: ../komikku/preferences/__init__.py:708 ../komikku/preferences/servers.py:83
+msgid ""
+"No keyring backends were found to store credential. Plaintext storage will "
+"be used as fallback."
+msgstr ""
+"Не було знайдено бекендів для зберігання облікових даних. У якості "
+"резервного варіанту буде використано сховище відкритого тексту."
+
+#: ../komikku/preferences/__init__.py:738
+msgid "Invalid instance URL"
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:740
+#: ../komikku/preferences/__init__.py:754
+msgid "Unavailable service"
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:752
+msgid "Invalid API key"
+msgstr ""
 
 #: ../komikku/preferences/servers.py:44
 msgid "User Account"
@@ -1966,29 +2036,13 @@ msgstr "Ім'я користувача"
 msgid "Password"
 msgstr "Пароль"
 
-#: ../komikku/preferences/servers.py:72
-msgid "System keyring service is disabled. Credential cannot be saved."
-msgstr "Службу Keyring вимкнено. Обліковий запис не вдається зберегти."
-
-#: ../komikku/preferences/servers.py:77
-msgid ""
-"No keyring backends were found to store credential. Use plaintext storage as "
-"fallback."
-msgstr ""
-"Не знайдено жодного бекенда для зберігання облікових даних. Використовуйте "
-"сховище відкритого тексту як запасний варіант."
-
-#: ../komikku/preferences/servers.py:82
-msgid ""
-"No keyring backends were found to store credential. Plaintext storage will "
-"be used as fallback."
-msgstr ""
-"Не було знайдено бекендів для зберігання облікових даних. У якості "
-"резервного варіанту буде використано сховище відкритого тексту."
-
-#: ../komikku/preferences/servers.py:90
+#: ../komikku/preferences/servers.py:92
 msgid "Test"
 msgstr "Тест"
+
+#: ../komikku/preferences/servers.py:419 ../komikku/preferences/servers.py:456
+msgid "Edit Server Settings"
+msgstr ""
 
 #: ../komikku/preferences/trackers.py:36 ../komikku/preferences/trackers.py:88
 #: ../komikku/preferences/trackers.py:118
@@ -2021,8 +2075,8 @@ msgstr "Відключитися від {}"
 msgid "Page successfully saved"
 msgstr "Сторінку успішно збережено"
 
-#: ../komikku/reader/ocr_translator.py:154
-#: ../komikku/reader/ocr_translator.py:159
+#: ../komikku/reader/ocr_translator.py:148
+#: ../komikku/reader/ocr_translator.py:153
 msgid "Copied to clipboard"
 msgstr "Скопійовано до буфера"
 

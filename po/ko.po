@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.96.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 01:16+0200\n"
+"POT-Creation-Date: 2026-09-06 22:56+0200\n"
 "PO-Revision-Date: 2026-08-04 05:49+0000\n"
 "Last-Translator: on9686 <on9686@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/komikku/main/ko/"
@@ -184,7 +184,7 @@ msgstr "모바일 형식 카테고리 편집 페이지"
 msgid "The Reading history page in mobile format"
 msgstr "모바일 형식 독서 이력 페이지"
 
-#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:429
+#: ../data/ui/application_window.blp:56 ../data/ui/preferences.blp:445
 msgid "Got it!"
 msgstr "알겠습니다!"
 
@@ -219,7 +219,7 @@ msgstr "디스크 크기"
 msgid "No Categories"
 msgstr "카테고리 없음"
 
-#: ../data/ui/card_tracking.blp:9 ../data/ui/preferences.blp:109
+#: ../data/ui/card_tracking.blp:9 ../data/ui/preferences.blp:110
 msgid "Tracking"
 msgstr "트래킹"
 
@@ -265,8 +265,8 @@ msgstr "가장 인기있는"
 msgid "Latest Updates"
 msgstr "최신 업데이트"
 
-#: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:220
-#: ../data/ui/preferences.blp:477
+#: ../data/ui/explorer_servers.blp:10 ../data/ui/preferences.blp:221
+#: ../data/ui/preferences.blp:493
 msgid "Servers"
 msgstr "서버"
 
@@ -290,7 +290,7 @@ msgstr "이력"
 msgid "No History"
 msgstr "이력 없음"
 
-#: ../data/ui/library.blp:10 ../data/ui/preferences.blp:119
+#: ../data/ui/library.blp:10 ../data/ui/preferences.blp:120
 msgid "Library"
 msgstr "라이브러리"
 
@@ -425,176 +425,176 @@ msgstr ""
 "만 아니라, 자유 소프트웨어 개발자로서의 활동을 계속하는 데에 도움이 될 것입니"
 "다."
 
-#: ../data/ui/preferences.blp:58
+#: ../data/ui/preferences.blp:59
 msgid "Appearance"
 msgstr "외형"
 
-#: ../data/ui/preferences.blp:61
+#: ../data/ui/preferences.blp:62
 msgid "Theme"
 msgstr "테마"
 
-#: ../data/ui/preferences.blp:64
+#: ../data/ui/preferences.blp:65
 msgid "Light"
 msgstr "라이트"
 
-#: ../data/ui/preferences.blp:65
+#: ../data/ui/preferences.blp:66
 msgid "Dark"
 msgstr "다크"
 
-#: ../data/ui/preferences.blp:66
+#: ../data/ui/preferences.blp:67
 msgid "Follow System"
 msgstr "시스템 설정"
 
-#: ../data/ui/preferences.blp:72
+#: ../data/ui/preferences.blp:73
 msgid "Night Light"
 msgstr "야간 모드"
 
-#: ../data/ui/preferences.blp:73
+#: ../data/ui/preferences.blp:74
 msgid "Automatically enable dark theme at night"
 msgstr "밤 시간에 자동으로 다크 테마 적용"
 
-#: ../data/ui/preferences.blp:78
+#: ../data/ui/preferences.blp:79
 msgid "Use system accent colors"
 msgstr "시스템 강조 색상 사용"
 
-#: ../data/ui/preferences.blp:82
+#: ../data/ui/preferences.blp:83
 msgid "Progress Bars Theme"
 msgstr "진행 바 테마"
 
-#: ../data/ui/preferences.blp:83
+#: ../data/ui/preferences.blp:84
 msgid "Theme to use for progress bars"
 msgstr "진행 바에 사용할 테마"
 
-#: ../data/ui/preferences.blp:87
+#: ../data/ui/preferences.blp:88
 msgid "Backdrop in Details Page"
 msgstr "상세 정보 페이지 배경"
 
-#: ../data/ui/preferences.blp:88
+#: ../data/ui/preferences.blp:89
 msgid "Method used to recolor background to match cover"
 msgstr "표지에 따라 배경 색상을 재설정하는 방법"
 
-#: ../data/ui/preferences.blp:92
+#: ../data/ui/preferences.blp:93
 msgid "Linear gradient"
 msgstr "선형 그라데이션"
 
-#: ../data/ui/preferences.blp:93
+#: ../data/ui/preferences.blp:94
 msgid "Blurred cover"
 msgstr "흐릿한 표지"
 
-#: ../data/ui/preferences.blp:103
+#: ../data/ui/preferences.blp:104
 msgid "Desktop Notifications"
 msgstr "데스크탑 알림"
 
-#: ../data/ui/preferences.blp:104
+#: ../data/ui/preferences.blp:105
 msgid "Use desktop notifications for downloads and library updates"
 msgstr "다운로드 및 라이브러리 업데이트에 데스크탑 알림 사용"
 
-#: ../data/ui/preferences.blp:112
+#: ../data/ui/preferences.blp:113
 msgid "Synchronize reading progress"
 msgstr "독서 진도 동기화"
 
-#: ../data/ui/preferences.blp:123
+#: ../data/ui/preferences.blp:124
 msgid "Display"
 msgstr "디스플레이"
 
-#: ../data/ui/preferences.blp:126
+#: ../data/ui/preferences.blp:127
 msgid "Display Mode"
 msgstr "디스플레이 모드"
 
-#: ../data/ui/preferences.blp:129
+#: ../data/ui/preferences.blp:130
 msgid "Grid"
 msgstr "그리드"
 
-#: ../data/ui/preferences.blp:130
+#: ../data/ui/preferences.blp:131
 msgid "Compact Grid"
 msgstr "컴팩트 그리드"
 
-#: ../data/ui/preferences.blp:136
+#: ../data/ui/preferences.blp:137
 msgid "Servers Logo"
 msgstr "서버 로고"
 
-#: ../data/ui/preferences.blp:137
+#: ../data/ui/preferences.blp:138
 msgid "Display servers logo"
 msgstr "서버 로고 표시"
 
-#: ../data/ui/preferences.blp:141
+#: ../data/ui/preferences.blp:142
 msgid "Badges"
 msgstr "뱃지"
 
-#: ../data/ui/preferences.blp:144
+#: ../data/ui/preferences.blp:145
 msgid "Number of Unread Chapters"
 msgstr "읽지 않은 챕터 수"
 
-#: ../data/ui/preferences.blp:164
+#: ../data/ui/preferences.blp:165
 msgid "Number of Downloaded Chapters"
 msgstr "다운로드한 챕터 수"
 
-#: ../data/ui/preferences.blp:184
+#: ../data/ui/preferences.blp:185
 msgid "Number of Recent and Unread Chapters"
 msgstr "최근 추가되고 읽지 않은 챕터 수"
 
-#: ../data/ui/preferences.blp:206
+#: ../data/ui/preferences.blp:207
 msgctxt "Settings: noun"
 msgid "Update"
 msgstr ""
 
-#: ../data/ui/preferences.blp:209
+#: ../data/ui/preferences.blp:210
 msgid "Update at Startup"
 msgstr "시작할 때 업데이트"
 
-#: ../data/ui/preferences.blp:210
+#: ../data/ui/preferences.blp:211
 msgid "Automatically update library at startup"
 msgstr "시작할 때 라이브러리를 자동 업데이트"
 
-#: ../data/ui/preferences.blp:214
+#: ../data/ui/preferences.blp:215
 msgid "Auto Download of New Chapters"
 msgstr "새 챕터 자동 다운로드"
 
-#: ../data/ui/preferences.blp:215
+#: ../data/ui/preferences.blp:216
 msgid "Automatically download new chapters"
 msgstr "새 챕터를 자동으로 다운로드"
 
-#: ../data/ui/preferences.blp:223
+#: ../data/ui/preferences.blp:224
 msgid "Languages"
 msgstr "언어"
 
-#: ../data/ui/preferences.blp:224
+#: ../data/ui/preferences.blp:225
 msgid "Restrict servers to selected languages"
 msgstr "선택한 언어로 서버 제한"
 
-#: ../data/ui/preferences.blp:232
+#: ../data/ui/preferences.blp:233
 msgid "Settings"
 msgstr "설정"
 
-#: ../data/ui/preferences.blp:233
+#: ../data/ui/preferences.blp:234
 msgid "Enable/disable and configure servers"
 msgstr "서버 활성화/비활성화 및 설정"
 
-#: ../data/ui/preferences.blp:241
+#: ../data/ui/preferences.blp:242
 msgid "Long Strip Detection"
 msgstr "롱 스트립 감지"
 
-#: ../data/ui/preferences.blp:242
+#: ../data/ui/preferences.blp:243
 msgid "Automatically detect long vertical strip when possible"
 msgstr "가능할 경우 세로로 긴 스트립을 자동으로 감지"
 
-#: ../data/ui/preferences.blp:248
+#: ../data/ui/preferences.blp:249
 msgid "NSFW Content (18+)"
 msgstr "NSFW 컨텐츠 (18+)"
 
-#: ../data/ui/preferences.blp:249
+#: ../data/ui/preferences.blp:250
 msgid "Whether to enable servers with NSFW content"
 msgstr "NSFW 컨텐츠를 포함하는 서버 활성화 여부"
 
-#: ../data/ui/preferences.blp:253
+#: ../data/ui/preferences.blp:254
 msgid "NSFW Only Content (18+)"
 msgstr "NSFW 전용 컨텐츠 (18+)"
 
-#: ../data/ui/preferences.blp:254
+#: ../data/ui/preferences.blp:255
 msgid "Whether to enable servers with NSFW only content"
 msgstr "NSFW 컨텐츠만 있는 서버 활성화 여부"
 
-#: ../data/ui/preferences.blp:258
+#: ../data/ui/preferences.blp:259
 msgid ""
 "These settings do not prevent potentially incorrectly flagged servers from "
 "surfacing NSFW content."
@@ -602,89 +602,89 @@ msgstr ""
 "이 설정은 잘못 분류된 서버에서 NSFW 컨텐츠를 노출하는 것을 방지하지 못할 수 "
 "있습니다."
 
-#: ../data/ui/preferences.blp:273 ../data/ui/reader.blp:10
+#: ../data/ui/preferences.blp:274 ../data/ui/reader.blp:10
 msgid "Reader"
 msgstr "리더"
 
-#: ../data/ui/preferences.blp:278
+#: ../data/ui/preferences.blp:279
 msgid "Reading Mode"
 msgstr "읽기 모드"
 
-#: ../data/ui/preferences.blp:281
+#: ../data/ui/preferences.blp:282
 msgid "⬅ Right to Left"
 msgstr "⬅ 오른쪽에서 왼쪽으로"
 
-#: ../data/ui/preferences.blp:282
+#: ../data/ui/preferences.blp:283
 msgid "➡ Left to Right"
 msgstr "➡ 왼쪽에서 오른쪽으로"
 
-#: ../data/ui/preferences.blp:283
+#: ../data/ui/preferences.blp:284
 msgid "⬇ Vertical"
 msgstr "⬇ 수직"
 
-#: ../data/ui/preferences.blp:284
+#: ../data/ui/preferences.blp:285
 msgid "⬇ Webtoon"
 msgstr "⬇ 웹툰"
 
-#: ../data/ui/preferences.blp:290 ../data/ui/reader_settings.blp:25
+#: ../data/ui/preferences.blp:291 ../data/ui/reader_settings.blp:25
 msgid "Scaling Filter"
 msgstr "스케일링 필터"
 
-#: ../data/ui/preferences.blp:291
+#: ../data/ui/preferences.blp:292
 msgid "Interpolation method used when scaling images"
 msgstr "이미지를 확대할 때 사용되는 보간 기법"
 
-#: ../data/ui/preferences.blp:301 ../data/ui/reader_settings.blp:29
+#: ../data/ui/preferences.blp:302 ../data/ui/reader_settings.blp:29
 msgid "Background Color"
 msgstr "배경 색상"
 
-#: ../data/ui/preferences.blp:313
+#: ../data/ui/preferences.blp:314
 msgid "Page Numbering"
 msgstr "페이지 넘버링"
 
-#: ../data/ui/preferences.blp:314 ../data/ui/reader_settings.blp:49
+#: ../data/ui/preferences.blp:315 ../data/ui/reader_settings.blp:49
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr "읽는 동안 화면 하단에 페이지 번호 숨기기"
 
-#: ../data/ui/preferences.blp:318
+#: ../data/ui/preferences.blp:319
 msgid "Fullscreen"
 msgstr "전체 화면"
 
-#: ../data/ui/preferences.blp:319
+#: ../data/ui/preferences.blp:320
 msgid "Automatically enter fullscreen mode"
 msgstr "자동으로 전체 화면 모드 진입"
 
-#: ../data/ui/preferences.blp:324 ../data/ui/shortcuts.blp:76
+#: ../data/ui/preferences.blp:325 ../data/ui/shortcuts.blp:76
 #: ../data/ui/shortcuts.blp:82 ../data/ui/shortcuts.blp:88
 msgid "Paged Reading Modes"
 msgstr "페이지 읽기 모드"
 
-#: ../data/ui/preferences.blp:325
+#: ../data/ui/preferences.blp:326
 msgid "Right to Left / Left to Right / Vertical"
 msgstr "오른쪽에서 왼쪽 / 왼쪽에서 오른쪽 / 수직"
 
-#: ../data/ui/preferences.blp:328 ../data/ui/reader_settings.blp:21
+#: ../data/ui/preferences.blp:329 ../data/ui/reader_settings.blp:21
 msgid "Scaling"
 msgstr "스케일링"
 
-#: ../data/ui/preferences.blp:329
+#: ../data/ui/preferences.blp:330
 msgid "Type of scaling to adapt image"
 msgstr "이미지 맞춤 스케일링 유형"
 
-#: ../data/ui/preferences.blp:341
+#: ../data/ui/preferences.blp:342
 msgid "Landscape Pages Zoom"
 msgstr "가로 페이지 확대"
 
-#: ../data/ui/preferences.blp:342 ../data/ui/reader_settings.blp:34
+#: ../data/ui/preferences.blp:343 ../data/ui/reader_settings.blp:34
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
 msgstr "가로 페이지일 때 높이에 맞게 확대 (화면 맞춤 모드 전용)"
 
-#: ../data/ui/preferences.blp:346
+#: ../data/ui/preferences.blp:347
 msgid "Borders Crop"
 msgstr "여백 자르기"
 
-#: ../data/ui/preferences.blp:347
+#: ../data/ui/preferences.blp:348
 msgid ""
 "Crop white borders of images\n"
 "\n"
@@ -696,108 +696,112 @@ msgstr ""
 "주의: CPU 사용량이 증가하여 모바일 기기 등에서 렌더링 및 애니메이션이 느려질 "
 "수 있습니다."
 
-#: ../data/ui/preferences.blp:351 ../data/ui/reader_settings.blp:43
+#: ../data/ui/preferences.blp:352 ../data/ui/reader_settings.blp:43
 msgid "Borders Cropping Threshold"
 msgstr ""
 
-#: ../data/ui/preferences.blp:352 ../data/ui/reader_settings.blp:44
+#: ../data/ui/preferences.blp:353 ../data/ui/reader_settings.blp:44
 msgid "Control which pixels are classified as 'white' during borders detection"
 msgstr ""
 
-#: ../data/ui/preferences.blp:357 ../data/ui/shortcuts.blp:94
+#: ../data/ui/preferences.blp:358 ../data/ui/shortcuts.blp:94
 #: ../data/ui/shortcuts.blp:100
 msgid "Webtoon Reading Mode"
 msgstr "웹툰 읽기 모드"
 
-#: ../data/ui/preferences.blp:358
+#: ../data/ui/preferences.blp:359
 msgid "Long Strip aka Infinite Vertical Canvas"
 msgstr "롱스트립(무한 수직 캔버스)"
 
-#: ../data/ui/preferences.blp:363
+#: ../data/ui/preferences.blp:364
 msgid "Reset to Default"
 msgstr "기본값으로 되돌리기"
 
-#: ../data/ui/preferences.blp:371
+#: ../data/ui/preferences.blp:372
 msgid "Maximum Width"
 msgstr "최대 너비"
 
-#: ../data/ui/preferences.blp:372
+#: ../data/ui/preferences.blp:373
 msgid "Constrain reader's width to a given maximum size"
 msgstr "리더의 너비를 설정된 최대 크기로 제한"
 
-#: ../data/ui/preferences.blp:382
+#: ../data/ui/preferences.blp:383
 msgid "Scroll Distance"
 msgstr "스크롤 이동량"
 
-#: ../data/ui/preferences.blp:383
+#: ../data/ui/preferences.blp:384
 msgid "Percentage of page height to scroll on click or Page Up/Down"
 msgstr "클릭 또는 페이지 업/다운에서 스크롤할 페이지 높이 비율"
 
-#: ../data/ui/preferences.blp:394
+#: ../data/ui/preferences.blp:395
 msgid "Drag Sensitivity"
 msgstr "드래그 민감도"
 
-#: ../data/ui/preferences.blp:395
+#: ../data/ui/preferences.blp:396
 msgid "Multiplier for drag scrolling sensitivity"
 msgstr "드래그 스크롤 감도 배수"
 
-#: ../data/ui/preferences.blp:407 ../data/ui/reader_settings.blp:54
+#: ../data/ui/preferences.blp:408 ../data/ui/reader_settings.blp:54
 msgid "OCR Translator"
 msgstr ""
 
-#: ../data/ui/preferences.blp:410 ../data/ui/reader_settings.blp:57
+#: ../data/ui/preferences.blp:411 ../data/ui/reader_settings.blp:57
 msgid "OCR Language"
 msgstr ""
 
-#: ../data/ui/preferences.blp:411
+#: ../data/ui/preferences.blp:412
 msgid "Default language to use for OCR text recognitions"
 msgstr ""
 
-#: ../data/ui/preferences.blp:415
-msgid "Translator Language"
-msgstr ""
-
 #: ../data/ui/preferences.blp:416
-msgid "Default language to use as target language for translations"
+msgid "Translator"
 msgstr ""
 
-#: ../data/ui/preferences.blp:424
+#: ../data/ui/preferences.blp:417
+msgid "Service to use for translations"
+msgstr ""
+
+#: ../data/ui/preferences.blp:428
+msgid "Edit Translator Settings"
+msgstr ""
+
+#: ../data/ui/preferences.blp:440
 msgid "Advanced"
 msgstr "고급"
 
-#: ../data/ui/preferences.blp:428
+#: ../data/ui/preferences.blp:444
 msgid "A setting has changed that requires a restart to take effect"
 msgstr "재시작이 필요한 설정이 변경되었습니다"
 
-#: ../data/ui/preferences.blp:434
+#: ../data/ui/preferences.blp:450
 msgid "Data"
 msgstr "데이터"
 
-#: ../data/ui/preferences.blp:435
+#: ../data/ui/preferences.blp:451
 msgid "Data not saved in the library"
 msgstr "데이터가 라이브러리가 저장되지 않았습니다"
 
-#: ../data/ui/preferences.blp:438
+#: ../data/ui/preferences.blp:454
 msgid "Clear Chapters Cache and Database"
 msgstr "화차 캐시 및 데이터베이스 비우기"
 
-#: ../data/ui/preferences.blp:453
+#: ../data/ui/preferences.blp:469
 msgid "Clear Chapters Cache and Database on Exit"
 msgstr "종료 시 화차 캐시 및 데이터베이스 비우기"
 
-#: ../data/ui/preferences.blp:458 ../data/ui/webview.blp:10
+#: ../data/ui/preferences.blp:474 ../data/ui/webview.blp:10
 msgid "WebView"
 msgstr "WebView"
 
-#: ../data/ui/preferences.blp:461
+#: ../data/ui/preferences.blp:477
 msgid "Clear Data"
 msgstr "데이터 정리"
 
-#: ../data/ui/preferences.blp:480
+#: ../data/ui/preferences.blp:496
 msgid "Use Up-to-date Servers Modules"
 msgstr "최신 서버 모듈 사용"
 
-#: ../data/ui/preferences.blp:481
+#: ../data/ui/preferences.blp:497
 msgid ""
 "An alternative version of the servers modules, installed from the source "
 "code repository and updated at each startup, is used instead of the one "
@@ -806,11 +810,11 @@ msgstr ""
 "앱에 기본 포함된 버전 대신 소스 코드 리포지토리에서 설치하여 시작할 때마다 업"
 "데이트되는 대체 서버 모듈을 사용합니다."
 
-#: ../data/ui/preferences.blp:485
+#: ../data/ui/preferences.blp:501
 msgid "Suggest Submitting a Bug Report in Case of Error"
 msgstr "오류 발생 시 버그 리포트 제출하기"
 
-#: ../data/ui/preferences.blp:486
+#: ../data/ui/preferences.blp:502
 msgid ""
 "If an error occurs with a server (it has been updated or an unexpected case "
 "has arisen), you will be prompted to create a bug report using a pre-"
@@ -819,27 +823,27 @@ msgstr ""
 "서버에 오류가 발생하면(업데이트되었거나 예외가 발생한 경우), 복사해 붙여넣을 "
 "수 있는 양식화된 텍스트로 버그 리포트를 작성하도록 안내합니다."
 
-#: ../data/ui/preferences.blp:491
+#: ../data/ui/preferences.blp:507
 msgid "Credentials Storage"
 msgstr "인증 정보 저장소"
 
-#: ../data/ui/preferences.blp:494
+#: ../data/ui/preferences.blp:510
 msgid "Allow Plaintext Storage as Fallback"
 msgstr "대체 수단으로 평문 저장 허용"
 
-#: ../data/ui/preferences.blp:495
+#: ../data/ui/preferences.blp:511
 msgid "Used when no keyring backends are found"
 msgstr "키링 백엔드를 찾을 수 없을 때 사용됩니다"
 
-#: ../data/ui/preferences.blp:500
+#: ../data/ui/preferences.blp:516
 msgid "Tweaks"
 msgstr "미세 조정"
 
-#: ../data/ui/preferences.blp:503
+#: ../data/ui/preferences.blp:519
 msgid "Disable Animations"
 msgstr "애니메이션 비활성화"
 
-#: ../data/ui/preferences.blp:504
+#: ../data/ui/preferences.blp:520
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
@@ -847,7 +851,7 @@ msgstr ""
 "애니메이션이 끊기고 부자연스럽게 보일 때 전자책(E-Ink) 끼리 사용하면 유용합니"
 "다. (화면 주사율이 낮을 때)"
 
-#: ../data/ui/preferences.blp:508
+#: ../data/ui/preferences.blp:524
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot toggle reduced motion animations globally "
@@ -868,6 +872,39 @@ msgstr "서버 설정"
 #: ../data/ui/preferences_servers_languages.blp:17
 msgid "Servers Languages"
 msgstr "서버 언어"
+
+#: ../data/ui/preferences_translator_params.blp:10
+#: ../data/ui/preferences_translator_params.blp:16
+msgid "Translator Settings"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:22
+msgid "Service"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:27
+msgid "Instance URL"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:36
+msgid "API Key"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:56
+msgid "Validate"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:69
+msgid "Behavior"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:72
+msgid "Translator Language"
+msgstr ""
+
+#: ../data/ui/preferences_translator_params.blp:73
+msgid "Default language to use as target language for translations"
+msgstr ""
 
 #: ../data/ui/reader.blp:27
 msgid "Back"
@@ -1153,7 +1190,7 @@ msgstr "대화방 참여"
 #: ../komikku/application.py:563 ../komikku/card/__init__.py:162
 #: ../komikku/card/__init__.py:163 ../komikku/categories_editor.py:188
 #: ../komikku/downloader.py:388 ../komikku/downloader.py:389
-#: ../komikku/library/__init__.py:846 ../komikku/library/__init__.py:847
+#: ../komikku/library/__init__.py:843 ../komikku/library/__init__.py:844
 msgid "Cancel"
 msgstr "취소"
 
@@ -1226,8 +1263,8 @@ msgid "Filters"
 msgstr "필터"
 
 #: ../komikku/card/__init__.py:220 ../komikku/library/__init__.py:338
-#: ../komikku/preferences/__init__.py:166
-#: ../komikku/preferences/__init__.py:189
+#: ../komikku/preferences/__init__.py:169
+#: ../komikku/preferences/__init__.py:192
 msgid "Clear?"
 msgstr ""
 
@@ -1236,8 +1273,8 @@ msgid "Are you sure you want to clear all chapters?"
 msgstr "모든 챕터(화)를 정리하시겠습니까?"
 
 #: ../komikku/card/__init__.py:222 ../komikku/card/chapters_list.py:724
-#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:168
-#: ../komikku/preferences/__init__.py:191
+#: ../komikku/library/__init__.py:340 ../komikku/preferences/__init__.py:171
+#: ../komikku/preferences/__init__.py:194
 msgid "Clear"
 msgstr "정리"
 
@@ -1273,7 +1310,7 @@ msgid "Reset"
 msgstr "초기화"
 
 #: ../komikku/card/chapters_list.py:336 ../komikku/downloader.py:533
-#: ../komikku/library/__init__.py:874
+#: ../komikku/library/__init__.py:871
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
@@ -1549,8 +1586,8 @@ msgstr ""
 msgid "Last Volume: {}"
 msgstr ""
 
-#: ../komikku/explorer/common.py:245 ../komikku/preferences/servers.py:394
-#: ../komikku/preferences/servers.py:446
+#: ../komikku/explorer/common.py:245 ../komikku/preferences/servers.py:396
+#: ../komikku/preferences/servers.py:450
 #: ../komikku/servers/mangatube/__init__.py:150
 msgid "18+"
 msgstr "만 18세 이상 이용가"
@@ -1778,23 +1815,23 @@ msgstr ""
 msgid "Series with new chapters"
 msgstr ""
 
-#: ../komikku/library/__init__.py:687
+#: ../komikku/library/__init__.py:684
 msgid "Welcome to Komikku"
 msgstr ""
 
-#: ../komikku/library/__init__.py:699
+#: ../komikku/library/__init__.py:696
 msgid "Loading…"
 msgstr "불러오는 중…"
 
-#: ../komikku/library/__init__.py:823
+#: ../komikku/library/__init__.py:820
 msgid "Failed to update reading status"
 msgstr ""
 
-#: ../komikku/library/__init__.py:851
+#: ../komikku/library/__init__.py:848
 msgid "Add New Comic"
 msgstr ""
 
-#: ../komikku/library/__init__.py:878 ../komikku/library/categories_list.py:146
+#: ../komikku/library/__init__.py:875 ../komikku/library/categories_list.py:146
 msgid "Uncategorized"
 msgstr ""
 
@@ -1887,31 +1924,60 @@ msgstr ""
 msgid "Hiatus"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:167
+#: ../komikku/preferences/__init__.py:170
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:186
+#: ../komikku/preferences/__init__.py:189
 msgid "Failed to clear WebView data"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:190
+#: ../komikku/preferences/__init__.py:193
 msgid "Are you sure you want to clear WebView data (cache, storage, cookies)?"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:215
+#: ../komikku/preferences/__init__.py:218
 msgid "Disable animations?"
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:216
+#: ../komikku/preferences/__init__.py:219
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
 
-#: ../komikku/preferences/__init__.py:217
+#: ../komikku/preferences/__init__.py:220
 msgid "Disable"
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:697 ../komikku/preferences/servers.py:72
+msgid "System keyring service is disabled. Credential cannot be saved."
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:702 ../komikku/preferences/servers.py:77
+msgid ""
+"No keyring backends were found to store credential. Use plaintext storage as "
+"fallback."
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:708 ../komikku/preferences/servers.py:83
+msgid ""
+"No keyring backends were found to store credential. Plaintext storage will "
+"be used as fallback."
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:738
+msgid "Invalid instance URL"
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:740
+#: ../komikku/preferences/__init__.py:754
+msgid "Unavailable service"
+msgstr ""
+
+#: ../komikku/preferences/__init__.py:752
+msgid "Invalid API key"
 msgstr ""
 
 #: ../komikku/preferences/servers.py:44
@@ -1930,24 +1996,12 @@ msgstr "사용자 이름"
 msgid "Password"
 msgstr "암호"
 
-#: ../komikku/preferences/servers.py:72
-msgid "System keyring service is disabled. Credential cannot be saved."
-msgstr ""
-
-#: ../komikku/preferences/servers.py:77
-msgid ""
-"No keyring backends were found to store credential. Use plaintext storage as "
-"fallback."
-msgstr ""
-
-#: ../komikku/preferences/servers.py:82
-msgid ""
-"No keyring backends were found to store credential. Plaintext storage will "
-"be used as fallback."
-msgstr ""
-
-#: ../komikku/preferences/servers.py:90
+#: ../komikku/preferences/servers.py:92
 msgid "Test"
+msgstr ""
+
+#: ../komikku/preferences/servers.py:419 ../komikku/preferences/servers.py:456
+msgid "Edit Server Settings"
 msgstr ""
 
 #: ../komikku/preferences/trackers.py:36 ../komikku/preferences/trackers.py:88
@@ -1981,8 +2035,8 @@ msgstr ""
 msgid "Page successfully saved"
 msgstr ""
 
-#: ../komikku/reader/ocr_translator.py:154
-#: ../komikku/reader/ocr_translator.py:159
+#: ../komikku/reader/ocr_translator.py:148
+#: ../komikku/reader/ocr_translator.py:153
 msgid "Copied to clipboard"
 msgstr ""
 

@@ -22,6 +22,7 @@ data/ui/preferences.blp
 data/ui/preferences_server_params.blp
 data/ui/preferences_servers_languages.blp
 data/ui/preferences_servers_settings.blp
+data/ui/preferences_translator_params.blp
 data/ui/reader.blp
 data/ui/reader_settings.blp
 data/ui/shortcuts.blp
