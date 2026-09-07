@@ -18,6 +18,7 @@ class Nixofnothing(Hiveworks):
     content = ServerContent(
         type=[_('Webcomic'), _('Self-publishing')]
     )
+    status = 'disabled'
 
     base_url = 'https://www.nixofnothing.com'
     logo_url = base_url + '/favicon.ico'
