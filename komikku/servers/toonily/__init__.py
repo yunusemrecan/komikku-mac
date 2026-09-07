@@ -21,7 +21,7 @@ class Toonily(Madara2):
     series_name = 'serie'
 
     base_url = 'https://toonily.com'
-    logo_url = base_url + '/wp-content/uploads/2024/01/cropped-toonfavicon_color_changed-32x32.png'
+    logo_url = 'https://static.tnlycdn.com/2017/10/toonily_favicon2-150x150.png'
     chapter_url = base_url + '/' + series_name + '/{0}/{1}/'
 
     results_selector = '.manga'
