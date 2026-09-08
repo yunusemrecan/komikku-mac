@@ -20,7 +20,7 @@
 # Raw Manga [JA] (Disabled)
 # Rimu Scans [FR] (Disabled)
 # Rukav Inari [ES] (Disabled)
-# Ryujinmanga [ES]
+# Ryujinmanga [ES] (Disabled)
 # Senpai Ediciones [ES] (Disabled)
 # ShadowMangas [ES]
 # SkyMangas [ES]
