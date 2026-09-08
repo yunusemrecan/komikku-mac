@@ -269,12 +269,12 @@ CREDITS = dict(
 
 RELEASE_NOTES = """
 <ul>
-    <li>[Preferences] OCR Translator: Added default language to use as target language for translations</li>
-    <li>[Reader] OCR Translator: Added a button to copy the source text</li>
-    <li>[Reader] Webtoon pager: Fixed keayboard navigation</li>
+    <li>[Reader] OCR Translator: Added DeepL provider</li>
     <li>[Servers] JManga (JA): Update</li>
-    <li>[Servers] MangaFreak (EN): Update</li>
-    <li>[L10n] Updated French, Russian and Ukrainian translations</li>
+    <li>[Servers] Mangas Origines (FR): Update</li>
+    <li>[Servers] Nix of Nothing (EN): Disabled</li>
+    <li>[Servers] Read Comics Online (EN): Update</li>
+    <li>[L10n] Updated Bengali, French, Italian, Russian and Ukrainian translations</li>
 </ul>
 <p>Happy reading.</p>
 """
