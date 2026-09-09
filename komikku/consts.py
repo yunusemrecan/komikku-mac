@@ -269,12 +269,10 @@ CREDITS = dict(
 
 RELEASE_NOTES = """
 <ul>
-    <li>[Reader] OCR Translator: Added DeepL provider</li>
-    <li>[Servers] JManga (JA): Update</li>
-    <li>[Servers] Mangas Origines (FR): Update</li>
-    <li>[Servers] Nix of Nothing (EN): Disabled</li>
-    <li>[Servers] Read Comics Online (EN): Update</li>
-    <li>[L10n] Updated Bengali, French, Italian, Russian and Ukrainian translations</li>
+    <li>[Translators] DeepL: Small fix</li>
+    <li>[Servers] MangaTown (EN): Update</li>
+    <li>[Servers] Rawkuma (JA): Update</li>
+    <li>[L10n] Updated Ukrainian translation</li>
 </ul>
 <p>Happy reading.</p>
 """

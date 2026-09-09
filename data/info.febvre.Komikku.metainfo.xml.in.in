@@ -119,6 +119,17 @@
     <url type="donation">https://febvre.info/donate.html</url>
 
     <releases>
+        <release version="50.15.0" date="2026-09-10">
+            <description translate="no">
+                <ul>
+                    <li>[Translators] DeepL: Small fix</li>
+                    <li>[Servers] MangaTown (EN): Update</li>
+                    <li>[Servers] Rawkuma (JA): Update</li>
+                    <li>[L10n] Updated Ukrainian translation</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="50.14.0" date="2026-09-09">
             <description translate="no">
                 <ul>
