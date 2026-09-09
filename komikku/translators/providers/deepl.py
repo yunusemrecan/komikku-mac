@@ -28,10 +28,12 @@ class Deepl(Translator):
         self.headers['Authorization'] = f'DeepL-Auth-Key {api_key}'
         self.session.headers.update(self.headers)
 
-        if api_key and api_key.endswith(':fx'):
-            # Free API detected
+        if api_key:
             self.api_key = api_key
-            self.base_url = self.base_url.replace('api', 'api-free')
+
+            if api_key.endswith(':fx'):
+                # Free API detected
+                self.base_url = self.base_url.replace('api', 'api-free')
 
     @property
     def languages_url(self):
