@@ -1,9 +1,10 @@
-# SPDX-FileCopyrightText: 2019-2025 Valéry Febvre
+# SPDX-FileCopyrightText: 2019-2026 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from gettext import gettext as _
 import json
+import logging
 from urllib.parse import parse_qs
 from urllib.parse import urlparse
 
@@ -14,6 +15,8 @@ from komikku.consts import USER_AGENT
 from komikku.servers import Server
 from komikku.servers.utils import convert_date_string
 from komikku.utils import get_buffer_mime_type
+
+logger = logging.getLogger(__name__)
 
 
 class Rawkuma(Server):
@@ -63,40 +66,66 @@ class Rawkuma(Server):
         if r.status_code != 200:
             return None
 
-        mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
-            return None
-
         soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
-        data.update(dict(
-            authors=[],  # not available
-            scanlators=[],  # not available
-            genres=[],
-            status=None,  # not available
-            synopsis=None,
-            chapters=[],
-            server_id=self.id,
-        ))
+        data.update({
+            'authors': [],
+            'scanlators': [],  # not available
+            'genres': [],
+            'status': None,
+            'synopsis': None,
+            'chapters': [],
+            'server_id': self.id,
+        })
 
-        # Name & cover
-        data['name'] = soup.select_one('[itemprop="name"]').text.strip()
-        data['cover'] = soup.select_one('[itemprop="image"] img').get('src')
+        success = False
+        for script_element in soup.select('script[type="application/ld+json"]'):
+            script = script_element.string
+            if not script or '"ComicSeries"' not in script:
+                continue
 
-        if elements := soup.select('[itemprop="genre"] span'):
-            data['genres'] = [element.text.strip() for element in elements]
+            details = json.loads(script)
+            success = True
 
-        if elements := soup.select('[itemprop="description"] p'):
-            data['synopsis'] = [element.text.strip() for element in elements]
-        if data['synopsis']:
-            data['synopsis'] = '\n\n'.join(data['synopsis'])
+            data['name'] = details['name']
+            data['cover'] = details['image']['url']
+
+            if status := details.get('creativeWorkStatus'):
+                if status == 'Ongoing':
+                    data['status'] = 'ongoing'
+                elif status == 'Completed':
+                    data['status'] = 'complete'
+                elif status == 'Cancelled':
+                    data['status'] = 'suspended'
+                elif status == 'On Hiatus':
+                    data['status'] = 'hiatus'
+
+            if genres := details.get('genre'):
+                data['genres'] = genres
+
+            if author := details.get('author'):
+                data['authors'].append(author['name'])
+            if author := details.get('illustrator'):
+                if author['name'] not in data['authors']:
+                    data['authors'].append(author['name'])
+
+            data['synopsis'] = details.get('description')
+            if data['synopsis']:
+                data['synopsis'] = data['synopsis'].replace('[&hellip;]', '[…]')
+
+            break
+
+        if not success:
+            logger.error('Failed to retrieved serie data: JSON data not found')
+            return None
 
         # Chapters
-        if manga_id_element := soup.select_one('#chapter-list'):
+        if manga_id_element := soup.select_one('#gallery-list'):
             url = manga_id_element.get('hx-get').strip()
             manga_id = parse_qs(urlparse(url).query)['manga_id'][0]
         else:
+            logger.error('Failed to retrieved serie Id')
             return None
 
         chapters = self.get_manga_chapters_data(manga_id)
@@ -126,12 +155,12 @@ class Rawkuma(Server):
             else:
                 date = None
 
-            chapters.append(dict(
-                slug=a_element.get('href').split('/')[-2],
-                title=title,
-                num=num,
-                date=date,
-            ))
+            chapters.append({
+                'slug': a_element.get('href').split('/')[-2],
+                'title': title,
+                'num': num,
+                'date': date,
+            })
 
         return chapters
 
@@ -151,15 +180,14 @@ class Rawkuma(Server):
 
         soup = BeautifulSoup(r.text, 'lxml')
 
-        data = dict(
-            pages=[],
-        )
-
+        data = {
+            'pages': [],
+        }
         for element in soup.select('section > img'):
-            data['pages'].append(dict(
-                slug=None,
-                image=element.get('src'),
-            ))
+            data['pages'].append({
+                'slug': None,
+                'image': element.get('src'),
+            })
 
         return data
 
@@ -180,11 +208,11 @@ class Rawkuma(Server):
         if not mime_type.startswith('image'):
             return None
 
-        return dict(
-            buffer=r.content,
-            mime_type=mime_type,
-            name=page['image'].split('/')[-1],
-        )
+        return {
+            'buffer': r.content,
+            'mime_type': mime_type,
+            'name': page['image'].split('/')[-1],
+        }
 
     def get_manga_list(self, title=None, types=None, orderby=None):
         r = self.session_post(
@@ -225,12 +253,12 @@ class Rawkuma(Server):
             else:
                 last_chapter = None
 
-            results.append(dict(
-                slug=slug,
-                name=name,
-                cover=a_element.img.get('src'),
-                last_chapter=last_chapter,
-            ))
+            results.append({
+                'slug': slug,
+                'name': name,
+                'cover': a_element.img.get('src'),
+                'last_chapter': last_chapter,
+            })
 
         return results
 
