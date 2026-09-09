@@ -117,16 +117,16 @@ class Mangatown(Server):
         soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
-        data.update(dict(
-            authors=[],
-            scanlators=[],
-            genres=[],
-            status=None,
-            synopsis=None,
-            chapters=[],
-            server_id=self.id,
-            cover=None,
-        ))
+        data.update({
+            'authors': [],
+            'scanlators': [],
+            'genres': [],
+            'status': None,
+            'synopsis': None,
+            'chapters': [],
+            'server_id': self.id,
+            'cover': None,
+        })
 
         data['name'] = soup.select_one('h1.title-top').text.strip()
         data['cover'] = soup.select_one('.detail_info > img').get('src')
@@ -179,9 +179,9 @@ class Mangatown(Server):
 
         soup = BeautifulSoup(r.text, 'lxml')
 
-        data = dict(
-            pages=[],
-        )
+        data = {
+            'pages': [],
+        }
         if soup.select_one('#viewer #image'):
             # Single page mode
             if element := soup.select_one('.page_select select'):
@@ -243,11 +243,11 @@ class Mangatown(Server):
         if not mime_type.startswith('image'):
             return None
 
-        return dict(
-            buffer=r.content,
-            mime_type=mime_type,
-            name=url.split('/')[-1],
-        )
+        return {
+            'buffer': r.content,
+            'mime_type': mime_type,
+            'name': url.split('/')[-1],
+        }
 
     def get_manga_url(self, slug, url):
         """
@@ -316,7 +316,10 @@ class Mangatown(Server):
                     'last_chapter': last_chapter_element.get('title').split()[-1],
                 })
 
-            more = 'javascript' not in soup.select_one('.next-page a.next').get('href') and page < SEARCH_RESULTS_PAGES
+            if a_element := soup.select_one('.next-page a.next'):
+                more = 'javascript' not in a_element.get('href') and page < SEARCH_RESULTS_PAGES
+            else:
+                more = False
 
             return items, more, get_response_elapsed(r)
 
