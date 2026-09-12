@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-06 22:56+0200\n"
-"PO-Revision-Date: 2026-09-09 21:27+0000\n"
+"PO-Revision-Date: 2026-09-13 05:51+0000\n"
 "Last-Translator: Димко <Dymkovych@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
 "uk/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.9.1\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 
 #: ../data/info.febvre.Komikku.desktop.in:2
 msgid "@prettyname@"
@@ -768,17 +768,14 @@ msgid "Default language to use for OCR text recognitions"
 msgstr "Типова мова для зчитування тексту"
 
 #: ../data/ui/preferences.blp:416
-#, fuzzy
 msgid "Translator"
 msgstr "Перекладач"
 
 #: ../data/ui/preferences.blp:417
-#, fuzzy
 msgid "Service to use for translations"
-msgstr "Служба перекладу"
+msgstr "Послуга перекладу"
 
 #: ../data/ui/preferences.blp:428
-#, fuzzy
 msgid "Edit Translator Settings"
 msgstr "Параметри перекладу"
 
@@ -893,7 +890,6 @@ msgstr "Мови серверів"
 
 #: ../data/ui/preferences_translator_params.blp:10
 #: ../data/ui/preferences_translator_params.blp:16
-#, fuzzy
 msgid "Translator Settings"
 msgstr "Параметри перекладу"
 
@@ -907,7 +903,6 @@ msgid "Instance URL"
 msgstr ""
 
 #: ../data/ui/preferences_translator_params.blp:36
-#, fuzzy
 msgid "API Key"
 msgstr "Ключ API"
 
@@ -916,7 +911,6 @@ msgid "Validate"
 msgstr ""
 
 #: ../data/ui/preferences_translator_params.blp:69
-#, fuzzy
 msgid "Behavior"
 msgstr "Поведінка"
 
