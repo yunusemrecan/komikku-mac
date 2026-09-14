@@ -135,7 +135,8 @@ class Kavita(Server):
         ))
 
         if latest_read_date := resp_data['latestReadDate']:
-            data['last_read'] = datetime.datetime.strptime(latest_read_date[:-1], '%Y-%m-%dT%H:%M:%S.%f')
+            if not latest_read_date.startswith('0001-01-01'):
+                data['last_read'] = datetime.datetime.fromisoformat(latest_read_date.rstrip('Z'))
 
         r = self.session_get(
             self.api_manga_metadata_url,
