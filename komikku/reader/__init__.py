@@ -161,8 +161,9 @@ class ReaderPage(Adw.NavigationPage):
         return (width, height)
 
     def add_accelerators(self):
-        self.window.application.set_accels_for_action('app.reader.toggle-ocr-translator', ['<Primary>t'])
+        self.window.application.set_accels_for_action('app.reader.fullscreen', ['F11'])
         self.window.application.set_accels_for_action('app.reader.save-page', ['<Primary>s'])
+        self.window.application.set_accels_for_action('app.reader.toggle-ocr-translator', ['<Primary>t'])
 
     def add_actions(self):
         # Reading mode
@@ -180,6 +181,11 @@ class ReaderPage(Adw.NavigationPage):
         self.save_page_action = Gio.SimpleAction.new('reader.save-page', None)
         self.save_page_action.connect('activate', self.save_page)
         self.window.application.add_action(self.save_page_action)
+
+        # Toggle fullscreen mode
+        fullscreen_action = Gio.SimpleAction.new('reader.fullscreen', None)
+        fullscreen_action.connect('activate', self.window.toggle_fullscreen)
+        self.window.application.add_action(fullscreen_action)
 
         # Toggle OCR translator
         self.toggle_ocr_translator_action = Gio.SimpleAction.new('reader.toggle-ocr-translator', None)

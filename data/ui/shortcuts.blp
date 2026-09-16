@@ -15,11 +15,6 @@ Adw.ShortcutsDialog shortcuts_dialog {
     }
 
     Adw.ShortcutsItem {
-      title: C_("Shortcut window description", "Toggle Fullscreen Mode");
-      action-name: "app.fullscreen";
-    }
-
-    Adw.ShortcutsItem {
       title: C_("Shortcut window description", "Open Keyboard Shortcuts");
       action-name: "app.shortcuts";
     }
@@ -44,7 +39,7 @@ Adw.ShortcutsDialog shortcuts_dialog {
 
     Adw.ShortcutsItem {
       title: C_("Shortcut window description", "Add Manga");
-      action-name: "app.add";
+      action-name: "app.library.add";
     }
 
     Adw.ShortcutsItem {
@@ -132,6 +127,13 @@ Adw.ShortcutsDialog shortcuts_dialog {
     Adw.ShortcutsItem {
       title: C_("Shortcut window description", "Toggle OCR Translator");
       action-name: "app.reader.toggle-ocr-translator";
+    }
+  }
+
+  Adw.ShortcutsSection {
+    Adw.ShortcutsItem {
+      title: C_("Shortcut window description", "Toggle Fullscreen Mode");
+      action-name: "app.reader.fullscreen";
     }
   }
 

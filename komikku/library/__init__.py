@@ -239,11 +239,12 @@ class LibraryPage(Adw.NavigationPage):
         self.window.navigationview.add(self)
 
     def add_accelerators(self):
-        self.window.application.set_accels_for_action('app.library.update', ['<Primary>r'])
+        self.window.application.set_accels_for_action('app.library.add', ['<Primary>plus'])
         self.window.application.set_accels_for_action('app.library.toggle-categories', ['F9'])
+        self.window.application.set_accels_for_action('app.library.update', ['<Primary>r'])
 
     def add_actions(self):
-        add_action = Gio.SimpleAction.new('add', None)
+        add_action = Gio.SimpleAction.new('library.add', None)
         add_action.connect('activate', self.on_left_button_clicked)
         self.window.application.add_action(add_action)
 

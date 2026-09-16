@@ -206,9 +206,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         return self.get_display().get_monitor_at_surface(self.get_native().get_surface())
 
     def add_accelerators(self):
-        self.application.set_accels_for_action('app.add', ['<Primary>plus'])
         self.application.set_accels_for_action('app.enter-search-mode', ['<Primary>f'])
-        self.application.set_accels_for_action('app.fullscreen', ['F11'])
         self.application.set_accels_for_action('app.select-all', ['<Primary>a'])
         self.application.set_accels_for_action('app.preferences', ['<Primary>comma'])
         self.application.set_accels_for_action('app.shortcuts', ['<Primary>question'])
@@ -225,10 +223,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         enter_search_mode_action = Gio.SimpleAction.new('enter-search-mode', None)
         enter_search_mode_action.connect('activate', self.enter_search_mode)
         self.application.add_action(enter_search_mode_action)
-
-        fullscreen_action = Gio.SimpleAction.new('fullscreen', None)
-        fullscreen_action.connect('activate', self.toggle_fullscreen)
-        self.application.add_action(fullscreen_action)
 
         self.select_all_action = Gio.SimpleAction.new('select-all', None)
         self.select_all_action.connect('activate', self.select_all)
