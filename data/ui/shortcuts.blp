@@ -31,6 +31,15 @@ Adw.ShortcutsDialog shortcuts_dialog {
   }
 
   Adw.ShortcutsSection {
+    title: C_("Shortcut window description", "Explorer");
+
+    Adw.ShortcutsItem {
+      title: C_("Shortcut window description", "Search For Servers");
+      action-name: "app.enter-search-mode";
+    }
+  }
+
+  Adw.ShortcutsSection {
     title: C_("Shortcut window description", "Library");
 
     Adw.ShortcutsItem {
@@ -139,6 +148,15 @@ Adw.ShortcutsDialog shortcuts_dialog {
     Adw.ShortcutsItem {
       title: C_("Shortcut window description", "Select All Downloads");
       action-name: "app.select-all";
+    }
+  }
+
+  Adw.ShortcutsSection {
+    title: C_("Shortcut window description", "History");
+
+    Adw.ShortcutsItem {
+      title: C_("Shortcut window description", "Search");
+      action-name: "app.enter-search-mode";
     }
   }
 }

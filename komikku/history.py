@@ -137,7 +137,7 @@ class HistoryPage(Adw.NavigationPage):
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.searchbar.connect_entry(self.searchentry)
-        self.searchbar.set_key_capture_widget(self.window)
+        self.searchbar.set_key_capture_widget(self)
 
         self.searchentry.connect('activate', self.on_searchentry_activated)
         self.searchentry.connect('search-changed', self.search)

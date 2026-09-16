@@ -98,7 +98,7 @@ class LibraryPage(Adw.NavigationPage):
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.searchbar.connect_entry(self.search_entry)
-        self.searchbar.set_key_capture_widget(self.window)
+        self.searchbar.set_key_capture_widget(self)
 
         # Filters dialog
         self.filters_dialog = Adw.PreferencesDialog.new()

@@ -56,7 +56,7 @@ class ExplorerServersPage(Adw.NavigationPage):
         )
         self.searchbar.connect_entry(self.searchentry)
         self.searchbar.connect('notify::search-mode-enabled', self.on_search_mode_toggled)
-        self.searchbar.set_key_capture_widget(self.window)
+        self.searchbar.set_key_capture_widget(self)
 
         self.searchentry.connect('activate', self.on_searchentry_activated)
         self.searchentry.connect('search-changed', self.search)

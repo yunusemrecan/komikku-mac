@@ -103,7 +103,7 @@ class Rncalation(Server):
         })
 
         data['name'] = soup.select_one('h1').text.strip()
-        data['cover'] = self.base_url + soup.select_one('img.comic-cover__img').get('src')
+        data['cover'] = self.base_url + soup.select_one('.rounded-none > img').get('src')
 
         # Status
         if element := soup.select_one('.flex.items-baseline:-soup-contains("Estado") span.text-right'):
@@ -283,10 +283,10 @@ class Rncalation(Server):
             if type_ == 'Novel':
                 continue
 
-            img_element = a_element.select_one('img.comic-cover__img')
+            img_element = a_element.select_one('img')
             results.append({
                 'slug': a_element.get('href').split('/')[-1],
-                'name': img_element.get('alt'),
+                'name': a_element.select_one('p.font-semibold').text.strip(),
                 'cover': self.base_url + img_element.get('src'),
             })
 
