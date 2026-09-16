@@ -159,10 +159,11 @@ class Mangakawaii(Server):
             xdata = rf'{xdata}'.replace('\\u0022', '"').replace('\\u0026', '&').replace('\\', '')
             xdata = json.loads(xdata)
             if images := xdata.get('imgs'):
-                for image in images:
+                for index, image in enumerate(images, start=1):
                     data['pages'].append({
                         'slug': None,
                         'image': image,
+                        'index': index,
                     })
 
         return data
@@ -225,7 +226,7 @@ class Mangakawaii(Server):
 
         return list(reversed(chapters))
 
-    def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
+    def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page, retry=False):
         """
         Returns chapter page scan (image) content
         """
@@ -236,6 +237,15 @@ class Mangakawaii(Server):
             }
         )
         if r.status_code != 200:
+            if r.status_code in (403, 410) and not retry and page.get('index'):
+                # Image URL is outdated
+                data = self.get_manga_chapter_data(manga_slug, manga_name, chapter_slug, None)
+                if not data or not data['pages'] or page['index'] > len(data['pages']):
+                    return None
+
+                page = data['pages'][page['index'] - 1]
+                return self.get_manga_chapter_page_image(manga_slug, manga_name, chapter_slug, page, retry=True)
+
             return None
 
         mime_type = get_buffer_mime_type(r.content)
