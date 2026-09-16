@@ -21,7 +21,6 @@ from komikku.utils import log_error_traceback
 
 class BasePager:
     autohide_controls = True
-    default_double_click_time = Gtk.Settings.get_default().get_property('gtk-double-click-time')
 
     def __init__(self, reader):
         self.reader = reader

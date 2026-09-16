@@ -64,6 +64,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         'zoom-begin': (GObject.SignalFlags.RUN_FIRST, None, ()),
         'zoom-end': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
+    __double_click_time = Gtk.Settings.get_default().get_property('gtk-double-click-time')
 
     def __init__(self, scaling='screen', scaling_filter='linear', crop=False, crop_threshold=None, landscape_zoom=False, zoomable=False):
         super().__init__()
@@ -623,8 +624,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
         if n_press == 1 and self.gesture_click_timeout_id is None and self.zoom == self.zoom_scaling:
             # Schedule single click event to be able to detect double click
-            dbl_click_time = Gtk.Settings.get_default().get_property('gtk-double-click-time')
-            self.gesture_click_timeout_id = GLib.timeout_add(dbl_click_time, emit_clicked, x, y)
+            self.gesture_click_timeout_id = GLib.timeout_add(self.__double_click_time, emit_clicked, x, y)
 
         elif n_press == 2:
             # Remove scheduled single click event
