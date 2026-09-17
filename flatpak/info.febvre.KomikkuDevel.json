@@ -1,7 +1,7 @@
 {
     "app-id": "info.febvre.KomikkuDevel",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "50",
+    "runtime-version": "51",
     "sdk": "org.gnome.Sdk",
     "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.rust-stable"
@@ -119,7 +119,10 @@
             "name": "tesseract",
             "buildsystem": "cmake-ninja",
             "builddir": true,
-            "config-opts": ["-DBUILD_TRAINING_TOOLS=OFF", "-DCMAKE_BUILD_TYPE=Release"],
+            "config-opts": [
+                "-DBUILD_TRAINING_TOOLS=OFF",
+                "-DCMAKE_BUILD_TYPE=Release"
+            ],
             "sources": [
                 {
                     "type": "archive",
@@ -134,14 +137,21 @@
                     "build-commands": [
                         "mkdir -p ${FLATPAK_DEST}/share/tessdata",
                         "cp eng.traineddata ${FLATPAK_DEST}/share/tessdata/",
+                        "cp fra.traineddata ${FLATPAK_DEST}/share/tessdata/",
                         "cp jpn.traineddata ${FLATPAK_DEST}/share/tessdata/",
-                        "cp jpn_vert.traineddata ${FLATPAK_DEST}/share/tessdata/"
+                        "cp jpn_vert.traineddata ${FLATPAK_DEST}/share/tessdata/",
+                        "cp spa.traineddata ${FLATPAK_DEST}/share/tessdata/"
                     ],
                     "sources": [
                         {
                             "type": "file",
                             "url": "https://github.com/tesseract-ocr/tessdata_fast/raw/4.1.0/eng.traineddata",
                             "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://github.com/tesseract-ocr/tessdata_fast/raw/4.1.0/fra.traineddata",
+                            "sha256": "ced037562e8c80c13122dece28dd477d399af80911a28791a66a63ac1e3445ca"
                         },
                         {
                             "type": "file",
@@ -152,6 +162,11 @@
                             "type": "file",
                             "url": "https://github.com/tesseract-ocr/tessdata/raw/4.1.0/jpn_vert.traineddata",
                             "sha256": "36879c1aa07634302c9dcb2c1ed4f8fb347c705ad7522dd693ee2e9d68028a79"
+                        },
+                        {
+                            "type": "file",
+                            "url": "https://github.com/tesseract-ocr/tessdata_fast/raw/4.1.0/spa.traineddata",
+                            "sha256": "6f2e04d02774a18f01bed44b1111f2cd7f3ba7ac9dc4373cd3f898a40ea6b464"
                         }
                     ]
                 }
@@ -163,7 +178,8 @@
             "builddir": true,
             "run-tests": true,
             "config-opts": [
-                "-Dprofile=development"
+                "-Dprofile=development",
+                "--libdir=lib"
             ]
         }
     ],
@@ -174,11 +190,6 @@
         ]
     },
     "cleanup": [
-        "/include",
-        "/man",
-        "/share/doc",
-        "/share/gtk-doc",
-        "/share/man",
         "/bin/cvtenc",
         "/bin/autogsdoc",
         "/bin/debugapp",
@@ -195,7 +206,14 @@
         "/bin/sfparse",
         "/bin/xmlparse",
         "/etc/GNUstep",
+        "/include",
+        "/lib/*.a",
+        "/lib/*.la",
+        "/lib/cmake",
         "/lib/GNUstep",
-        "/share/GNUstep"
+        "/lib/pkgconfig",
+        "/share/GNUstep",
+        "/share/gtk-doc",
+        "/share/man"
     ]
 }
