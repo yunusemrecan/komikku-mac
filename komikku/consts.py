@@ -269,9 +269,14 @@ CREDITS = dict(
 
 RELEASE_NOTES = """
 <ul>
-    <li>[Translators] DeepL: Small fix</li>
-    <li>[Servers] MangaTown (EN): Update</li>
-    <li>[Servers] Rawkuma (JA): Update</li>
+    <li>Updated to GNOME 51 runtime</li>
+    <li>[Library/Explorer/History] Fixed search through typing on the keyboard</li>
+    <li>[OCR Translator] Added OCR support for French and Spanish languages</li>
+    <li>[Servers] JManga (JA): Update</li>
+    <li>[Servers] MangaKawaii (FR): Update</li>
+    <li>[Servers] Rncalation (ES): Update</li>
+    <li>[Servers] SkyMangas (ES): Update</li>
+    <li>[Servers] Kavita: Fixed an issue where series with no read history could not be opened</li>
     <li>[L10n] Updated Ukrainian translation</li>
 </ul>
 <p>Happy reading.</p>

@@ -119,6 +119,22 @@
     <url type="donation">https://febvre.info/donate.html</url>
 
     <releases>
+        <release version="51.0.0" date="2026-09-17">
+            <description translate="no">
+                <ul>
+                    <li>Updated to GNOME 51 runtime</li>
+                    <li>[Library/Explorer/History] Fixed search through typing on the keyboard</li>
+                    <li>[OCR Translator] Added OCR support for French and Spanish languages</li>
+                    <li>[Servers] JManga (JA): Update</li>
+                    <li>[Servers] MangaKawaii (FR): Update</li>
+                    <li>[Servers] Rncalation (ES): Update</li>
+                    <li>[Servers] SkyMangas (ES): Update</li>
+                    <li>[Servers] Kavita: Fixed an issue where series with no read history could not be opened</li>
+                    <li>[L10n] Updated Ukrainian translation</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="50.15.0" date="2026-09-10">
             <description translate="no">
                 <ul>
