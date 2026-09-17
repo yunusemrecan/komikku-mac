@@ -177,7 +177,7 @@ def get_buffer_mime_type(buffer):
     # Dirty hack: fileformat detector is broken with libmagic 547
     # Known formats that cause problems: WebP
     version = magic.version()
-    if version > 546 and mime_type == 'application/octet-stream':
+    if version == 547 and mime_type == 'application/octet-stream':
         logger.debug('Failed to detect image file format! libmagic %d is broken?', version)
         mime_type = 'image/webp'
 
