@@ -268,6 +268,12 @@ CREDITS = dict(
 )
 
 RELEASE_NOTES = """
+<p>This is a bugfix version.</p>
+<ul>
+    <li>Back to GNOME 50 runtime until some OSK input regressions are fixed</li>
+</ul>
+
+<p>Changes in previous version 51.0.0</p>
 <ul>
     <li>Updated to GNOME 51 runtime</li>
     <li>[Library/Explorer/History] Fixed search through typing on the keyboard</li>
