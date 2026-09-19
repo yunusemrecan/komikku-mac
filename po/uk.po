@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-06 22:56+0200\n"
-"PO-Revision-Date: 2026-09-13 05:51+0000\n"
+"PO-Revision-Date: 2026-09-20 05:51+0000\n"
 "Last-Translator: Димко <Dymkovych@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
 "uk/>\n"
@@ -773,7 +773,7 @@ msgstr "Перекладач"
 
 #: ../data/ui/preferences.blp:417
 msgid "Service to use for translations"
-msgstr "Послуга перекладу"
+msgstr "Надавач послуч"
 
 #: ../data/ui/preferences.blp:428
 msgid "Edit Translator Settings"
