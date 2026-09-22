@@ -170,11 +170,16 @@ class Page(Gtk.Overlay):
                 return
 
             # Selection coordinates
-            x = self.ocr_selection_start_x + min(0, offset_x)
-            y = self.ocr_selection_start_y + min(0, offset_y)
+            zoom = self.image.zoom
+            if self.image.crop_bbox:
+                crop_x = self.image.crop_bbox[0] * zoom
+                crop_y = self.image.crop_bbox[1] * zoom
+            else:
+                crop_x, crop_y = (0, 0)
+            x = crop_x + self.ocr_selection_start_x + min(0, offset_x)
+            y = crop_y + self.ocr_selection_start_y + min(0, offset_y)
             x = max(0, x - self.image.image_displayed_x)
             y = max(0, y - self.image.image_displayed_y)
-            zoom = self.image.zoom
 
             # Text recognition
             self.reader.ocr_translator.recognize(

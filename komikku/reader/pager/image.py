@@ -484,8 +484,11 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         return 0, int(for_size / self.ratio) if for_size != -1 else -1, -1, -1
 
     def do_size_allocate(self, w, h, b):
-        if self.crop and self.crop_bbox is None:
-            self.crop_bbox = self.__compute_borders_crop_bbox()
+        if self.crop:
+            if self.crop_bbox is None:
+                self.crop_bbox = self.__compute_borders_crop_bbox()
+        else:
+            self.crop_bbox = None
 
         if self.zoom_scaling is None or self.zoom == self.zoom_scaling:
             self.zoom_scaling = self.scaling_size[1] / self.image_height
