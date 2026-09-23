@@ -7,7 +7,12 @@ import json
 import time
 
 from bs4 import BeautifulSoup
-import requests
+try:
+    # This server requires JA3/TLS and HTTP2 fingerprints impersonation
+    from curl_cffi import requests
+except Exception:
+    # Server will be disabled
+    requests = None
 
 from komikku.consts import DOWNLOAD_MAX_DELAY
 from komikku.consts import USER_AGENT
@@ -25,6 +30,7 @@ class Mangakawaii(Server):
     lang = 'fr'
 
     is_nsfw = True
+    status = 'enabled' if requests is not None else 'disabled'
 
     base_url = 'https://www.mangakawaii.fr'
     logo_url = base_url + '/assets/img/favicon-32x32.png'
@@ -144,7 +150,16 @@ class Mangakawaii(Server):
 
         Currently, only pages are expected.
         """
-        r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
+        r = self.session_get(
+            self.chapter_url.format(manga_slug, chapter_slug),
+            headers={
+                'Accept-Language': 'fr,en-US;q=0.9',
+                'Referer': f'{self.base_url}/sw.js',
+                'Sec-Fetch-Dest': 'empty',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'same-origin',
+            }
+        )
         if r.status_code != 200:
             return None
 
@@ -174,10 +189,16 @@ class Mangakawaii(Server):
                 self.chapters_url.format(manga_slug),
                 params={
                     'page': page,
-                    'ch': None,
+                    'ch': '',
+                    'order': 'desc',
                 },
                 headers={
-                    'Referer': f'{self.base_url}/',
+                    'Accept-Language': 'fr,fr-FR;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'Referer': self.manga_url.format(manga_slug),
+                    'Sec-Fetch-Dest': 'empty',
+                    'Sec-Fetch-Mode': 'cors',
+                    'Sec-Fetch-Site': 'same-origin',
+                    'X-Requested-With': 'fetch',
                 }
             )
             if r.status_code != 200:
@@ -187,7 +208,7 @@ class Mangakawaii(Server):
 
             more = soup.select_one('span').get('data-ch-next') != ''
 
-            return soup, more, get_response_elapsed(r)
+            return soup.select('.ch-row'), more, get_response_elapsed(r)
 
         chapters = []
         delay = None
@@ -197,8 +218,8 @@ class Mangakawaii(Server):
             if delay:
                 time.sleep(delay)
 
-            soup, more, rtime = get_page(page)
-            for element in soup.select('.ch-row'):
+            elements, more, rtime = get_page(page)
+            for element in elements:
                 a_element = element.select_one('a.ch-num')
                 if not a_element:
                     # External chapter
@@ -233,7 +254,11 @@ class Mangakawaii(Server):
         r = self.session_get(
             page['image'],
             headers={
+                'Accept-Language': 'fr,en-US;q=0.9',
                 'Referer': f'{self.base_url}/',
+                'Sec-Fetch-Dest': 'image',
+                'Sec-Fetch-Mode': 'no-cors',
+                'Sec-Fetch-Site': 'same-site',
             }
         )
         if r.status_code != 200:
