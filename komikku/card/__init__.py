@@ -110,7 +110,8 @@ class CardPage(Adw.NavigationPage):
         self.filters_dialog.set_title(_('Filters'))
         self.filters_dialog.props.presentation_mode = Adw.DialogPresentationMode.BOTTOM_SHEET
 
-        self.window.updater.connect('manga-updated', self.on_manga_updated)
+        self.window.updater.connect('manga-update-begin', self.show_activity_indicator)
+        self.window.updater.connect('manga-update-end', self.on_manga_updated)
         self.window.trackers.connect('manga-tracker-synced', self.on_manga_tracker_synced)
 
         self.window.breakpoint.add_setter(self.viewswitcherbar, 'reveal', True)
@@ -415,11 +416,9 @@ class CardPage(Adw.NavigationPage):
         else:
             do_populate()
 
-    def on_update_request(self, _action=None, _param=None):
+    def on_update_request(self, _action=None, _gparam=None):
         self.window.updater.add(self.manga)
-        if self.window.updater.start():
-            # Start update indicator
-            self.show_activity_indicator()
+        self.window.updater.start()
 
     def populate(self):
         self.chapters_list.set_sort_order(invalidate=False)
@@ -501,7 +500,10 @@ class CardPage(Adw.NavigationPage):
 
         self.window.navigationview.push(self)
 
-    def show_activity_indicator(self):
+    def show_activity_indicator(self, _updater=None, _manga=None):
+        if not self.manga:
+            return
+
         def pulse(manga_id):
             if self.window.page != self.props.tag:
                 # Page left, stop indicator

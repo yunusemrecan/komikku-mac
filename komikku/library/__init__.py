@@ -98,7 +98,7 @@ class LibraryPage(Adw.NavigationPage):
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.searchbar.connect_entry(self.search_entry)
-        self.searchbar.set_key_capture_widget(self)
+        self.searchbar.set_key_capture_widget(self.window)
 
         # Filters dialog
         self.filters_dialog = Adw.PreferencesDialog.new()
@@ -139,7 +139,7 @@ class LibraryPage(Adw.NavigationPage):
         self.gesture_long_press.connect('pressed', self.on_gesture_long_press_activated)
         self.flowbox.add_controller(self.gesture_long_press)
 
-        self.window.updater.connect('manga-updated', self.on_manga_updated)
+        self.window.updater.connect('manga-update-end', self.on_manga_updated)
 
         def _filter(flowbox_child):
             manga = flowbox_child.manga

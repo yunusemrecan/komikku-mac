@@ -22,7 +22,8 @@ class Updater(GObject.GObject):
     Mangas updater
     """
     __gsignals__ = {
-        'manga-updated': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT, bool)),
+        'manga-update-begin': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, )),
+        'manga-update-end': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT, bool)),
     }
 
     current_id = None
@@ -94,6 +95,7 @@ class Updater(GObject.GObject):
                     continue
 
                 self.current_id = manga_id
+                self.emit('manga-update-begin', manga)
                 try:
                     success, chapters_changes, synced = manga.update_full(db_conn=db_conn)
                     if success:
@@ -159,7 +161,7 @@ class Updater(GObject.GObject):
                 show_notification(f'updater.{manga.id}', manga.name, _('No new chapters'))
 
             self.emit(
-                'manga-updated',
+                'manga-update-end',
                 manga,
                 dict(
                     nb_recent_chapters=nb_recent_chapters,
