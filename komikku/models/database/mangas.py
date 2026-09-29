@@ -263,6 +263,15 @@ class Manga:
         return get_server_dir_name_by_id(self.server_id)
 
     @property
+    def has_chapter_numbers(self):
+        """
+        Returns whether chapter numbers are known
+
+        This is a requirement for synchronizing reading progress with a tracker
+        """
+        return not self.chapters or self.chapters[0].num is not None
+
+    @property
     def is_local(self):
         return self.server_id == 'local'
 

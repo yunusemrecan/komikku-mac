@@ -100,6 +100,14 @@ class TrackingDialog(Adw.PreferencesDialog):
             self.window.add_notification(_('No tracking services available'))
             return
 
+        description_label = self.group.get_prev_sibling()
+        if not self.window.card.manga.has_chapter_numbers:
+            description_label.set_text(_('The chapter numbers are unknown. Automatic synchronization of reading progress is not possible.'))
+            description_label.set_visible(True)
+            description_label.add_css_class('warning')
+        else:
+            description_label.set_visible(False)
+
         self.present(self.window)
 
     def show_search(self, tracker):
@@ -295,6 +303,11 @@ class TrackerRow(Adw.ExpanderRow):
                 # Failed to get data from tracker (connection error, server error or invalid request)
                 return
 
+            tracked = self.window.card.manga.tracking and self.window.card.manga.tracking.get(self.tracker.id)
+            if not tracked or self.window.card.manga.tracking[self.tracker.id]['id'] != data['id']:
+                # Cancel: data is outdated, it corresponds to a different serie
+                return
+
             self.set_enable_expansion(True)
             self.set_expanded(True)
             self.set_arrow_visible(True)
@@ -335,14 +348,20 @@ class TrackerRow(Adw.ExpanderRow):
         granted, access_token_valid = self.tracker.is_granted()
         self.set_visible(granted)
 
-        if data is None:
+        if data:
+            # Tracking have just been added
+            # Initialize with data provided by search result
+            complete(data)
+        else:
             tracked = self.window.card.manga.tracking and self.window.card.manga.tracking.get(self.tracker.id)
 
             if access_token_valid and tracked:
+                # Tracking active, initialize by fetching data from tracker
                 thread = threading.Thread(target=run)
                 thread.daemon = True
                 thread.start()
             else:
+                # Not tracked yet
                 self.set_expanded(False)
                 self.set_enable_expansion(False)
                 self.action_row.set_title('')
@@ -357,8 +376,6 @@ class TrackerRow(Adw.ExpanderRow):
                     self.btn.set_visible(False)
                     self.set_activatable(False)
                     self.set_subtitle(_('Connection is expired'))
-        else:
-            complete(data)
 
         return granted and access_token_valid
 
