@@ -263,8 +263,7 @@ def get_image_info(path_or_bytes):
         if isinstance(path_or_bytes, str):
             img = Image.open(path_or_bytes)
         else:
-            with BytesIO(path_or_bytes) as io_buffer:
-                img = Image.open(io_buffer)
+            img = Image.open(BytesIO(path_or_bytes))
     except Exception:
         # Pillow doesn´t support SVG images
         # Get content type to identify an image
