@@ -6,7 +6,7 @@
 
 # Supported servers:
 # Asura Scans For Free [EN] (Disabled)
-# Cartel De Manhwas [ES]
+# Cartel De Manhwas [ES] (Disabled)
 # Hijala [AR]
 # Iris Scanlator [pt_BR] (Disabled)
 # KomikLovers [ID]

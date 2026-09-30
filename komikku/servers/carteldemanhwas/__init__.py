@@ -14,10 +14,12 @@ class Carteldemanhwas(MangaStream):
     id = 'carteldemanhwas'
     name = 'Cartel De Manhwas'
     lang = 'es'
+    status = 'disabled'  # => LectorTMO
+
     is_nsfw = True
 
     chapters_order = 'desc'
-    date_format: str = '%d %B, %Y'
+    date_format = '%d %B, %Y'
     series_name = 'manga'
 
     base_url = 'https://carteldemanhwa.net'
