@@ -277,6 +277,8 @@ class Comichubfree(Server):
         results = []
         for element in soup.select('.cartoon-box'):
             a_element = element.select_one('.mb-right h3 a')
+            if not a_element:
+                continue
             img_element = element.select_one('.image img')
             nb_chapters_element = element.select_one('.mb-right .detail')
 
