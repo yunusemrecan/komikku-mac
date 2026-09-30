@@ -431,8 +431,8 @@ class Madara2(Madara):
         {
             'key': 'nsfw',
             'type': 'checkbox',
-            'name': _('NSFW Content'),
-            'description': _('Whether to show manga containing NSFW content'),
+            'name': _('Adult Content'),
+            'description': _('Whether to show series containing adult content'),
             'default': False,
         },
     ]
