@@ -81,7 +81,7 @@ class Skymangas(MangaStream):
                 {'key': '3', 'name': _('Seinen')},
                 {'key': '4', 'name': _('Josei')},
                 {'key': '5', 'name': _('Kodomo')},
-                {'key': '6', 'name': _('Ninguna')},
+                {'key': '6', 'name': _('Other')},
             ],
         }
     ]

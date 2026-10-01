@@ -105,7 +105,7 @@ class Mangaball(Server):
                 {'key': 'manga', 'name': _('Manga')},
                 {'key': 'manhwa', 'name': _('Manhwa')},
                 {'key': 'manhua', 'name': _('Manhua')},
-                {'key': 'comics', 'name': _('Comics')},
+                {'key': 'comics', 'name': _('Comic')},
             ]
         },
         {
