@@ -78,6 +78,7 @@ class WebviewPage(Adw.NavigationPage):
         # Settings
         self.settings = WebKit.Settings.new()
         self.settings.set_enable_developer_extras(DEBUG)
+        self.settings.set_enable_media_stream(False)
         self.settings.set_enable_write_console_messages_to_stdout(DEBUG)
 
         # Enable extra features
@@ -739,8 +740,6 @@ def get_page_resources(url, paths, timeout=20, user_agent=None):
             data = resources
 
     def on_resource_load_started(_webkit_webview, resource, request):
-        nonlocal resources
-
         uri = request.get_uri()
         if uri in resources:
             return
