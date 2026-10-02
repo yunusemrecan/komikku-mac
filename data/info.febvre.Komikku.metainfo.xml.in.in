@@ -119,6 +119,21 @@
     <url type="donation">https://febvre.info/donate.html</url>
 
     <releases>
+        <release version="51.1.0" date="2026-10-03">
+            <description translate="no">
+                <ul>
+                    <li>[Card] Tracking: Added warning message when automatic synchronization of reading progress is not possible</li>
+                    <li>[Reader] OCR Translator: Fixed calculation of the selection area's coordinates when white borders are cropped</li>
+                    <li>[Servers] Cartel De Manhwas (ES): Disabled</li>
+                    <li>[Servers] ComicHubFree (EN): Fixed search when no results</li>
+                    <li>[Servers] JManga (JA): Update</li>
+                    <li>[Servers] MangaBall (multi): Update</li>
+                    <li>[Servers] MangaKawaii (FR): Update</li>
+                    <li>[L10n] Updated French, Indonesian, Korean, Russian and Ukrainian translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="51.0.1" date="2026-09-19">
             <description translate="no">
                 <p>This is a bugfix version.</p>

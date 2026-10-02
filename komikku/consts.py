@@ -167,10 +167,6 @@ CREDITS = dict(
         'Beruto666 (Brazilian Portuguese)',
         'twlvnn (Bulgarian)',
         'Roger VC (Catalan)',
-        'Flynn (Cornish)'
-        'Lukáš Linhart (Czech)',
-        'Jakub Soukup (Czech)',
-        'Petr Horník (Czech)',
         'Dingzhong Chen (Simplified Chinese)',
         'Eric-Song-Nop (Simplified Chinese)',
         'Inaha (Simplified Chinese)',
@@ -178,12 +174,15 @@ CREDITS = dict(
         'randint (Traditional Chinese)',
         'Zhao Se (Traditional Chinese)',
         'happylittle7 (Traditional Chinese)',
+        'Flynn (Cornish)',
+        'Milo Ivir (Croatian)',
+        'Lukáš Linhart (Czech)',
+        'Jakub Soukup (Czech)',
+        'Petr Horník (Czech)',
         'Heimen Stoffels (Dutch)',
         'Philip Goto (Dutch)',
         'Koen Benne (Dutch)',
         'Mikachu (Dutch)',
-        'Danial Behzadi (Persian)',
-        'Muhammad Hussein Ammari (Persian)',
         'Jiri Grönroos (Finnish)',
         'Ricky Tigg (Finnish)',
         'Irénée THIRION (French)',
@@ -205,12 +204,12 @@ CREDITS = dict(
         'Simon Barth (German)',
         'anon (German)',
         'Scrambled777 (Hindi)',
-        'Milo Ivir (Croatian)',
         'Alifiyan Rosyidi (Indonesian)',
         'Alim Satria (Indonesian)',
         'Juan Manuel (Indonesian)',
         'srntskl-111 (Indonesian)',
         'Nataniel Dika Kurniawan (Indonesian)',
+        'Stysusss (Indonesian)',
         'Mek101 (Italian)',
         'dedocc (Italian)',
         'Davide Mora (Italian)',
@@ -219,8 +218,13 @@ CREDITS = dict(
         'Riccardo Luise (Italian)',
         'cas9 (Italian)',
         'Giulia (Italian)',
+        '유찬후 (Korean)',
+        '안세훈 (Korean)',
+        'Jun-Hyung Park (Korean)',
         'on9686 (Korean)',
         'Velyvis (Lithuanian)',
+        'Danial Behzadi (Persian)',
+        'Muhammad Hussein Ammari (Persian)',
         'Lili Kurek (Polish)',
         'Aleksander Warzyniak (Polish)',
         'Kurai (Polish)',
@@ -268,22 +272,15 @@ CREDITS = dict(
 )
 
 RELEASE_NOTES = """
-<p>This is a bugfix version.</p>
 <ul>
-    <li>Back to GNOME 50 runtime until some OSK input regressions are fixed</li>
-</ul>
-
-<p>Changes in previous version 51.0.0</p>
-<ul>
-    <li>Updated to GNOME 51 runtime</li>
-    <li>[Library/Explorer/History] Fixed search through typing on the keyboard</li>
-    <li>[OCR Translator] Added OCR support for French and Spanish languages</li>
+    <li>[Card] Tracking: Added warning message when automatic synchronization of reading progress is not possible</li>
+    <li>[Reader] OCR Translator: Fixed calculation of the selection area's coordinates when white borders are cropped</li>
+    <li>[Servers] Cartel De Manhwas (ES): Disabled</li>
+    <li>[Servers] ComicHubFree (EN): Fixed search when no results</li>
     <li>[Servers] JManga (JA): Update</li>
+    <li>[Servers] MangaBall (multi): Update</li>
     <li>[Servers] MangaKawaii (FR): Update</li>
-    <li>[Servers] Rncalation (ES): Update</li>
-    <li>[Servers] SkyMangas (ES): Update</li>
-    <li>[Servers] Kavita: Fixed an issue where series with no read history could not be opened</li>
-    <li>[L10n] Updated Ukrainian translation</li>
+    <li>[L10n] Updated French, Indonesian, Korean, Russian and Ukrainian translations</li>
 </ul>
 <p>Happy reading.</p>
 """

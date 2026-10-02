@@ -78,6 +78,9 @@ for name in sorted(os.listdir(dirpath)):
 
             # Extract translator name
             translator = line.split('<')[0][2:].replace('"', '').strip()
+            if '½' in translator:
+                # Malay encoding errors
+                continue
             if translator not in translators[lang]:
                 translators[lang].append(translator)
 
