@@ -359,7 +359,8 @@ def is_number(s):
 def log_error_traceback(e):
     from komikku.servers.exceptions import ServerException
 
-    if isinstance(e, requests.exceptions.RequestException):
+    class_hierarchy = [c.__name__ for c in type(e).mro()]
+    if 'RequestException' in class_hierarchy:
         return _('No Internet connection, timeout or server down'), None
     if isinstance(e, ServerException):
         return e.message, None
