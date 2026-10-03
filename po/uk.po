@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-01 01:50+0200\n"
-"PO-Revision-Date: 2026-10-03 07:39+0000\n"
+"PO-Revision-Date: 2026-10-04 07:51+0000\n"
 "Last-Translator: Димко <Dymkovych@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
 "uk/>\n"
@@ -187,7 +187,7 @@ msgstr "Сторінка читача у мобільному форматі"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
 msgid "The Reader page with the OCR Translator in use"
-msgstr ""
+msgstr "Сторінка читача з увімкненим розпізнаванням і перекладом"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
 msgid "The Category editor page in mobile format"
@@ -898,13 +898,12 @@ msgid "Translator Settings"
 msgstr "Параметри перекладу"
 
 #: ../data/ui/preferences_translator_params.blp:22
-#, fuzzy
 msgid "Service"
 msgstr "Служба"
 
 #: ../data/ui/preferences_translator_params.blp:27
 msgid "Instance URL"
-msgstr ""
+msgstr "Адреса вузла"
 
 #: ../data/ui/preferences_translator_params.blp:36
 msgid "API Key"
@@ -912,7 +911,7 @@ msgstr "Ключ API"
 
 #: ../data/ui/preferences_translator_params.blp:56
 msgid "Validate"
-msgstr ""
+msgstr "Перевірити"
 
 #: ../data/ui/preferences_translator_params.blp:69
 msgid "Behavior"
@@ -997,12 +996,12 @@ msgstr "Вийти"
 #: ../data/ui/shortcuts.blp:29
 msgctxt "Shortcut window description"
 msgid "Explorer"
-msgstr ""
+msgstr "Провідник"
 
 #: ../data/ui/shortcuts.blp:32
 msgctxt "Shortcut window description"
 msgid "Search For Servers"
-msgstr ""
+msgstr "Пошук серверів"
 
 #: ../data/ui/shortcuts.blp:38
 msgctxt "Shortcut window description"
@@ -1426,7 +1425,7 @@ msgstr "Служби відстеження недоступні"
 msgid ""
 "The chapter numbers are unknown. Automatic synchronization of reading "
 "progress is not possible."
-msgstr ""
+msgstr "Номери розділів невідомі. Узгодити прочитане не вдасться."
 
 #: ../komikku/card/tracking.py:195
 msgid "Track"
@@ -2054,16 +2053,16 @@ msgstr ""
 
 #: ../komikku/preferences/__init__.py:738
 msgid "Invalid instance URL"
-msgstr ""
+msgstr "Недійсна URL-адреса інстансу"
 
 #: ../komikku/preferences/__init__.py:740
 #: ../komikku/preferences/__init__.py:754
 msgid "Unavailable service"
-msgstr ""
+msgstr "Недійсна адреса вузла"
 
 #: ../komikku/preferences/__init__.py:752
 msgid "Invalid API key"
-msgstr ""
+msgstr "Недійсний ключ API"
 
 #: ../komikku/preferences/servers.py:44
 msgid "User Account"
@@ -2087,7 +2086,7 @@ msgstr "Тест"
 
 #: ../komikku/preferences/servers.py:419 ../komikku/preferences/servers.py:456
 msgid "Edit Server Settings"
-msgstr ""
+msgstr "Змінити налаштування сервера"
 
 #: ../komikku/preferences/trackers.py:36 ../komikku/preferences/trackers.py:88
 #: ../komikku/preferences/trackers.py:118
@@ -2472,7 +2471,7 @@ msgstr "Двозначний"
 #: ../komikku/servers/mangak/__init__.py:53
 #: ../komikku/servers/weebdex/__init__.py:54
 msgid "Erotica"
-msgstr "Еротичний"
+msgstr "Еротика"
 
 #: ../komikku/servers/comick/__init__.py:78
 #: ../komikku/servers/comix/__init__.py:59
@@ -2865,7 +2864,7 @@ msgstr "Фільтрувати за класифікацією вмісту"
 #: ../komikku/servers/mangak/__init__.py:54
 #: ../komikku/servers/weebdex/__init__.py:55
 msgid "Pornographic"
-msgstr "Порнографічний"
+msgstr "Порнографія"
 
 #: ../komikku/servers/comix/__init__.py:72
 #: ../komikku/servers/dynasty/__init__.py:41
@@ -3033,7 +3032,7 @@ msgstr "Вміст для дорослих"
 #: ../komikku/servers/mangaball/__init__.py:115
 #: ../komikku/servers/multi/madara/__init__.py:435
 msgid "Whether to show series containing adult content"
-msgstr ""
+msgstr "Чи показувати серії із вмістом для дорослих"
 
 #: ../komikku/servers/mangadex/__init__.py:112
 msgid "Self-Published"
@@ -3151,11 +3150,11 @@ msgstr "Чи показувати манґу, що містить NSFW"
 
 #: ../komikku/servers/skymangas/__init__.py:65
 msgid "Manfra"
-msgstr ""
+msgstr "Французька манґа"
 
 #: ../komikku/servers/skymangas/__init__.py:83
 msgid "Kodomo"
-msgstr ""
+msgstr "Для дітей"
 
 #: ../komikku/servers/suwayomi/__init__.py:33
 msgid "Manga reader server"
