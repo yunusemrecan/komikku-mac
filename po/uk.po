@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-01 01:50+0200\n"
-"PO-Revision-Date: 2026-09-20 05:51+0000\n"
+"PO-Revision-Date: 2026-10-03 07:39+0000\n"
 "Last-Translator: Димко <Dymkovych@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
 "uk/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.10.dev0\n"
+"X-Generator: Weblate 2026.10.1.dev0\n"
 
 #: ../data/info.febvre.Komikku.desktop.in:2
 msgid "@prettyname@"
@@ -1117,7 +1117,7 @@ msgstr "Обрати усі завантаження"
 #: ../data/ui/shortcuts.blp:157
 msgctxt "Shortcut window description"
 msgid "History"
-msgstr ""
+msgstr "Історія"
 
 #: ../data/ui/support.blp:10 ../data/ui/support.blp:16
 msgid "Support Development"
