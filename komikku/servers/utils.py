@@ -262,6 +262,7 @@ def get_server_module_name_by_id(id):
 
 def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
     count = 0
+    count_disabled = 0
     servers = []
     for module in get_servers_modules():
         for _name, obj in dict(inspect.getmembers(module)).items():
@@ -271,6 +272,7 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
                 continue
 
             if not include_disabled and obj.status == 'disabled':
+                count_disabled += 1
                 continue
 
             count += 1
@@ -295,7 +297,7 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
                     'class_name': get_server_class_name_by_id(obj.id),
                 })
 
-    logger.info('Found %d servers', count)
+    logger.info('Found %d active servers (%d disabled)', count, count_disabled)
 
     return sorted(servers, key=itemgetter(*order_by))
 
