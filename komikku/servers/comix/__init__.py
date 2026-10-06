@@ -301,8 +301,9 @@ class Comix(Server):
     id = 'comix'
     name = 'Comix'
     lang = 'en'
-    is_nsfw = True
+    status = 'disabled'  # too time-consuming and too tedious to maintain
 
+    is_nsfw = True
     has_cf = True
 
     base_url = 'https://comix.to'
