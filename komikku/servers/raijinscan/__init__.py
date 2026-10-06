@@ -24,6 +24,7 @@ class Raijinscan(Server):
     name = 'Raijin Scan'
     lang = 'fr'
     has_cf = True
+    status = 'disabled'  # new site, new domain https://aniverse.fr/
 
     base_url = 'https://raijin-scans.fr'
     logo_url = base_url + '/wp-content/uploads/2025/05/cropped-logopp-32x32.png'
