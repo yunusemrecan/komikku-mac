@@ -9,6 +9,7 @@ class Mangastop(MangaStream):
     id = 'mangastop'
     name = 'Manga Stop'
     lang = 'pt_BR'
+    status = 'disabled'  # new site
     is_nsfw = True
 
     has_cf = True
