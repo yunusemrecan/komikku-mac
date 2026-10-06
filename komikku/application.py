@@ -5,12 +5,13 @@
 from collections import deque
 import datetime
 from gettext import gettext as _
-import gi
-import logging
 import os
 import sys
 import threading
 import urllib.parse
+
+import colorlog
+import gi
 
 gi.require_version('Adw', '1')
 gi.require_version('Gtk', '4.0')
@@ -77,11 +78,22 @@ class Application(Adw.Application):
         self.set_resource_base_path('/info/febvre/Komikku')
         GLib.set_application_name('Komikku')
 
-        logging.basicConfig(
-            format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%d-%m-%y %H:%M:%S',
-            level=logging.DEBUG if self.profile == 'development' else logging.INFO
+        # Logger
+        formatter = colorlog.ColoredFormatter(
+            '%(log_color)s%(levelname)-8s%(reset)s | %(bold)s%(name)s%(reset)s | %(message)s',
+            log_colors={
+                'DEBUG': 'cyan',
+                'INFO': 'green',
+                'WARNING': 'yellow',
+                'ERROR': 'red',
+                'CRITICAL': 'red,bg_white',
+            }
         )
-        self.logger = logging.getLogger('komikku')
+        handler = colorlog.StreamHandler()
+        handler.setFormatter(formatter)
+        self.logger = colorlog.getLogger('komikku')
+        self.logger.addHandler(handler)
+        self.logger.setLevel(colorlog.DEBUG if self.profile == 'development' else colorlog.INFO)
 
         print(BANNER)
         print(f'v{self.version} — {self.description}\n\n{self.gitrepo}\n')
