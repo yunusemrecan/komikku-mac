@@ -20,6 +20,7 @@ class Flamescans(Server):
     id = 'flamescans'
     name = 'Flame Comics (Flame Scans)'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://flamecomics.xyz'
     logo_url = base_url + '/favicon.ico'
