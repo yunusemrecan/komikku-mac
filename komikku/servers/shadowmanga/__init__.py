@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from gettext import gettext as _
+
 import requests
 
 from komikku.consts import USER_AGENT
@@ -29,6 +31,16 @@ class Shadowmanga(Server):
     api_search_url = api_url + '/search-candidates'
     api_manga_url = api_url + '/{0}'
     api_chapter_url = api_url + '/{0}/capitulos/{1}/paginas'
+
+    filters = [
+        {
+            'key': 'nsfw',
+            'type': 'checkbox',
+            'name': _('Adult Content'),
+            'description': _('Whether to show series containing adult content'),
+            'default': False,
+        },
+    ]
 
     def __init__(self):
         if self.session is None:
@@ -199,12 +211,12 @@ class Shadowmanga(Server):
 
         return list(result.values())
 
-    def search(self, term):
+    def search(self, term, nsfw=False):
         r = self.session_get(
             self.api_search_url,
             params={
                 'q': term,
-                'includeAdult': 'true',
+                'includeAdult': 'true' if nsfw else 'false',
                 'showSinPortada': 'false',
                 'take': 120,
             },
