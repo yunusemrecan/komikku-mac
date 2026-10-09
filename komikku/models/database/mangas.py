@@ -4,7 +4,6 @@
 
 import datetime
 from gettext import gettext as _
-import gc
 import importlib
 import json
 import logging
@@ -512,7 +511,6 @@ class Manga:
             url=self.url,
             last_read=self.last_read
         ))
-        gc.collect()
 
         if data is None:
             return False, chapters_changes, False
@@ -798,7 +796,6 @@ class Chapter:
         start = time.perf_counter()
         data = self.manga.server.get_manga_chapter_page_image(self.manga.slug, self.manga.name, self.slug, page)
         rtime = time.perf_counter() - start
-        gc.collect()
 
         if data is None:
             return None, None
@@ -898,7 +895,6 @@ class Chapter:
             return True
 
         data = self.manga.server.get_manga_chapter_data(self.manga.slug, self.manga.name, self.slug, self.url)
-        gc.collect()
 
         if data is None or not data['pages']:
             return False

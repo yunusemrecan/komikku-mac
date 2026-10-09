@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-import gc
 from gettext import gettext as _
 import threading
 
@@ -51,8 +50,6 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
                     GLib.idle_add(error, results, server)
             except Exception as e:
                 GLib.idle_add(error, None, server, *log_error_traceback(e))
-            finally:
-                gc.collect()
 
         def complete(results, server):
             if not self.parent.can_page_be_updated_with_results('search', server.id):

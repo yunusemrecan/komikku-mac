@@ -4,7 +4,6 @@
 
 from concurrent.futures import as_completed
 from concurrent.futures import ThreadPoolExecutor
-import gc
 from gettext import gettext as _
 import threading
 
@@ -119,8 +118,6 @@ class ExplorerSearchStackPageSearchGlobal(ExplorerSearchStackPage):
                         GLib.idle_add(complete_server, results, server_data)
 
                     self.parent.progressbar.set_fraction((index + 1) / len(servers))
-
-            gc.collect()
 
             GLib.idle_add(complete)
 
