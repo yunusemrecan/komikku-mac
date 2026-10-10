@@ -25,7 +25,7 @@ class Mangalivreblog(Server):
 
     base_url = 'https://mangalivre.blog'
     most_populars_url = base_url + '/wp-admin/admin-ajax.php'
-    logo_url = base_url + '/wp-content/uploads/2025/05/cropped-logopp-32x32.png'
+    logo_url = base_url + '/wp-content/uploads/2026/09/download-2-1.png'
     search_url = base_url + '/pesquisa/'
     manga_url = base_url + '/manga/{0}/'
     chapter_url = base_url + '/capitulo/{0}/'
