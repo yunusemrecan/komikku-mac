@@ -63,12 +63,12 @@ class Downloader(GObject.GObject):
                 # Chapter download is already scheduled
                 continue
 
-            rows_data.append(dict(
-                chapter_id=chapter_id,
-                status='pending',
-                percent=0,
-                date=datetime.datetime.now(datetime.UTC),
-            ))
+            rows_data.append({
+                'chapter_id': chapter_id,
+                'status': 'pending',
+                'percent': 0,
+                'date': datetime.datetime.now(datetime.UTC),
+            })
             chapters_ids.append(chapter_id)
 
         if not chapters_ids:
@@ -168,7 +168,7 @@ class Downloader(GObject.GObject):
                 if manga is None:
                     manga = chapter.manga
 
-                download.update(dict(status='downloading'), db_conn=db_conn)
+                download.update({'status': 'downloading'}, db_conn=db_conn)
                 GLib.idle_add(self.emit, 'download-changed', download, None)
 
                 try:
@@ -199,10 +199,10 @@ class Downloader(GObject.GObject):
 
                                 if path is not None:
                                     page_successes += 1
-                                    download.update(dict(percent=(index + 1) * 100 / len(chapter.pages)), db_conn=db_conn)
+                                    download.update({'percent': (index + 1) * 100 / len(chapter.pages)}, db_conn=db_conn)
                                 else:
                                     page_errors += 1
-                                    download.update(dict(errors=page_errors), db_conn=db_conn)
+                                    download.update({'errors': page_errors}, db_conn=db_conn)
 
                                 GLib.idle_add(self.emit, 'download-changed', download, None)
 
@@ -215,7 +215,7 @@ class Downloader(GObject.GObject):
                             # Download ended
                             # All pages were successfully downloaded
                             successes += 1
-                            chapter.update(dict(downloaded=1), db_conn=db_conn)
+                            chapter.update({'downloaded': 1}, db_conn=db_conn)
                             download.delete(db_conn=db_conn)
                             GLib.idle_add(self.emit, 'download-changed', None, chapter)
 
@@ -223,7 +223,7 @@ class Downloader(GObject.GObject):
                             # Download has ended
                             # But at least one page failed to be downloaded
                             errors += 1
-                            download.update(dict(status='error'), db_conn=db_conn)
+                            download.update({'status': 'error'}, db_conn=db_conn)
                             GLib.idle_add(self.emit, 'download-changed', download, None)
 
                         else:
@@ -231,7 +231,7 @@ class Downloader(GObject.GObject):
                             if self.stop_flag:
                                 # Downloader has been stopped
                                 # Restore pending status of current unfinished download
-                                download.update(dict(status='pending'), db_conn=db_conn)
+                                download.update({'status': 'pending'}, db_conn=db_conn)
 
                             elif download.status == 'canceled':
                                 # Download has been canceled
@@ -243,7 +243,7 @@ class Downloader(GObject.GObject):
                         # - Outdated chapter info
                         # - Server has undergone changes (API, HTML) and plugin code is outdated
                         failures += 1
-                        download.update(dict(status='error'), db_conn=db_conn)
+                        download.update({'status': 'error'}, db_conn=db_conn)
                         GLib.idle_add(self.emit, 'download-changed', download, None)
                 except Exception:
                     # Possible causes:
@@ -252,7 +252,7 @@ class Downloader(GObject.GObject):
                     # - Server down
                     # - Bad/corrupt local archive
                     failures += 1
-                    download.update(dict(status='error'), db_conn=db_conn)
+                    download.update({'status': 'error'}, db_conn=db_conn)
                     GLib.idle_add(self.emit, 'download-changed', download, None)
 
             self.current_download = None

@@ -15,13 +15,13 @@ logger = logging.getLogger(__name__)
 class Download:
     _chapter = None
 
-    STATUSES = dict(
-        pending=_('Download pending'),
-        downloaded=_('Downloaded'),
-        downloading=_('Downloading'),
-        canceled=_('Download canceled'),
-        error=_('Download error'),
-    )
+    STATUSES = {
+        'pending': _('Download pending'),
+        'downloaded': _('Downloaded'),
+        'downloading': _('Downloading'),
+        'canceled': _('Download canceled'),
+        'error': _('Download error'),
+    }
 
     @classmethod
     def get(cls, id_, db_conn=None):

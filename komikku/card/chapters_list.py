@@ -342,7 +342,7 @@ class ChaptersList:
         if value == self.card.manga.sort_order:
             return
 
-        self.card.manga.update(dict(sort_order=value))
+        self.card.manga.update({'sort_order': value})
         self.set_sort_order()
 
     def populate(self):
@@ -384,12 +384,12 @@ class ChaptersList:
                 continue
 
             chapters_ids.append(chapter.id)
-            chapters_data.append(dict(
-                last_page_read_index=None,
-                read_progress=None,
-                read=True,
-                recent=False,
-            ))
+            chapters_data.append({
+                'last_page_read_index': None,
+                'read_progress': None,
+                'read': True,
+                'recent': False,
+            })
 
         db_conn = create_db_connection()
 
@@ -456,12 +456,12 @@ class ChaptersList:
         item = self.list_model.get_item(position.get_uint16())
         chapter = item.chapter
 
-        data = dict(
-            last_page_read_index=None,
-            read_progress=None,
-            read=read,
-            recent=False,
-        )
+        data = {
+            'last_page_read_index': None,
+            'read_progress': None,
+            'read': read,
+            'recent': False,
+        }
         chapter.update(data)
 
         item.emit_changed()
@@ -478,12 +478,12 @@ class ChaptersList:
         # First, update DB
         for item in self.get_selected_chapters_items():
             chapters_ids.append(item.chapter.id)
-            chapters_data.append(dict(
-                last_page_read_index=None,
-                read_progress=None,
-                read=read,
-                recent=False,
-            ))
+            chapters_data.append({
+                'last_page_read_index': None,
+                'read_progress': None,
+                'read': read,
+                'recent': False,
+            })
 
         db_conn = create_db_connection()
 

@@ -163,11 +163,11 @@ class Updater(GObject.GObject):
             self.emit(
                 'manga-update-end',
                 manga,
-                dict(
-                    nb_recent_chapters=nb_recent_chapters,
-                    nb_updated_chapters=chapters_changes['nb_updated'],
-                    nb_deleted_chapters=chapters_changes['nb_deleted'],
-                ),
+                {
+                    'nb_recent_chapters': nb_recent_chapters,
+                    'nb_updated_chapters': chapters_changes['nb_updated'],
+                    'nb_deleted_chapters': chapters_changes['nb_deleted'],
+                },
                 synced
             )
 

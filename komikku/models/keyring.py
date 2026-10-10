@@ -185,10 +185,10 @@ class PlaintextKeyring(keyring.backend.KeyringBackend):
 
     def set_password(self, service, username, password, address=None):
         data = self._read()
-        data[service] = dict(
-            username=username,
-            password=password,
-        )
+        data[service] = {
+            'username': username,
+            'password': password,
+        }
         if address is not None:
             data[service]['address'] = address
         self._save(data)

@@ -129,9 +129,9 @@ class CategoriesEditorPage(Adw.NavigationPage):
         if not label:
             return
 
-        res = row.category.update(dict(
-            label=label,
-        ))
+        res = row.category.update({
+            'label': label,
+        })
         if res:
             row.set_label(label)
             row.set_edit_mode(active=False)

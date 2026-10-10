@@ -42,7 +42,7 @@ class DebugInfo:
             ('Instance', 'devel'),
         ]
 
-        info = dict()
+        info = {}
         keyfile = GLib.KeyFile.new()
         keyfile.load_from_file(path, 0)
         for group, key in data:

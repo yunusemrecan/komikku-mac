@@ -41,12 +41,12 @@ class Manga:
     _chapters_scanlators = None
     _server = None
 
-    STATUSES = dict(
-        complete=_('Complete'),
-        ongoing=_('Ongoing'),
-        suspended=_('Suspended'),
-        hiatus=_('Hiatus'),
-    )
+    STATUSES = {
+        'complete': _('Complete'),
+        'ongoing': _('Ongoing'),
+        'suspended': _('Suspended'),
+        'hiatus': _('Hiatus'),
+    }
 
     def __init__(self, server=None):
         if server:
@@ -83,18 +83,18 @@ class Manga:
             data['synopsis'] = markdown_to_markup(data['synopsis'])
 
         # Fill data with internal data
-        data.update(dict(
-            in_library=0,
+        data.update({
+            'in_library': 0,
             # Add fake last_read date: allows to display recently added manga at the top of the library
-            last_read=datetime.datetime.now(datetime.UTC),
-        ))
+            'last_read': datetime.datetime.now(datetime.UTC),
+        })
 
         # Long strip detection (Webtoon)
         if long_strip_detection and server.is_long_strip(data):
-            data.update(dict(
-                reading_mode='webtoon',
-                scaling='width',
-            ))
+            data.update({
+                'reading_mode': 'webtoon',
+                'scaling': 'width',
+            })
 
         db_conn = create_db_connection()
         with db_conn:
@@ -340,7 +340,7 @@ class Manga:
     def add_in_library(self):
         tmp_path = self.path
 
-        self.update(dict(in_library=True))
+        self.update({'in_library': True})
 
         if self.is_local:
             # Move files
@@ -457,7 +457,7 @@ class Manga:
         db_conn = create_db_connection()
         with db_conn:
             if active:
-                insert_row(db_conn, 'categories_mangas_association', dict(category_id=category_id, manga_id=self.id))
+                insert_row(db_conn, 'categories_mangas_association', {'category_id': category_id, 'manga_id': self.id})
             else:
                 db_conn.execute(
                     'DELETE FROM categories_mangas_association WHERE category_id = ? AND manga_id = ?',
@@ -505,12 +505,12 @@ class Manga:
 
             return get_free_rank(rank + 1)
 
-        data = self.server.get_manga_data(dict(
-            slug=self.slug,
-            name=self.name,
-            url=self.url,
-            last_read=self.last_read
-        ))
+        data = self.server.get_manga_data({
+            'slug': self.slug,
+            'name': self.name,
+            'url': self.url,
+            'last_read': self.last_read
+        })
 
         if data is None:
             return False, chapters_changes, False
@@ -596,13 +596,13 @@ class Manga:
                     if not chapter_data.get('date'):
                         chapter_data['date'] = datetime.date.today()
 
-                    chapter_data.update(dict(
-                        manga_id=self.id,
-                        rank=rank,
-                        downloaded=chapter_data.get('downloaded', 0),
-                        recent=1,
-                        read=0,
-                    ))
+                    chapter_data.update({
+                        'manga_id': self.id,
+                        'rank': rank,
+                        'downloaded': chapter_data.get('downloaded', 0),
+                        'recent': 1,
+                        'read': 0,
+                    })
                     id_ = insert_row(db_conn, 'chapters', chapter_data)
                     if id_ is not None:
                         chapters_changes['recent_ids'].append(id_)
@@ -669,13 +669,13 @@ class Chapter:
     def new(cls, data, rank, manga_id, db_conn=None):
         # Fill data with internal data
         data = data.copy()
-        data.update(dict(
-            manga_id=manga_id,
-            rank=rank,
-            downloaded=data.get('downloaded', 0),
-            recent=0,
-            read=0,
-        ))
+        data.update({
+            'manga_id': manga_id,
+            'rank': rank,
+            'downloaded': data.get('downloaded', 0),
+            'recent': 0,
+            'read': 0,
+        })
 
         if db_conn is None:
             db_conn = create_db_connection()
@@ -731,17 +731,17 @@ class Chapter:
         if self.clearable:
             shutil.rmtree(self.path)
 
-        data = dict(
-            downloaded=0,
-        )
+        data = {
+            'downloaded': 0,
+        }
         if reset:
-            data.update(dict(
-                pages=None,
-                read_progress=None,
-                read=0,
-                last_read=None,
-                last_page_read_index=None,
-            ))
+            data.update({
+                'pages': None,
+                'read_progress': None,
+                'read': 0,
+                'last_read': None,
+                'last_page_read_index': None,
+            })
 
         return self.update(data)
 
@@ -759,17 +759,17 @@ class Chapter:
 
             ids.append(chapter.id)
 
-            updated_data = dict(
-                downloaded=0,
-            )
+            updated_data = {
+                'downloaded': 0,
+            }
             if reset:
-                updated_data.update(dict(
-                    pages=None,
-                    read_progress=None,
-                    read=0,
-                    last_read=None,
-                    last_page_read_index=None,
-                ))
+                updated_data.update({
+                    'pages': None,
+                    'read_progress': None,
+                    'read': 0,
+                    'last_read': None,
+                    'last_page_read_index': None,
+                })
             data.append(updated_data)
 
         db_conn = create_db_connection()

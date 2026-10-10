@@ -121,15 +121,15 @@ USER_AGENT_MOBILE = 'Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) App
 
 TIMEZONE = datetime.datetime.now(tz=datetime.UTC).astimezone().tzinfo
 
-CREDITS = dict(
-    artists=(
+CREDITS = {
+    'artists': (
         'Tobias Bernard (bertob)',
     ),
-    designers=(
+    'designers': (
         'Tobias Bernard (bertob)',
         'Valéry Febvre (valos)',
     ),
-    developers=(
+    'developers': (
         'Mufeed Ali (fushinari)',
         'Gerben Droogers (Tijder)',
         'Valéry Febvre (valos)',
@@ -146,7 +146,7 @@ CREDITS = dict(
         'ISO-morphism',
         'jaskaranSM',
     ),
-    translators=(
+    'translators': (
         'abidin toumi (Arabic)',
         'Rayen Ghanmi (Arabic)',
         'Mohamed Abdalah Noh (Arabic)',
@@ -265,11 +265,11 @@ CREDITS = dict(
         'niyaki hayyashi (Vietnamese)',
         'Loc Huynh (Vietnamese)',
     ),
-    supporters=(
+    'supporters': (
         'gondolyr',
         'José',
     ),
-)
+}
 
 RELEASE_NOTES = """
 <ul>

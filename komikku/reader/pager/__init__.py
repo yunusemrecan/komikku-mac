@@ -93,14 +93,14 @@ class BasePager:
         if not read_pages:
             return GLib.SOURCE_REMOVE
 
-        read_chapters = dict()
+        read_chapters = {}
         for page in read_pages.copy():
             chapter = page.chapter
             if chapter.id not in read_chapters:
-                read_chapters[chapter.id] = dict(
-                    chapter=chapter,
-                    pages=[],
-                )
+                read_chapters[chapter.id] = {
+                    'chapter': chapter,
+                    'pages': [],
+                }
             read_chapters[chapter.id]['pages'].append(page.index)
             read_pages.remove(page)
 
@@ -108,9 +108,9 @@ class BasePager:
 
         # Update manga last read time
         self.reader.manga.update(
-            dict(
-                last_read=datetime.datetime.now(datetime.UTC)
-            ),
+            {
+                'last_read': datetime.datetime.now(datetime.UTC)
+            },
             db_conn=db_conn
         )
 
@@ -138,13 +138,13 @@ class BasePager:
 
                 # Update chapter
                 chapter.update(
-                    dict(
-                        last_page_read_index=page.index if not chapter_is_read else None,
-                        last_read=datetime.datetime.now(datetime.UTC),
-                        read_progress=read_progress,
-                        read=chapter_is_read,
-                        recent=0,
-                    ),
+                    {
+                        'last_page_read_index': page.index if not chapter_is_read else None,
+                        'last_read': datetime.datetime.now(datetime.UTC),
+                        'read_progress': read_progress,
+                        'read': chapter_is_read,
+                        'recent': 0,
+                    },
                     db_conn=db_conn
                 )
 
@@ -159,10 +159,10 @@ class BasePager:
         def run():
             try:
                 res = chapter.manga.server.update_chapter_read_progress(
-                    dict(
-                        page=index + 1,
-                        completed=chapter.read,
-                    ),
+                    {
+                        'page': index + 1,
+                        'completed': chapter.read,
+                    },
                     self.reader.manga.slug, self.reader.manga.name, chapter.slug, chapter.url
                 )
                 if res != NotImplemented and not res:

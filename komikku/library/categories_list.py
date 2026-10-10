@@ -78,16 +78,16 @@ class CategoriesList:
                             # No insert, category is already associated with this manga
                             continue
 
-                        insert_data.append(dict(
-                            manga_id=manga_id,
-                            category_id=row.category.id,
-                        ))
+                        insert_data.append({
+                            'manga_id': manga_id,
+                            'category_id': row.category.id,
+                        })
                 elif Settings.get_default().selected_category == row.category.id:
                     for manga_id in manga_ids:
-                        delete_data.append(dict(
-                            manga_id=manga_id,
-                            category_id=row.category.id,
-                        ))
+                        delete_data.append({
+                            'manga_id': manga_id,
+                            'category_id': row.category.id,
+                        })
 
             db_conn = create_db_connection()
             with db_conn:

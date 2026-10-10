@@ -804,12 +804,12 @@ class LibraryPage(Adw.NavigationPage):
         for child in self.flowbox.get_selected_children():
             for chapter in child.manga.chapters:
                 chapters_ids.append(chapter.id)
-                chapters_data.append(dict(
-                    last_page_read_index=None,
-                    read_progress=None,
-                    read=read,
-                    recent=False,
-                ))
+                chapters_data.append({
+                    'last_page_read_index': None,
+                    'read_progress': None,
+                    'read': read,
+                    'recent': False,
+                })
 
         db_conn = create_db_connection()
         with db_conn:

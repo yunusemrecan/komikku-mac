@@ -33,7 +33,7 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
             if not slug:
                 return
 
-            self.parent.show_manga_card(dict(slug=slug))
+            self.parent.show_manga_card({'slug': slug})
             return
 
         # Disallow empty search except for 'Local' server

@@ -32,9 +32,9 @@ class Category:
 
     @classmethod
     def new(cls, label):
-        data = dict(
-            label=label,
-        )
+        data = {
+            'label': label,
+        }
 
         db_conn = create_db_connection()
         with db_conn:

@@ -25,12 +25,12 @@ def get_trackers_list(include_disabled=False, order_by=('name',)):
                 continue
 
             if inspect.isclass(obj):
-                trackers.append(dict(
-                    id=obj.id,
-                    name=obj.name,
-                    module=module,
-                    class_name=obj.id.capitalize(),
-                ))
+                trackers.append({
+                    'id': obj.id,
+                    'name': obj.name,
+                    'module': module,
+                    'class_name': obj.id.capitalize(),
+                })
 
     return sorted(trackers, key=itemgetter(*order_by))
 

@@ -753,11 +753,11 @@ def get_page_resources(url, paths, timeout=20, user_agent=None):
         if not found:
             return
 
-        resources[uri] = dict(
-            uri=uri,
-            resource=resource,
-            request=request
-        )
+        resources[uri] = {
+            'uri': uri,
+            'resource': resource,
+            'request': request
+        }
 
     def on_load_failed(_webkit_webview, _event, _uri, _gerror):
         nonlocal error
