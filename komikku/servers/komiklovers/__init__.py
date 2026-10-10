@@ -9,6 +9,7 @@ class Komiklovers(MangaStream):
     id = 'komiklovers'
     name = 'KomikLovers'
     lang = 'id'
+    status = 'disabled'
 
     series_name = 'komik'
 

@@ -9,7 +9,7 @@
 # Cartel De Manhwas [ES] (Disabled)
 # Hijala [AR]
 # Iris Scanlator [pt_BR] (Disabled)
-# KomikLovers [ID]
+# KomikLovers [ID] (Disabled)
 # Lelmanga [FR]
 # Manga Koleji [TR]
 # Neko Scans [ES]
