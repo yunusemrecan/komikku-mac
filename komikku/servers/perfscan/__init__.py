@@ -20,6 +20,7 @@ class Perfscan(Server):
     id = 'perfscan'
     name = 'Perf Scan'
     lang = 'fr'
+    status = 'disabled'  # Dead
 
     base_url = 'https://perf-scan.xyz'
     logo_url = base_url + '/logo-static/Logo_Perf_NoText.png'
