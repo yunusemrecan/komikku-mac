@@ -2,18 +2,56 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from functools import wraps
 import json
 import logging
-import re
 
-from bs4 import BeautifulSoup
 import requests
 
 from komikku.consts import USER_AGENT
 from komikku.servers import Server
+from komikku.servers.utils import convert_date_string
 from komikku.utils import get_buffer_mime_type
+from komikku.webview import eval_js
 
 logger = logging.getLogger(__name__)
+
+
+def get_chapters(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        server = args[0]
+
+        if not server.chapters:
+            try:
+                res = eval_js('JSON.stringify(window.CHAPTERS)', server.search_url, wait_ready=True)
+            except Exception:
+                return None
+
+            server.chapters = json.loads(res)
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def get_series(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        server = args[0]
+
+        if not server.series:
+            try:
+                res = eval_js('JSON.stringify(window.SERIES)', server.search_url, wait_ready=True)
+            except Exception:
+                return None
+
+            for serie in json.loads(res):
+                server.series[serie['id']] = serie
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 class Lanortrad(Server):
@@ -23,10 +61,14 @@ class Lanortrad(Server):
 
     base_url = 'https://lanortrad.com'
     logo_url = base_url + '/images/icons/icon-192x192.png'
-    search_url = base_url + '/js/utile/mangaData.js'
-    manga_url = base_url + '/manga/{0}'
-    chapter_url = base_url + '/manga/{0}/{1}'
-    image_url = base_url + '/manga/{0}/{1}'
+    search_url = base_url + '/catalogue.html'
+    manga_url = base_url + '/manga/{0}/'
+    chapter_url = base_url + '/manga/{0}/{1}/'
+    image_url = base_url + '/Manga/{0}/Chapitres/Chapitre {1}/{2}'
+    image_oneshot_url = base_url + '/Manga/{0}/Oneshot/{1}'
+
+    series = {}
+    chapters = {}
 
     def __init__(self):
         if self.session is None:
@@ -35,25 +77,23 @@ class Lanortrad(Server):
                 'User-Agent': USER_AGENT,
             }
 
+    @get_series
+    @get_chapters
     def get_manga_data(self, initial_data):
         """
-        Returns manga data by scraping manga HTML page content
+        Returns manga data
 
         Initial data should contain at least manga's slug (provided by search)
         """
         assert 'slug' in initial_data, 'Manga slug is missing in initial data'
 
-        r = self.session_get(self.manga_url.format(initial_data['slug']))
-        if r.status_code != 200:
-            return None
-
-        soup = BeautifulSoup(r.text, 'lxml')
+        serie_data = self.series[initial_data['slug']]
 
         data = initial_data.copy()
         data.update({
             'authors': [],
             'scanlators': [self.name, ],
-            'genres': [],
+            'genres': serie_data.get('genres'),
             'status': 'ongoing',
             'synopsis': None,
             'chapters': [],
@@ -61,131 +101,74 @@ class Lanortrad(Server):
             'cover': None,
         })
 
-        data['name'] = soup.find('h1').text.strip()
-        if element := soup.select_one('.card > img'):
-            path = element.get('src')
-            data['cover'] = f'{self.base_url}/{path}'
+        data['name'] = serie_data['title']
+        if cover := serie_data.get('cover'):
+            data['cover'] = f'{self.base_url}/{cover}'
 
         # Details
-        for element in soup.select('div.grid div:-soup-contains("Auteur") p, div.grid div:-soup-contains("Artiste") p'):
-            author = element.text.strip()
+        if type_ := serie_data.get('type'):
+            data['genres'].append(type_)
+        if year := serie_data.get('year'):
+            data['genres'].append(str(year))
+
+        if author := serie_data.get('author'):
+            data['authors'].append(author)
+        if author := serie_data.get('artist'):
             if author not in data['authors']:
                 data['authors'].append(author)
 
-        if element := soup.select_one('div.grid div:-soup-contains("Statut") p'):
-            status = element.text.strip()
+        if status := serie_data.get('status'):
             if status == 'En cours':
                 data['status'] = 'ongoing'
             elif status == 'Terminé':
                 data['status'] = 'complete'
 
-        for element in soup.select('div.flex.flex-wrap > span.rounded-full'):
-            data['genres'].append(element.text.strip())
-
-        if element := soup.select_one('div.card:-soup-contains("Synopsis") p'):
-            data['synopsis'] = element.text.strip()
+        if synopsis := serie_data.get('description'):
+            data['synopsis'] = synopsis
 
         # Chapters
-        if 'Oneshot' in data['genres']:
-            # Oneshot (single chapter)
+        for chapter in reversed(self.chapters[data['slug']]):
+            num = chapter['num']
+            date = chapter.get('d')
+
             data['chapters'].append({
-                'slug': 'oneshot',
-                'title': 'Chapitre unique',
-                'date': None,
+                'slug': f'chapitre-{num}',
+                'title': f'Chapitre {num}',
+                'num': num,
+                'date': convert_date_string(date.split('T')[0], format='%Y-%m-%d') if date else None,
             })
-
-        else:
-            js_url = None
-            for script_element in soup.select('script'):
-                if path := script_element.get('src'):
-                    if 'js/manga/' in path:
-                        path = path.replace('../', '')
-                        js_url = f'{self.base_url}/{path}'
-                        break
-
-            if js_url is None:
-                logger.warning('Failed to get URL of JS file containing manga info')
-                return data
-
-            r = self.session_get(
-                js_url,
-                headers={
-                    'Referer': self.manga_url.format(data['slug']),
-                }
-            )
-            if r.status_code != 200:
-                return None
-
-            js_code = r.text
-            chapters_nums = None
-            if matches := re.search(r'\s*maxChapters: (\d*)', js_code):
-                chapters_nums = list(range(1, int(matches.group(1)) + 1))
-
-            if chapters_nums is None:
-                logger.warning('Failed to retrieve the number of chapters')
-                return data
-
-            # Get bonus chapters numbers
-            if matches := re.search(r'\s*number: (\d*.\d)', js_code):
-                for num in matches.groups():
-                    chapters_nums.append(float(num))
-
-            for num in sorted(chapters_nums):
-                data['chapters'].append({
-                    'slug': f'chapitre {num}',
-                    'title': f'Chapitre {num}',
-                    'num': num,
-                    'date': None,
-                })
 
         return data
 
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
-        Returns manga chapter data by scraping chapter HTML page content
+        Returns manga chapter data
 
         Currently, only pages are expected.
         """
-        r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
-        if r.status_code != 200:
+        try:
+            url = self.chapter_url.format(manga_slug.lower().replace(' ', '-'), chapter_slug)
+            res = eval_js('JSON.stringify(window.CHAPTER_FILES)', url, wait_ready=True)
+        except Exception:
             return None
 
-        soup = BeautifulSoup(r.text, 'lxml')
-
-        nb_digits = None
-        nb_pages = None
-        path = None
-        for script_element in soup.select('script'):
-            script = script_element.string
-            if not script or 'generateImages' not in script:
-                continue
-
-            if matches := re.search(r'\s*padStart\((\d),', script):
-                nb_digits = int(matches.group(1))
-            if matches := re.search(r'\s*for \(let i = 1; i <= (\d*)\s*; i\+\+\)', script):
-                nb_pages = int(matches.group(1))
-            if matches := re.search(r'\s*imgElement\.src = `(.*)`', script):
-                path = matches.group(1)
-
-            break
-
-        if nb_digits is None:
-            logger.warning('Failed to retrieve the number of digits of image filenames')
-            return None
-        if nb_pages is None:
-            logger.warning('Failed to retrieve the number of pages of the chapter')
-            return None
-        if path is None:
-            logger.warning('Failed to retrieve the images path')
-            return None
+        chapter_num = chapter_slug.split('-')[-1]
+        chapters_files = json.loads(res)[manga_slug]
+        pages = chapters_files[chapter_num]['f']
+        oneshot = len(chapters_files) == 1
 
         data = {
             'pages': [],
         }
-        for num in range(1, nb_pages + 1):
+        for name in pages:
+            if oneshot:
+                image = self.image_oneshot_url.format(manga_slug, name)
+            else:
+                image = self.image_url.format(manga_slug, chapter_num, name)
+
             data['pages'].append({
-                'image': None,
-                'url': path.replace('${num}', f'{num:0{nb_digits}}'),  # noqa
+                'slug': None,
+                'image': image,
             })
 
         return data
@@ -195,7 +178,7 @@ class Lanortrad(Server):
         Returns chapter page scan (image) content
         """
         r = self.session_get(
-            self.image_url.format(manga_slug, page['url']),
+            page['image'],
             headers={
                 'Referer': self.chapter_url.format(manga_slug, chapter_slug),
             }
@@ -210,7 +193,7 @@ class Lanortrad(Server):
         return {
             'buffer': r.content,
             'mime_type': mime_type,
-            'name': page['url'].split('/')[-1],
+            'name': page['image'].split('/')[-1],
         }
 
     def get_manga_url(self, slug, url):
@@ -222,50 +205,17 @@ class Lanortrad(Server):
     def get_most_populars(self):
         return self.search()
 
+    @get_series
     def search(self, term=None):
-        """
-        Return all manga by scraping a JS file
-        """
-        r = self.session_get(
-            self.search_url,
-            headers={
-                'Referer': f'{self.base_url}/',
-            }
-        )
-        if r.status_code != 200:
-            return None
-
-        lines = []
-        for line in r.text.split('\n'):
-            if not line or line.strip().startswith('//'):
-                # Empty or comment
-                continue
-
-            if line.startswith('window.MANGA_DATA'):
-                lines.append('[')
-            elif line.strip() == '];':
-                lines.append(']')
-            elif matches := re.search(r'\s*([a-zA-Z]*): (.*)', line):
-                lines.append(f'"{matches.group(1)}": {matches.group(2)}')
-            else:
-                lines.append(line)
-
-        data = json.loads('\n'.join(lines))
-
         results = []
-        for item in data:
-            if term and term.lower() not in item['title'].lower():
+        for id, serie in self.series.items():
+            if term and term.lower() not in serie['title'].lower():
                 continue
-
-            cover = item['coverImage']
-            if not cover.startswith('http'):
-                # Oneshots have no cover
-                cover = f'{self.base_url}/{item["image"]}'
 
             results.append({
-                'slug': item['id'].lower(),
-                'name': item['title'],
-                'cover': cover,
+                'slug': serie['id'],
+                'name': serie['title'],
+                'cover': f'{self.base_url}/{serie["cover"]}',
             })
 
         return results

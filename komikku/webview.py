@@ -568,20 +568,45 @@ class Challenger:
         self.webview.close_page()
 
 
-def eval_js(code):
+def eval_js(code, uri=None, wait_ready=False):
     error = None
     res = None
     webview = Gio.Application.get_default().window.webview
 
+    if wait_ready:
+        code = """
+            let count = 0;
+            let intervalID = setInterval(() => {
+                if (count > 50) {
+                    document.title = 'ready';
+                    clearInterval(intervalID);
+                    return;
+                }
+                if (document.readyState === 'loading') {
+                    count += 1;
+                    return;
+                }
+
+                document.title = 'ready';
+                window.eval_js_result = %s;
+                clearInterval(intervalID);
+            }, 100);
+        """ % code
+
     def load_page():
-        if not webview.load_page(uri='about:blank'):
+        if not webview.load_page(uri=uri or 'about:blank'):
             return True
 
         webview.connect_webview_signal('load-changed', on_load_changed)
+        if wait_ready:
+            webview.connect_webview_signal('notify::title', on_title_changed)
 
     def on_evaluate_javascript_finish(_webkit_webview, result, _user_data=None):
         nonlocal error
         nonlocal res
+
+        if wait_ready:
+            return
 
         try:
             js_result = webview.webkit_webview.evaluate_javascript_finish(result)
@@ -596,11 +621,34 @@ def eval_js(code):
 
         webview.close_page()
 
+    def on_get_result_finish(_webkit_webview, result, _user_data=None):
+        nonlocal error
+        nonlocal res
+
+        js_result = webview.webkit_webview.evaluate_javascript_finish(result)
+        if js_result.is_string():
+            res = js_result.to_string()
+
+        if res is None:
+            error = 'Failed to execute JS code'
+        webview.close_page()
+
     def on_load_changed(_webkit_webview, event):
         if event != WebKit.LoadEvent.FINISHED:
             return
 
         webview.webkit_webview.evaluate_javascript(code, -1, None, None, None, on_evaluate_javascript_finish)
+
+    def on_title_changed(_webkit_webview, _title):
+        nonlocal error
+
+        if webview.webkit_webview.props.title == 'ready':
+            # Everything we need has been loaded, we can retrieve page HTML
+            webview.webkit_webview.evaluate_javascript('window.eval_js_result', -1, None, None, None, on_get_result_finish)
+
+        elif webview.webkit_webview.props.title == 'abort':
+            error = 'Failed to execute JS code'
+            webview.close_page()
 
     GLib.timeout_add(100, load_page)
 
