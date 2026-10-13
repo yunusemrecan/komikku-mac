@@ -94,6 +94,8 @@ def check_db(db_conn):
 
 
 def clear_cached_data(manga_in_use=None):
+    logger.info('Clear cached data')
+
     # Clear chapters cache
     cache_dir_path = get_cached_data_dir()
     for server_name in os.listdir(cache_dir_path):
