@@ -10,9 +10,9 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from komikku.models import Settings
-from komikku.reader.pager import BasePager
-from komikku.reader.pager.infinite_canvas import KInfiniteCanvas
-from komikku.reader.pager.page import Page
+from komikku.reader.pagers import BasePager
+from komikku.reader.pagers.infinite_canvas import KInfiniteCanvas
+from komikku.reader.pagers.page import Page
 
 
 class LongstripPager(Adw.Bin, BasePager):

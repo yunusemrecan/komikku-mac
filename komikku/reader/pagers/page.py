@@ -12,7 +12,7 @@ from gi.repository import Gtk
 
 import cairo
 
-from komikku.reader.pager.image import KImage
+from komikku.reader.pagers.image import KImage
 from komikku.models import Settings
 from komikku.utils import log_error_traceback
 

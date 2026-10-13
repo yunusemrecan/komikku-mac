@@ -10,8 +10,8 @@ from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 
-from komikku.reader.pager import BasePager
-from komikku.reader.pager.page import Page
+from komikku.reader.pagers import BasePager
+from komikku.reader.pagers.page import Page
 
 
 class PagedPager(Adw.Bin, BasePager):

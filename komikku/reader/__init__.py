@@ -14,8 +14,8 @@ from gi.repository import Gtk
 from komikku.models import Settings
 from komikku.reader.controls import Controls
 from komikku.reader.ocr_translator import OCRTranslator
-from komikku.reader.pager.longstrip_pager import LongstripPager
-from komikku.reader.pager.paged_pager import PagedPager
+from komikku.reader.pagers.longstrip_pager import LongstripPager
+from komikku.reader.pagers.paged_pager import PagedPager
 from komikku.reader.settings import ReaderSettingsDialog
 from komikku.utils import get_file_mime_type
 
