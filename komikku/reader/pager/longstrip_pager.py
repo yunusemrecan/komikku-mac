@@ -15,10 +15,10 @@ from komikku.reader.pager.infinite_canvas import KInfiniteCanvas
 from komikku.reader.pager.page import Page
 
 
-class WebtoonPager(Adw.Bin, BasePager):
+class LongstripPager(Adw.Bin, BasePager):
     """Vertical smooth/continuous scrolling (a.k.a. infinite canvas) pager"""
 
-    __gtype_name__ = 'WebtoonPager'
+    __gtype_name__ = 'LongstripPager'
 
     __interactive = True
     current_chapter_id = None

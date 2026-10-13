@@ -14,8 +14,8 @@ from gi.repository import Gtk
 from komikku.models import Settings
 from komikku.reader.controls import Controls
 from komikku.reader.ocr_translator import OCRTranslator
-from komikku.reader.pager import Pager
-from komikku.reader.pager.webtoon import WebtoonPager
+from komikku.reader.pager.longstrip_pager import LongstripPager
+from komikku.reader.pager.paged_pager import PagedPager
 from komikku.reader.settings import ReaderSettingsDialog
 from komikku.utils import get_file_mime_type
 
@@ -217,9 +217,9 @@ class ReaderPage(Adw.NavigationPage):
             self.pager.dispose()
 
         if self.reading_mode == 'webtoon':
-            self.pager = WebtoonPager(self)
+            self.pager = LongstripPager(self)
         else:
-            self.pager = Pager(self)
+            self.pager = PagedPager(self)
             self.set_orientation()
 
         self.settings_dialog.set_background_color()
