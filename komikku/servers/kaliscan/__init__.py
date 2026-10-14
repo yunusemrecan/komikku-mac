@@ -17,6 +17,7 @@ class Kaliscan(Madtheme):
     id = 'kaliscan'
     name = 'KaliScan'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://kaliscan.com'
     logo_url = base_url + '/static/sites/icons/favicon-32x32.png'
