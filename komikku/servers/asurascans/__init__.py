@@ -262,6 +262,7 @@ class Asurascans_tr(Madara):
     id = 'asurascans_tr'
     name = 'Armoni Scans (Asura Scans)'
     lang = 'tr'
+    status = 'disabled'
 
     has_cf = True
 
