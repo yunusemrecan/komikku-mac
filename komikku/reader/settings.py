@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from copy import deepcopy
 from gettext import gettext as _
 
 from gi.repository import Adw
@@ -12,6 +13,57 @@ from gi.repository import Gtk
 
 from komikku.consts import BORDERS_CROP_THRESHOLDS
 from komikku.models import Settings
+
+FILTERS = {
+    'brightness': {
+        'title': _('Brightness'),
+        'subtitle': _('Make pages brighter or darker'),
+        'min': 0,
+        'max': 200,
+        'step': 1,
+        'default': 100,
+    },
+    'contrast': {
+        'title': _('Contrast'),
+        'subtitle': _('Increase or decrease the contrast of pages'),
+        'min': 0,
+        'max': 200,
+        'step': 1,
+        'default': 100,
+    },
+    'grayscale': {
+        'title': _('Grayscale'),
+        'subtitle': _('Convert pages to grayscale'),
+        'min': 0,
+        'max': 100,
+        'step': 1,
+        'default': 100,
+    },
+    'invert': {
+        'title': _('Inversion'),
+        'subtitle': _('Convert pages to grayscale and invert black and white'),
+        'min': 0,
+        'max': 100,
+        'step': 1,
+        'default': 100,
+    },
+    'sepia': {
+        'title': _('Sepia'),
+        'subtitle': _('Give a more yellow/brown appearance to pages'),
+        'min': 0,
+        'max': 100,
+        'step': 1,
+        'default': 0,
+    },
+    'saturate': {
+        'title': _('Saturation'),
+        'subtitle': _('Super-saturate or desaturate pages'),
+        'min': 0,
+        'max': 400,
+        'step': 1,
+        'default': 100,
+    },
+}
 
 
 class KeyLabelPair(GObject.Object):
@@ -144,50 +196,7 @@ class ReaderSettingsDialog(Adw.PreferencesDialog):
 
     def init_general(self):
         # Filters
-        filters = {
-            'brightness': {
-                'title': _('Brightness'),
-                'subtitle': _('Make pages brighter or darker'),
-                'min': 0,
-                'max': 200,
-                'step': 1,
-                'default': 100,
-            },
-            'contrast': {
-                'title': _('Contrast'),
-                'subtitle': _('Increase or decrease the contrast of pages'),
-                'min': 0,
-                'max': 200,
-                'step': 1,
-                'default': 100,
-            },
-            'grayscale': {
-                'title': _('Grayscale'),
-                'subtitle': _('Convert pages to grayscale'),
-                'min': 0,
-                'max': 100,
-                'step': 1,
-                'default': 0,
-            },
-            'sepia': {
-                'title': _('Sepia'),
-                'subtitle': _('Give a more yellow/brown appearance to pages'),
-                'min': 0,
-                'max': 100,
-                'step': 1,
-                'default': 0,
-            },
-            'saturate': {
-                'title': _('Saturation'),
-                'subtitle': _('Super-saturate or desaturate pages'),
-                'min': 0,
-                'max': 400,
-                'step': 1,
-                'default': 100,
-            },
-        }
-
-        for name, data in filters.items():
+        for name, data in FILTERS.items():
             erow = Adw.ExpanderRow()
             erow.set_title(data['title'])
             erow.set_subtitle(data['subtitle'])
@@ -321,11 +330,19 @@ class ReaderSettingsDialog(Adw.PreferencesDialog):
 
     def set_pages_filters(self):
         funcs = []
-        for name, value in self.settings.page_filters.items():
+        page_filters = deepcopy(self.settings.page_filters)
+
+        for name, value in page_filters.items():
+            if name == 'invert' and page_filters.get(f'{name}-state'):
+                # Force grayscale filter on if invert filter is on
+                page_filters['grayscale-state'] = True
+                page_filters['grayscale'] = FILTERS['grayscale']['default']
+
+        for name, value in page_filters.items():
             if name.endswith('-state'):
                 # Ignore state key
                 continue
-            if not self.settings.page_filters.get(f'{name}-state'):
+            if not page_filters.get(f'{name}-state'):
                 # Filter is off
                 continue
 
