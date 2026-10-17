@@ -57,13 +57,13 @@ class Animesama(Server):
             server_id=self.id,
         ))
 
-        data['name'] = soup.select_one('.oeuvre-right h1').text.strip()
+        data['name'] = soup.select_one('#titreOeuvre').text.strip()
         data['cover'] = self.cover_url.format(data['slug'])
 
-        if element := soup.select_one('.info-grid > .info-lbl:-soup-contains("Créateur") ~ span'):
+        if element := soup.select_one('.oe-infos > dt:-soup-contains("Auteur") ~ dd'):
             data['authors'].append(element.text.strip())
 
-        if element := soup.select_one('.info-grid > .info-lbl:-soup-contains("État") ~ span'):
+        if element := soup.select_one('.oe-infos > dt:-soup-contains("Statut") ~ dd'):
             status = element.text.strip()
             if status == 'En cours':
                 data['status'] = 'ongoing'
@@ -73,7 +73,7 @@ class Animesama(Server):
         for element in soup.select('.genre-pill'):
             data['genres'].append(element.text.strip())
 
-        if element := soup.select_one('div h2:-soup-contains("Synopsis") ~ p'):
+        if element := soup.select_one('#synopsisText'):
             data['synopsis'] = element.text.strip()
 
         # Chapters

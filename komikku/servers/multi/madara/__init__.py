@@ -12,7 +12,7 @@
 # Apoll Comics [ES]
 # ArazNovel [TR] (disabled)
 # Argos Scan / Argos Comics [PT] (disabled)
-# Asura Scans [TR]
+# Asura Scans [TR] (disabled)
 # Atikrost [TR] (disabled)
 # Best Manga [RU] (disabled)
 # Fr-Scan (Id frdashscan) [FR] (disabled)
