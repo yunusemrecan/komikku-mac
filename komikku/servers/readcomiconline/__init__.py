@@ -29,7 +29,8 @@ class Readcomiconline(Server):
     name = 'Read Comic Online'
     lang = 'en'
     is_nsfw = True
-    status = 'enabled' if requests is not None else 'disabled'
+    # status = 'enabled' if requests is not None else 'disabled'
+    status = 'disabled'
 
     has_cf = True
     has_captcha = True  # Custom captcha AreYouHuman2
