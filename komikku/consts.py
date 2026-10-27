@@ -273,14 +273,22 @@ CREDITS = {
 
 RELEASE_NOTES = """
 <ul>
-    <li>[Card] Tracking: Added warning message when automatic synchronization of reading progress is not possible</li>
-    <li>[Reader] OCR Translator: Fixed calculation of the selection area's coordinates when white borders are cropped</li>
-    <li>[Servers] Cartel De Manhwas (ES): Disabled</li>
-    <li>[Servers] ComicHubFree (EN): Fixed search when no results</li>
+    <li>[Reader] General settings: Add `Inversion` filter</li>
+    <li>[Servers] Anime-Sama (FR): Update</li>
     <li>[Servers] JManga (JA): Update</li>
-    <li>[Servers] MangaBall (multi): Update</li>
-    <li>[Servers] MangaKawaii (FR): Update</li>
-    <li>[L10n] Updated French, Indonesian, Korean, Russian and Ukrainian translations</li>
+    <li>[Servers] Armoni Scans (TR): Disabled</li>
+    <li>[Servers] Comix (EN): Disabled</li>
+    <li>[Servers] Flame Comics (EN): Disabled</li>
+    <li>[Servers] KaliScan (EN): Disabled</li>
+    <li>[Servers] KomikLovers (ID): Disabled</li>
+    <li>[Servers] LanorTrad (FR): Update</li>
+    <li>[Servers] Manga Stop (pt_BR): Disabled</li>
+    <li>[Servers] MangaReader (cc) (EN): Disabled</li>
+    <li>[Servers] Perf Scan (FR): Disabled</li>
+    <li>[Servers] Raijin Scan (FR): Disabled</li>
+    <li>[Servers] Read Comic Online (EN): Disabled</li>
+    <li>[Servers] Shadow Manga (ES): Add `Adult Content` filter</li>
+    <li>[L10n] Updated Finnish and Ukrainian translations</li>
 </ul>
 <p>Happy reading.</p>
 """
