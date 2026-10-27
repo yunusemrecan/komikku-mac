@@ -9,6 +9,7 @@ class Mangareadercc(Paprika):
     id = 'mangareadercc'
     name = 'MangaReader (cc)'
     lang = 'en'
+    status = 'disabled'
 
     has_cf = True
     is_nsfw = True
