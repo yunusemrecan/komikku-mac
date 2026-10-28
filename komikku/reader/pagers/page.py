@@ -3,37 +3,47 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from gettext import gettext as _
+from io import BytesIO
 import threading
 
 from gi.repository import Adw
+from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 
 import cairo
+from PIL import Image
 
+from komikku.consts import MISSING_IMG_RESOURCE_PATH
 from komikku.reader.pagers.image import KImage
 from komikku.models import Settings
 from komikku.utils import log_error_traceback
 
 
 class Page(Gtk.Overlay):
+    """Pager page composed of one or two pages"""
+
     __gtype_name__ = 'Page'
     __gsignals__ = {
         'rendered': (GObject.SignalFlags.RUN_FIRST, None, (bool, bool, )),
     }
 
-    def __init__(self, pager, chapter, index):
+    def __init__(self, pager, chapter, index, double=False, direction=1):
         super().__init__(hexpand=True, vexpand=True)
 
         self.pager = pager
         self.reader = pager.reader
         self.window = self.reader.window
 
-        self.chapter = self.init_chapter = chapter
-        self.data = None
-        self.index = self.init_index = index
-        self.path = None
+        self.double = double
+        self.sides = [PageSide(self.reader.manga, chapter, index)]
+        if self.double:
+            if direction == 1:
+                self.sides.append(PageSide(self.reader.manga, chapter, index + direction))
+            else:
+                self.sides.insert(0, PageSide(self.reader.manga, chapter, index + direction))
+
         self.image = None
         self.retry_button = None
 
@@ -91,6 +101,38 @@ class Page(Gtk.Overlay):
         return False
 
     @property
+    def chapter(self):
+        return self.sides[0].chapter if self.sides[0] else self.sides[1].chapter
+
+    @property
+    def index(self):
+        return self.sides[0].index
+
+    @property
+    def index_end(self):
+        if not self.double:
+            return self.index
+
+        sides = reversed(self.sides) if self.reader.reading_mode != 'right-to-left' else self.sides
+        for side in sides:
+            if side:
+                return side.index
+
+    @property
+    def index_start(self):
+        if not self.double:
+            return self.index
+
+        sides = reversed(self.sides) if self.reader.reading_mode == 'right-to-left' else self.sides
+        for side in sides:
+            if side:
+                return side.index
+
+    @property
+    def indexes(self):
+        return [side.index for side in self.sides if side]
+
+    @property
     def scrollable(self):
         return self.hscrollable or self.vscrollable
 
@@ -132,8 +174,8 @@ class Page(Gtk.Overlay):
         ctx.paint()
 
     def on_button_retry_clicked(self, _button):
-        self.chapter = self.init_chapter
-        self.index = self.init_index
+        for side in self.sides:
+            side.reset()
 
         self.retry_button.set_visible(False)
 
@@ -200,61 +242,28 @@ class Page(Gtk.Overlay):
         self.reader.pager.interactive = True
 
     def render(self, retry=False):
-        def complete(error_code, error_message, stack_trace):
-            if error_code in ('connection', 'server'):
-                self.stop_activity_indicator()
-                on_error(error_code, error_message, stack_trace)
-                if retry:
+        def on_complete(errors):
+            for code, error in errors.items():
+                if code in ('connection', 'server'):
+                    self.stop_activity_indicator()
+                    on_error(code, error['message'], error['stack_trace'])
+                    if retry:
+                        continue
+
+                elif code == 'offlimit':
+                    self.stop_activity_indicator()
+                    self.status = 'offlimit'
                     return
 
-            elif error_code == 'offlimit':
-                self.stop_activity_indicator()
-                self.status = 'offlimit'
-                return
-
-            if self.status == 'disposed':
-                # Page has been removed from pager
-                self.stop_activity_indicator()
-                return
+                if self.status == 'disposed':
+                    # Page has been removed from pager
+                    self.stop_activity_indicator()
+                    return
 
             self.set_image(retry)
 
-        def load_chapter(prior_chapter=None):
-            if self.chapter is None:
-                return 'error', 'offlimit', None, None
-
-            if self.chapter.pages and self.index >= 0 and self.index < len(self.chapter.pages):
-                return 'success', None, None, None
-
-            if self.index < 0:
-                # Page belongs to another (previous) chapter
-                self.chapter = self.reader.manga.get_next_chapter(self.chapter, -1)
-                if self.chapter is None:
-                    return 'error', 'offlimit', None, None
-
-            if not self.chapter.pages:
-                try:
-                    if not self.chapter.update_full():
-                        return 'error', 'server', None, None
-                except Exception as e:
-                    return 'error', 'connection', *log_error_traceback(e)
-
-            if self.index > len(self.chapter.pages) - 1:
-                # Page belongs to another (next) chapter
-                prior_chapter = self.chapter
-                self.chapter = self.reader.manga.get_next_chapter(self.chapter, 1)
-                if self.chapter is None:
-                    return 'error', 'offlimit', None, None
-
-            if self.index < 0:
-                self.index = len(self.chapter.pages) + self.index
-            elif self.index > len(prior_chapter.pages if prior_chapter else self.chapter.pages) - 1:
-                self.index = self.index - len(prior_chapter.pages)
-
-            return load_chapter(prior_chapter)
-
-        def on_error(kind, message=None, stack_trace=None):
-            assert kind in ('connection', 'server', ), 'Invalid error kind'
+        def on_error(code, message=None, stack_trace=None):
+            assert code in ('connection', 'server', ), 'Invalid error code'
 
             if message is not None:
                 self.window.add_notification(message, timeout=2)
@@ -269,38 +278,70 @@ class Page(Gtk.Overlay):
                 ])
                 self.window.open_server_bug_report_dialog(manga.server, context, stack_trace)
 
-            self.error = kind
+            self.error = code
 
             self.show_retry_button()
 
         def run():
-            res, error_code, error_message, stack_trace = load_chapter()
-            if res == 'error':
-                GLib.idle_add(complete, error_code, error_message, stack_trace)
-                return
+            errors = {}
+            for side in self.sides:
+                res, error_code, error_message, stack_trace = side.resolve()
+                if res == 'error':
+                    if error_code not in errors:
+                        errors[error_code] = {
+                            'message': error_message,
+                            'stack_trace': stack_trace,
+                        }
+                    continue
 
-            self.loadable = True
+                self.loadable = True
 
-            if not self.reader.manga.is_local:
-                page_path = self.chapter.get_page_path(self.index)
-                if page_path is None:
-                    try:
-                        page_path, _rtime = self.chapter.get_page(self.index)
-                        if page_path:
-                            self.path = page_path
-                        else:
-                            error_code, error_message, stack_trace = 'server', None, None
-                    except Exception as e:
-                        error_code, error_message, stack_trace = 'connection', *log_error_traceback(e)
+                if not self.reader.manga.is_local:
+                    path = side.chapter.get_page_path(side.index)
+                    if path is None:
+                        try:
+                            path, _rtime = side.chapter.get_page(side.index)
+                            if path:
+                                side.path = path
+                            else:
+                                error_code, error_message, stack_trace = 'server', None, None
+                                if error_code not in errors:
+                                    errors[error_code] = {
+                                        'message': error_message,
+                                        'stack_trace': stack_trace,
+                                    }
+                        except Exception as e:
+                            error_code, error_message, stack_trace = 'connection', *log_error_traceback(e)
+                            if error_code not in errors:
+                                errors[error_code] = {
+                                    'message': error_message,
+                                    'stack_trace': stack_trace,
+                                }
+                    else:
+                        side.path = path
                 else:
-                    self.path = page_path
-            else:
-                try:
-                    self.data = self.chapter.get_page_data(self.index)
-                except Exception as e:
-                    error_code, error_message, stack_trace = 'server', *log_error_traceback(e)
+                    try:
+                        side.buffer = side.chapter.get_page_data(side.index)['buffer']
+                    except Exception as e:
+                        error_code, error_message, stack_trace = 'server', *log_error_traceback(e)
+                        if error_code not in errors:
+                            errors[error_code] = {
+                                'message': error_message,
+                                'stack_trace': stack_trace,
+                            }
 
-            GLib.idle_add(complete, error_code, error_message, stack_trace)
+            if self.double:
+                # Detect last page of a chapter with an odd number of pages
+                # One of the two sides must be a blank page
+                if self.sides[0].index > self.sides[1].index:
+                    # Reading forward
+                    self.sides[1] = None
+                elif self.sides[0].index % 2 != 0:
+                    # Reading backward
+                    self.sides[0] = self.sides[1]
+                    self.sides[1] = None
+
+            GLib.idle_add(on_complete, errors)
 
         if self.status is not None and self.error is None:
             return
@@ -341,8 +382,9 @@ class Page(Gtk.Overlay):
                 self.error = error
                 self.show_retry_button()
 
-                if self.path:
-                    GLib.unlink(self.path)
+                for side in self.sides:
+                    if side and side.path:
+                        GLib.unlink(side.path)
 
                 message = [_('Failed to load image')]
                 if self.error == 'corrupted-or-unsupported-format':
@@ -366,16 +408,66 @@ class Page(Gtk.Overlay):
 
             self.stop_activity_indicator()
 
-        if self.path is None and self.data is None:
-            image = KImage()
-            image.load_missing(callback=on_loaded)
-        else:
+        if self.double:
             image = KImage(
                 scaling=self.reader.scaling, scaling_filter=self.reader.scaling_filter,
                 crop=self.reader.borders_crop, crop_threshold=self.reader.borders_crop_threshold,
                 landscape_zoom=self.reader.landscape_zoom, zoomable=self.zoomable
             )
-            image.load(path=self.path, data=self.data['buffer'] if self.data else None, callback=on_loaded)
+
+            # Assemble the two sides
+            imgs = []
+            for side in self.sides:
+                if side is None:
+                    # Blank page
+                    imgs.append(Image.new('RGB', (1, 1), (255, 255, 255)))
+                    continue
+
+                if not side.path and not side.buffer:
+                    # Missing page
+                    texture = Gdk.Texture.new_from_resource(MISSING_IMG_RESOURCE_PATH)
+                    buffer = texture.save_to_tiff_bytes().get_data()
+                    with Image.open(BytesIO(buffer)) as img:
+                        imgs.append(img.convert('RGB'))
+                    continue
+
+                try:
+                    obj = side.path or side.buffer
+                    with Image.open(obj if isinstance(obj, str) else BytesIO(obj)) as img:
+                        imgs.append(img.convert('RGB'))
+                except Exception:
+                    return None
+
+            if self.reader.reading_mode == 'right-to-left':
+                imgs.reverse()
+
+            w = sum([img.width for img in imgs])
+            h = max([img.height for img in imgs])
+            double_img = Image.new('RGB', (w, h), (255, 255, 255))
+            x = 0
+            for img in imgs:
+                double_img.paste(img, (x, 0))
+                x += img.width
+
+            with BytesIO() as io_buffer:
+                # Use the very fast/lossless TIFF format (Pillow uses libtiff)
+                double_img.save(io_buffer, 'tiff')
+                buffer = io_buffer.getvalue()
+
+            image.load(path=None, buffer=buffer, callback=on_loaded)
+
+        else:
+            side = self.sides[0]
+            if not side.path and not side.buffer:
+                image = KImage()
+                image.load_missing(callback=on_loaded)
+            else:
+                image = KImage(
+                    scaling=self.reader.scaling, scaling_filter=self.reader.scaling_filter,
+                    crop=self.reader.borders_crop, crop_threshold=self.reader.borders_crop_threshold,
+                    landscape_zoom=self.reader.landscape_zoom, zoomable=self.zoomable
+                )
+                image.load(path=side.path, buffer=side.buffer, callback=on_loaded)
 
     def show_retry_button(self):
         if self.retry_button is None:
@@ -403,3 +495,55 @@ class Page(Gtk.Overlay):
     def stop_activity_indicator(self, *args):
         if self.reader.reading_mode != 'webtoon':
             self.activity_indicator.set_visible(False)
+
+
+class PageSide:
+    def __init__(self, manga, chapter, index):
+        self.manga = manga
+        self.chapter = chapter
+        self.chapter_initial = chapter
+        self.index = index
+        self.index_initial = index
+
+        self.path: str = None
+        self.buffer: bytes = None
+
+    def reset(self):
+        self.chapter = self.chapter_initial
+        self.index = self.index_initial
+
+    def resolve(self, prior_chapter=None):
+        """Calculate correct chapter and index if there is a chapter change (index < 0 or index > number of pages)"""
+
+        if self.chapter is None:
+            return 'error', 'offlimit', None, None
+
+        if self.chapter.pages and self.index >= 0 and self.index < len(self.chapter.pages):
+            return 'success', None, None, None
+
+        if self.index < 0:
+            # Page belongs to another (previous) chapter
+            self.chapter = self.manga.get_next_chapter(self.chapter, -1)
+            if self.chapter is None:
+                return 'error', 'offlimit', None, None
+
+        if not self.chapter.pages:
+            try:
+                if not self.chapter.update_full():
+                    return 'error', 'server', None, None
+            except Exception as e:
+                return 'error', 'connection', *log_error_traceback(e)
+
+        if self.index > len(self.chapter.pages) - 1:
+            # Page belongs to another (next) chapter
+            prior_chapter = self.chapter
+            self.chapter = self.manga.get_next_chapter(self.chapter, 1)
+            if self.chapter is None:
+                return 'error', 'offlimit', None, None
+
+        if self.index < 0:
+            self.index = len(self.chapter.pages) + self.index
+        elif self.index > len(prior_chapter.pages if prior_chapter else self.chapter.pages) - 1:
+            self.index = self.index - len(prior_chapter.pages)
+
+        return self.resolve(prior_chapter)

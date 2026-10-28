@@ -30,6 +30,10 @@ class BasePager:
         self.pointer_position = None
 
     @property
+    def double_page(self):
+        return False
+
+    @property
     @abstractmethod
     def pages(self):
         raise NotImplementedError()
@@ -98,7 +102,7 @@ class BasePager:
                     'chapter': chapter,
                     'pages': [],
                 }
-            read_chapters[chapter.id]['pages'].append(page.index)
+            read_chapters[chapter.id]['pages'] += page.indexes
             read_pages.remove(page)
 
         db_conn = create_db_connection()

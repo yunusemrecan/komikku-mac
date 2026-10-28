@@ -80,7 +80,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         self.__zoom = 1
         self.__zoomable = zoomable
 
-        self.data = None
+        self.buffer = None
         self.path = None
 
         self.image_displayed_x = 0
@@ -374,14 +374,14 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         return GLib.SOURCE_CONTINUE
 
     def __compute_borders_crop_bbox(self):
-        if self.path is None and self.data is None:
+        if self.path is None and self.buffer is None:
             return None
 
         def lookup(x):
             return 255 if x > self.crop_threshold else 0
 
         try:
-            with Image.open(self.path or BytesIO(self.data)) as im:
+            with Image.open(self.path or BytesIO(self.buffer)) as im:
                 with im.convert('L') as im_bw:
                     im_lookup = im_bw.point(lookup, mode='1')
         except Exception as exc:
@@ -430,11 +430,11 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         # Crop is possible if computed bbox is included in textures
         if bbox and (bbox[2] - bbox[0] < textures_width or bbox[3] - bbox[1] < textures_height):
             try:
-                with Image.open(self.path or BytesIO(self.data)) as im:
+                with Image.open(self.path or BytesIO(self.buffer)) as im:
                     with im.convert('RGB') as im_rgb:
                         with im_rgb.crop(bbox) as im_crop:
                             with BytesIO() as io_buffer:
-                                # Use the very fast TIFF format (Pillow uses libtiff)
+                                # Use the very fast/lossless TIFF format (Pillow uses libtiff)
                                 im_crop.save(io_buffer, 'tiff')
 
                                 if bbox[3] - bbox[1] > TEXTURES_CHUNK_MAX_HEIGHT:
@@ -471,7 +471,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         if self.animation_tick_callback_id:
             self.remove_tick_callback(self.animation_tick_callback_id)
 
-        self.data = None
+        self.buffer = None
         self.textures = None
         self.textures_crop = None
         self.animation_iter = None
@@ -545,8 +545,8 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         if not self.__rendered:
             self.__rendered = True
 
-    def load(self, path=None, data=None, callback=None, static_animation=False):
-        info, mime_type = get_image_info(path or data)
+    def load(self, path=None, buffer=None, callback=None, static_animation=False):
+        info, mime_type = get_image_info(path or buffer)
         if info is None:
             self.load_missing(callback=callback, error='corrupted-or-unsupported-format', mime_type=mime_type)
             return
@@ -555,8 +555,8 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             if path:
                 with open(path, 'rb') as fp:
                     stream = Gio.MemoryInputStream.new_from_bytes(GLib.Bytes.new(fp.read()))
-            elif data:
-                stream = Gio.MemoryInputStream.new_from_bytes(GLib.Bytes.new(data))
+            elif buffer:
+                stream = Gio.MemoryInputStream.new_from_bytes(GLib.Bytes.new(buffer))
 
             if not info['is_animated']:
                 Pixbuf.new_from_stream_async(stream, None, self.load_ready, callback, info, mime_type)
@@ -569,7 +569,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             return
 
         self.path = path
-        self.data = data
+        self.buffer = buffer
 
     def load_missing(self, callback=None, error=None, mime_type=None):
         self.path = MISSING_IMG_RESOURCE_PATH

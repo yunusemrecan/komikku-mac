@@ -215,6 +215,14 @@ class Settings(Gio.Settings):
         self.set_boolean('disable-animations', state)
 
     @property
+    def double_page(self):
+        return self.get_boolean('double-page')
+
+    @double_page.setter
+    def double_page(self, state):
+        self.set_boolean('double-page', state)
+
+    @property
     def downloader_state(self):
         return self.get_boolean('downloader-state')
 

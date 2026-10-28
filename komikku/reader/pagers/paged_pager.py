@@ -44,6 +44,10 @@ class PagedPager(Adw.Bin, BasePager):
         self.add_controller(self.controller_scroll)
         self.controller_scroll.connect('scroll', self.on_scroll)
 
+    @property
+    def double_page(self):
+        return self.reader.double_page
+
     @GObject.Property(type=bool, default=True)
     def interactive(self):
         return self.carousel.get_interactive()
@@ -71,18 +75,20 @@ class PagedPager(Adw.Bin, BasePager):
 
     def add_page(self, position):
         if position == 'start':
+            # Prepend + remove at end
             if page_end := self.carousel.get_nth_page(2):
                 page_end.dispose()
 
             page = self.carousel.get_nth_page(0)
             direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
-            new_page = Page(self, page.chapter, page.index + direction)
+            new_page = Page(self, page.chapter, page.index_start + direction, self.double_page, direction)
             self.carousel.prepend(new_page)
 
             new_page.connect('rendered', self.on_page_rendered)
             new_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
             new_page.render()
         else:
+            # Append + remove at start
             page = self.carousel.get_nth_page(2)
 
             def append_after_remove(_carousel, _position):
@@ -92,7 +98,7 @@ class PagedPager(Adw.Bin, BasePager):
                 self.carousel.disconnect(position_handler_id)
 
                 direction = -1 if self.reader.reading_mode == 'right-to-left' else 1
-                new_page = Page(self, page.chapter, page.index + direction)
+                new_page = Page(self, page.chapter, page.index_end + direction, self.double_page, direction)
                 self.carousel.append(new_page)
 
                 new_page.connect('rendered', self.on_page_rendered)
@@ -167,22 +173,28 @@ class PagedPager(Adw.Bin, BasePager):
             else:
                 page_index = 0
 
+        if self.double_page and page_index % 2 != 0:
+            # Page index should always be an even number in double page view
+            page_index -= 1
+
         direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
 
         # Left page
-        left_page = Page(self, chapter, page_index + direction)
+        index = page_index + direction * 2 if self.double_page else page_index + direction
+        left_page = Page(self, chapter, index, self.double_page, 1)
         self.carousel.append(left_page)
         left_page.connect('rendered', self.on_page_rendered)
         left_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
 
         # Center page
-        center_page = Page(self, chapter, page_index)
+        center_page = Page(self, chapter, page_index, self.double_page, 1)
         self.carousel.append(center_page)
         center_page.connect('rendered', self.on_page_rendered)
         center_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
 
         # Right page
-        right_page = Page(self, chapter, page_index - direction)
+        index = page_index - direction * 2 if self.double_page else page_index - direction
+        right_page = Page(self, chapter, index, self.double_page, 1)
         self.carousel.append(right_page)
         right_page.connect('rendered', self.on_page_rendered)
         right_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
@@ -469,7 +481,10 @@ class PagedPager(Adw.Bin, BasePager):
             self.window.add_notification(_('This chapter is inaccessible.'), timeout=2)
 
         # Update page number and controls page slider
-        self.reader.update_page_numbering(page.index + 1, len(page.chapter.pages) if page.loadable else None)
+        self.reader.update_page_numbering(
+            '-'.join([str(index + 1) for index in page.indexes]),
+            len(page.chapter.pages) if page.loadable else None
+        )
         self.reader.controls.set_scale_value(page.index + 1)
 
         return GLib.SOURCE_REMOVE

@@ -270,6 +270,11 @@
             <summary>Reading Mode</summary>
             <description>Reading mode in reader</description>
         </key>
+        <key type="b" name="double-page">
+            <default>false</default>
+            <summary>Double Page</summary>
+            <description>Two pages on one spread</description>
+        </key>
         <key enum="@appid@.Scaling" name="scaling">
             <default>"screen"</default>
             <summary>Scaling</summary>

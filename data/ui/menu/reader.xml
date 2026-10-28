@@ -35,6 +35,11 @@ SPDX-FileContributor: Valéry Febvre <vfebvre@easter-eggs.com>
                     </item>
                 </section>
             </submenu>
+
+            <item>
+                <attribute name="label" translatable="yes">Double Page</attribute>
+                <attribute name="action">app.reader.double-page</attribute>
+            </item>
         </section>
 
        <section>

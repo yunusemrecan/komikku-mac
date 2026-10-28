@@ -210,7 +210,7 @@ class OCRTranslator(GObject.GObject):
             self.open_sheet(text)
 
         def run():
-            with Image.open(image.path or BytesIO(image.data)) as full_img:
+            with Image.open(image.path or BytesIO(image.buffer)) as full_img:
                 img = full_img.crop((x, y, w, h))
                 text = pytesseract.image_to_string(img, lang=self.ocr_lang, config='--psm 12 --oem 1')
                 img.close()

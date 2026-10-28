@@ -98,7 +98,7 @@ class LongstripPager(Adw.Bin, BasePager):
         self.hide_cursor()
 
     def on_offlimit(self, _canvas, position):
-        if position == 'bottom':
+        if position == 'end':
             message = _('It was the last chapter.')
         else:
             message = _('There is no previous chapter.')

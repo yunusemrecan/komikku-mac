@@ -17,7 +17,7 @@ from komikku.reader.ocr_translator import OCRTranslator
 from komikku.reader.pagers.longstrip_pager import LongstripPager
 from komikku.reader.pagers.paged_pager import PagedPager
 from komikku.reader.settings import ReaderSettingsDialog
-from komikku.utils import get_file_mime_type
+from komikku.utils import get_image_info
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/reader.ui')
@@ -115,6 +115,10 @@ class ReaderPage(Adw.NavigationPage):
         return self.manga.borders_crop_threshold or Settings.get_default().borders_crop_threshold
 
     @property
+    def double_page(self):
+        return self.manga.double_page or Settings.get_default().double_page
+
+    @property
     def landscape_zoom(self):
         if self.reading_mode == 'webtoon':
             # Landscape zoom is not an option in Webtoon reading mode
@@ -172,6 +176,11 @@ class ReaderPage(Adw.NavigationPage):
         self.reading_mode_action.connect('activate', self.on_reading_mode_changed)
         self.window.application.add_action(self.reading_mode_action)
 
+        # Double page
+        self.double_page_action = Gio.SimpleAction.new_stateful('reader.double-page', None, GLib.Variant('b', False))
+        self.double_page_action.connect('change-state', self.on_double_page_changed)
+        self.window.application.add_action(self.double_page_action)
+
         # Open settings dialog
         self.open_settings_dialog_action = Gio.SimpleAction.new('reader.open-settings-dialog', None)
         self.open_settings_dialog_action.connect('activate', self.open_settings_dialog)
@@ -203,6 +212,7 @@ class ReaderPage(Adw.NavigationPage):
 
         # Init settings
         self.set_action_reading_mode()
+        self.set_action_double_page()
 
         if Settings.get_default().fullscreen:
             self.window.fullscreen()
@@ -230,6 +240,18 @@ class ReaderPage(Adw.NavigationPage):
 
     def on_back_button_clicked(self, _btn):
         self.window.navigationview.pop()
+
+    def on_double_page_changed(self, _action, variant):
+        value = variant.get_boolean()
+        if value == self.double_page:
+            return
+
+        self.manga.update({
+            'double_page': value if value != Settings.get_default().double_page else None,
+        })
+        self.set_action_double_page()
+
+        self.init_pager(self.pager.current_page.chapter)
 
     def on_fullscreen_state_changed(self, _window, gparam):
         if self.window.is_fullscreen():
@@ -292,7 +314,7 @@ class ReaderPage(Adw.NavigationPage):
         })
         self.set_action_reading_mode()
 
-        if value == 'webtoon' or prior_reading_mode == 'webtoon':
+        if value == 'webtoon' or prior_reading_mode == 'webtoon' or self.pager.double_page:
             self.init_pager(self.pager.current_page.chapter)
         else:
             if value == 'right-to-left' or prior_reading_mode == 'right-to-left':
@@ -328,7 +350,11 @@ class ReaderPage(Adw.NavigationPage):
 
         def do_save(dest_path):
             try:
-                shutil.copy(page.path, dest_path)
+                if page.image.path:
+                    shutil.copy(page.image.path, dest_path)
+                else:
+                    with open(dest_path, 'wb') as fp:
+                        fp.write(page.image.buffer)
             except Exception as error:
                 self.window.add_notification(str(error))
             else:
@@ -344,7 +370,8 @@ class ReaderPage(Adw.NavigationPage):
             if gfile:
                 do_save(gfile.get_path())
 
-        extension = get_file_mime_type(page.path).split('/')[-1]
+        _info, content_type = get_image_info(page.image.path or page.image.buffer)
+        extension = content_type.split('/')[-1]
         filename = f'{self.manga.name}_{page.chapter.title}_{str(page.index + 1)}.{extension}'
         xdg_pictures_dir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES)
 
@@ -355,8 +382,14 @@ class ReaderPage(Adw.NavigationPage):
 
         dialog.save(self.window, None, on_ready)
 
+    def set_action_double_page(self):
+        self.double_page_action.set_state(GLib.Variant('b', self.double_page))
+
     def set_action_reading_mode(self):
         self.reading_mode_action.set_state(GLib.Variant('s', self.reading_mode))
+
+        # Double page is enabled in RTL/LTR/Vertical reading modes only
+        self.double_page_action.set_enabled(self.reading_mode != 'webtoon')
 
         # Scaling action is enabled in RTL/LTR/Vertical reading modes only
         self.settings_dialog.scaling_row.set_sensitive(self.reading_mode != 'webtoon')

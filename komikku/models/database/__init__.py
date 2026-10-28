@@ -248,6 +248,7 @@ def init_db():
         ocr_lang text,
         page_numbering integer,
         reading_mode text,
+        double_page integer,
         scaling text,
         scaling_filter text,
         sort_order text,
@@ -461,6 +462,11 @@ def init_db():
         # Version 50.12.0
         execute_sql(db_conn, 'ALTER TABLE mangas ADD COLUMN ocr_lang text;')
         db_conn.execute('PRAGMA user_version = {0}'.format(17))
+
+    if 0 < db_version <= 17:
+        # Version 51.3.0
+        execute_sql(db_conn, 'ALTER TABLE mangas ADD COLUMN double_page integer;')
+        db_conn.execute('PRAGMA user_version = {0}'.format(18))
 
     logger.info('DB version {0}'.format(db_conn.execute('PRAGMA user_version').fetchone()[0]))
 
