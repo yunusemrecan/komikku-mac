@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from copy import deepcopy
 from gettext import gettext as _
 
 from gi.repository import Adw
@@ -330,9 +329,9 @@ class ReaderSettingsDialog(Adw.PreferencesDialog):
 
     def set_pages_filters(self):
         funcs = []
-        page_filters = deepcopy(self.settings.page_filters)
+        page_filters = self.settings.page_filters.copy()
 
-        for name, value in page_filters.items():
+        for name in list(page_filters.keys()):
             if name == 'invert' and page_filters.get(f'{name}-state'):
                 # Force grayscale filter on if invert filter is on
                 page_filters['grayscale-state'] = True
@@ -362,6 +361,8 @@ class ReaderSettingsDialog(Adw.PreferencesDialog):
     def toggle_page_filter_state(self, row, _gparam, name):
         filters = self.settings.page_filters
         filters[f'{name}-state'] = row.get_enable_expansion()
+        if name not in filters:
+            filters[name] = FILTERS[name]['default']
         self.settings.page_filters = filters
 
         self.set_pages_filters()
