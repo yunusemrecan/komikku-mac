@@ -64,7 +64,7 @@ class Lanortrad(Server):
     search_url = base_url + '/catalogue.html'
     manga_url = base_url + '/manga/{0}/'
     chapter_url = base_url + '/manga/{0}/{1}/'
-    image_url = base_url + '/Manga/{0}/Chapitres/Chapitre {1}/{2}'
+    image_url = base_url + '/Manga/{0}/Chapitres/Chapitre {1:02d}/{2}'
     image_oneshot_url = base_url + '/Manga/{0}/Oneshot/{1}'
 
     series = {}
@@ -164,7 +164,7 @@ class Lanortrad(Server):
             if oneshot:
                 image = self.image_oneshot_url.format(manga_slug, name)
             else:
-                image = self.image_url.format(manga_slug, chapter_num, name)
+                image = self.image_url.format(manga_slug, int(chapter_num), name)
 
             data['pages'].append({
                 'slug': None,
