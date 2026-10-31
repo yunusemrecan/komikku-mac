@@ -45,7 +45,7 @@ class Bdplus(Server):
 
     base_url = 'https://bdplus.cc'
     logo_url = base_url + '/favicon.ico'
-    search_url = base_url + '/catalogue.html'
+    search_url = base_url + '/data/search_corpus.json'
     manga_url = base_url + '/serie_static/{0}.html'
     chapter_url = base_url + '/lecture.html?b={0}'
     chapter_pages_url = base_url + '/_converted/{0}/{1}/pages.json'
@@ -82,11 +82,11 @@ class Bdplus(Server):
             'default': 'Toutes',
             'options': [
                 {'key': 'Toutes', 'name': 'Toutes'},
-                {'key': 'Classiques', 'name': 'Classiques (<1980)'},
+                {'key': 'Classiques', 'name': 'Classiques (avant 1980)'},
                 {'key': '1980s', 'name': 'Années 80-90'},
                 {'key': '2000s', 'name': 'Années 2000'},
                 {'key': '2010s', 'name': 'Années 2010'},
-                {'key': 'Recentes', 'name': 'Récentes (2020+)'},
+                {'key': 'Recentes', 'name': 'Récentes (2020 et après)'},
             ],
         },
     ]
@@ -124,33 +124,38 @@ class Bdplus(Server):
             'cover': None,
         })
 
-        data['name'] = soup.select_one('h1.serie-main-title').text.strip()
-        if element := soup.select_one('img.serie-cover'):
+        data['name'] = soup.select_one('h1#fhT').text.strip()
+        if element := soup.select_one('.fh-cov img'):
             data['cover'] = f'{self.base_url}{element.get("src")}'
 
         # Details
-        if element := soup.select_one('.meta-authors'):
+        if element := soup.select_one('.fh-au b'):
             for author in element.text.split(','):
                 author = author.strip()
                 if author not in data['authors']:
                     data['authors'].append(author)
 
-        for element in soup.select('.genre-pill'):
+        for element in soup.select('.fh-meta a.pill.pg'):
             data['genres'].append(element.text.strip())
 
-        if element := soup.select_one('.synopsis-text'):
-            synopsis = [element.text.strip(), ]
-            if element := soup.select_one('#synopsis-more'):
-                soup_synopsis = BeautifulSoup(element.get('data-content'), 'lxml')
-                for element in soup_synopsis.select('p'):
-                    synopsis.append(element.text.strip())
+        if element := soup.select_one('section.syn'):
+            synopsis = []
+            for element in soup.select('#synMore p'):
+                synopsis.append(element.text.strip())
             data['synopsis'] = '\n\n'.join(synopsis)
 
         # Chapters
-        for element in soup.select('#tomes-grid a.card'):
+        for element in soup.select('#tl a.tr'):
+            title = []
+            if title_element := element.select_one('.tn'):
+                title.append(title_element.text.strip())
+            if title_element := element.select_one('.tt'):
+                title.append(title_element.text.strip())
+            url = element.get('data-k')
+
             data['chapters'].append({
-                'slug': element.get('data-path').split('/')[-1],
-                'title': element.select_one('.card-title').text.strip(),
+                'slug': url.split('/')[-1],
+                'title': ' : '.join(title),
             })
 
         return data
@@ -228,15 +233,27 @@ class Bdplus(Server):
 
         soup = BeautifulSoup(r.text, 'lxml')
 
-        results = []
-        for element in soup.select('#nouveautes-carousel a.nouveaute-card'):
-            results.append({
-                'slug': element.get('href').split('/')[-1].replace('.html', ''),
-                'name': element.select_one('.card-title').text.strip(),
-                'cover': self.base_url + element.select_one('img').get('src'),
-            })
+        if script_element := soup.select_one('script#homeCfg'):
+            script = script_element.string
 
-        return results
+            results = []
+            for serie in json.loads(script)['disc']:
+                if genre and genre != 'Tous' and genre != serie[2]:
+                    continue
+
+                results.append({
+                    'slug': serie[0],
+                    'name': serie[1],
+                    'cover': self.base_url + serie[5],
+                })
+
+            return results
+
+        return None
+
+    def get_most_populars(self, genre=None, epoque=None):
+        result = self.search(genre=genre, epoque=epoque)
+        return sorted(result, key=lambda i: i.get('popularity', 0), reverse=True)[:100]
 
     def search(self, term=None, genre=None, epoque=None):
         if not self.manga_list:
@@ -245,39 +262,35 @@ class Bdplus(Server):
             if r.status_code != 200:
                 return None
 
-            soup = BeautifulSoup(r.text, 'lxml')
-
-            if script_element := soup.select_one('script#catalogue-data'):
-                if data := script_element.string:
-                    self.manga_list = json.loads(data)
+            self.manga_list = r.json()['docs']
 
         if not self.manga_list:
             return None
 
         results = []
         for serie in self.manga_list:
-            if term and term.lower() not in serie[1].lower():
+            if term and term.lower() not in serie['title'].lower():
                 continue
 
-            if genre and genre != 'Tous' and genre != serie[3]:
+            if genre and genre != 'Tous' and genre not in serie['genres']:
                 continue
 
             if epoque and epoque != 'Toutes':
-                if epoque == 'Classiques' and serie[6] >= 1980:
+                if epoque == 'Classiques' and serie['year'] >= 1980:
                     continue
-                if epoque == '1980s' and (serie[6] < 1980 or serie[6] > 1999):
+                if epoque == '1980s' and (serie['year'] < 1980 or serie['year'] > 1999):
                     continue
-                if epoque == '2000s' and (serie[6] < 2000 or serie[6] > 2009):
+                if epoque == '2000s' and (serie['year'] < 2000 or serie['year'] > 2009):
                     continue
-                if epoque == '2010s' and (serie[6] < 2010 or serie[6] > 2019):
+                if epoque == '2010s' and (serie['year'] < 2010 or serie['year'] > 2019):
                     continue
-                if epoque == 'Recentes' and serie[6] < 2020:
+                if epoque == 'Recentes' and serie['year'] < 2020:
                     continue
 
             results.append({
-                'slug': serie[0],
-                'name': serie[1],
-                'cover': self.base_url + serie[2],
+                'slug': serie['id'],
+                'name': serie['title'],
+                'cover': self.base_url + serie['cover'],
             })
 
         return results
