@@ -55,6 +55,7 @@ class PreferencesDialog(Adw.PreferencesDialog):
     long_strip_detection_switch = Gtk.Template.Child('long_strip_detection_switch')
 
     reading_mode_row = Gtk.Template.Child('reading_mode_row')
+    double_page_switch = Gtk.Template.Child('double_page_switch')
     scaling_filter_row = Gtk.Template.Child('scaling_filter_row')
     background_color_row = Gtk.Template.Child('background_color_row')
     page_numbering_switch = Gtk.Template.Child('page_numbering_switch')
@@ -225,6 +226,9 @@ class PreferencesDialog(Adw.PreferencesDialog):
         elif self.settings.disable_animations:
             self.settings.disable_animations = False
             Gtk.Settings.get_default().set_property('gtk-enable-animations', True)
+
+    def on_double_page_changed(self, switch_button, _gparam):
+        self.settings.double_page = switch_button.get_active()
 
     def on_fullscreen_changed(self, switch_button, _gparam):
         self.settings.fullscreen = switch_button.get_active()
@@ -492,6 +496,10 @@ class PreferencesDialog(Adw.PreferencesDialog):
         # Reading mode
         self.reading_mode_row.set_selected(self.settings.reading_mode_value)
         self.reading_mode_row.connect('notify::selected', self.on_reading_mode_changed)
+
+        # Double page
+        self.double_page_switch.set_active(self.settings.double_page)
+        self.double_page_switch.connect('notify::active', self.on_double_page_changed)
 
         # Image scaling filter
         self.scaling_filter_row.set_selected(self.settings.scaling_filter_value)

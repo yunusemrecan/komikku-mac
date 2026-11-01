@@ -116,7 +116,10 @@ class ReaderPage(Adw.NavigationPage):
 
     @property
     def double_page(self):
-        return self.manga.double_page or Settings.get_default().double_page
+        if self.manga.double_page in (0, 1):
+            return bool(self.manga.double_page)
+
+        return Settings.get_default().double_page
 
     @property
     def landscape_zoom(self):
