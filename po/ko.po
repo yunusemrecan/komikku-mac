@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: Komikku 1.96.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-01 01:50+0200\n"
-"PO-Revision-Date: 2026-09-19 00:51+0000\n"
+"PO-Revision-Date: 2026-11-02 07:51+0000\n"
 "Last-Translator: on9686 <on9686@users.noreply.hosted.weblate.org>\n"
-"Language-Team: Korean <https://hosted.weblate.org/projects/komikku/main/ko/"
-">\n"
+"Language-Team: Korean <https://hosted.weblate.org/projects/komikku/main/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.10.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 #: ../data/info.febvre.Komikku.desktop.in:2
 msgid "@prettyname@"
@@ -35,15 +35,15 @@ msgstr "manga;reader;viewer;comic;manhwa;manhua;webtoon;webcomic;scanlation;book
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:11
 msgid "Discover and read manga & comics"
-msgstr "만화, 코믹 탐색 및 읽기"
+msgstr "만화와 코믹스를 탐색하고 읽기"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:13
 msgid ""
 "With its simple, elegant and adaptive interface, this reader lets you "
 "search, sort and read your series with ease."
 msgstr ""
-"간단하고, 우아하며 적응성 있는 인터페이스를 갖춘 이 리더는 시리즈를 쉽게 검"
-"색, 정렬하고 읽게 합니다."
+"간결하고 세련된 적응형 인터페이스로 시리즈를 쉽게 검색하고, 정렬하고, 읽을 "
+"수 있습니다."
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:15
 msgid "Why you will love Komikku?"
@@ -60,7 +60,7 @@ msgstr "로컬 저장 시리즈 지원 (CBZ/CBR/CBT, EPUB 및 PDF 포맷)"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
-msgstr "왼쪽으로 읽기, 오른쪽으로 읽기, 수직 및 웹툰 읽기 모드"
+msgstr "오른쪽에서 왼쪽, 왼쪽에서 오른쪽, 세로 및 웹툰 읽기 모드"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:20
 msgid ""
@@ -68,13 +68,13 @@ msgid ""
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
 "wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)"
 msgstr ""
-"다양한 유형의 네비게이션 지원: 키보드 화살표 키, 마우스 클릭 또는 탭(터치패"
-"드/터치스크린)을 통한 좌우 네비게이션 레이아웃, 마우스 휠, 두 손가락 스와이"
-"프 제스처(터치패드), 스와이프 제스처(터치스크린)"
+"다양한 탐색 방식 지원: 키보드 화살표 키, 마우스 클릭이나 탭(터치패드/"
+"터치스크린)을 통한 좌우 탐색 레이아웃, 마우스 휠, 두 손가락 스와이프 제스처"
+"(터치패드), 스와이프 제스처(터치스크린)"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
 msgid "Categories to organize your library"
-msgstr "카테고리 설정을 통한 라이브러리 정리"
+msgstr "카테고리로 라이브러리 정리"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
@@ -114,15 +114,15 @@ msgstr "코믹"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "manga"
-msgstr "일본만화"
+msgstr "manga"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manhwa"
-msgstr "한국만화"
+msgstr "manhwa"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhua"
-msgstr "중국만화"
+msgstr "manhua"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "webtoon"
@@ -178,7 +178,7 @@ msgstr "모바일 형식 리더 페이지"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
 msgid "The Reader page with the OCR Translator in use"
-msgstr ""
+msgstr "OCR 번역기를 사용 중인 리더 페이지"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
 msgid "The Category editor page in mobile format"
@@ -208,7 +208,7 @@ msgstr "라이브러리에 추가"
 
 #: ../data/ui/card.blp:252
 msgid "Scanlators"
-msgstr "스캔 역자"
+msgstr "스캔레이터"
 
 #: ../data/ui/card.blp:308
 msgid "Last Update"
@@ -216,7 +216,7 @@ msgstr "마지막 업데이트"
 
 #: ../data/ui/card.blp:336
 msgid "Size on Disk"
-msgstr "디스크 크기"
+msgstr "디스크 사용량"
 
 #: ../data/ui/card.blp:455 ../data/ui/categories_editor.blp:67
 #: ../data/ui/library.blp:251
@@ -263,7 +263,7 @@ msgstr "브라우저에서 열기"
 
 #: ../data/ui/explorer_search.blp:147
 msgid "Most Popular"
-msgstr "가장 인기있는"
+msgstr "인기 작품"
 
 #: ../data/ui/explorer_search.blp:214
 msgid "Latest Updates"
@@ -276,7 +276,7 @@ msgstr "서버"
 
 #: ../data/ui/explorer_servers.blp:17
 msgid "Search Comics Across All Servers"
-msgstr "모든 서버에서 코믹스 검색"
+msgstr "모든 서버에서 만화 검색"
 
 #: ../data/ui/explorer_servers.blp:23
 msgid "Search Servers"
@@ -300,7 +300,7 @@ msgstr "라이브러리"
 
 #: ../data/ui/library.blp:23
 msgid "Toggle Categories Sidebar"
-msgstr "카테고리 사이드바 토글"
+msgstr "카테고리 사이드바 열기/닫기"
 
 #: ../data/ui/library.blp:39
 msgid "Main Menu"
@@ -317,7 +317,7 @@ msgstr "업데이트"
 
 #: ../data/ui/library.blp:202
 msgid "Discover Comics"
-msgstr "코믹스 탐색"
+msgstr "만화 탐색"
 
 #: ../data/ui/library.blp:273
 msgid "OK"
@@ -382,7 +382,7 @@ msgstr "정렬"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Alphabetical"
-msgstr "알파벳 순"
+msgstr "이름순"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Read First"
@@ -415,7 +415,7 @@ msgstr "일반"
 
 #: ../data/ui/preferences.blp:24
 msgid "Support Komikku"
-msgstr "Komikku 지원"
+msgstr "Komikku 후원"
 
 #: ../data/ui/preferences.blp:30
 msgid ""
@@ -424,10 +424,9 @@ msgid ""
 "maintain it, but also continue my work as a free software developer in "
 "general."
 msgstr ""
-"Komikku는 자유롭고 오픈 소스이며, 앞으로도 그럴 것입니다. 프로그램이 마음에 "
-"드셨다면 기부를 통해 지원해주시면 감사하겠습니다. 이 프로그램을 유지하는 것뿐"
-"만 아니라, 자유 소프트웨어 개발자로서의 활동을 계속하는 데에 도움이 될 것입니"
-"다."
+"Komikku는 자유 오픈 소스 소프트웨어이며 앞으로도 그럴 것입니다. 마음에 "
+"드신다면 후원으로 응원해 주세요. 앱을 유지 관리하는 데뿐만 아니라 자유 "
+"소프트웨어 개발자로서 활동을 이어가는 데에도 큰 도움이 됩니다."
 
 #: ../data/ui/preferences.blp:59
 msgid "Appearance"
@@ -447,7 +446,7 @@ msgstr "다크"
 
 #: ../data/ui/preferences.blp:67
 msgid "Follow System"
-msgstr "시스템 설정"
+msgstr "시스템 설정 따르기"
 
 #: ../data/ui/preferences.blp:73
 msgid "Night Light"
@@ -463,19 +462,19 @@ msgstr "시스템 강조 색상 사용"
 
 #: ../data/ui/preferences.blp:83
 msgid "Progress Bars Theme"
-msgstr "진행 바 테마"
+msgstr "진행 표시줄 테마"
 
 #: ../data/ui/preferences.blp:84
 msgid "Theme to use for progress bars"
-msgstr "진행 바에 사용할 테마"
+msgstr "진행 표시줄에 사용할 테마"
 
 #: ../data/ui/preferences.blp:88
 msgid "Backdrop in Details Page"
-msgstr "상세 정보 페이지 배경"
+msgstr "세부 정보 페이지 배경"
 
 #: ../data/ui/preferences.blp:89
 msgid "Method used to recolor background to match cover"
-msgstr "표지에 따라 배경 색상을 재설정하는 방법"
+msgstr "표지에 맞춰 배경 색상을 바꾸는 방식"
 
 #: ../data/ui/preferences.blp:93
 msgid "Linear gradient"
@@ -487,23 +486,23 @@ msgstr "흐릿한 표지"
 
 #: ../data/ui/preferences.blp:104
 msgid "Desktop Notifications"
-msgstr "데스크탑 알림"
+msgstr "데스크톱 알림"
 
 #: ../data/ui/preferences.blp:105
 msgid "Use desktop notifications for downloads and library updates"
-msgstr "다운로드 및 라이브러리 업데이트에 데스크탑 알림 사용"
+msgstr "다운로드 및 라이브러리 업데이트에 데스크톱 알림 사용"
 
 #: ../data/ui/preferences.blp:113
 msgid "Synchronize reading progress"
-msgstr "독서 진도 동기화"
+msgstr "읽기 진행 상황 동기화"
 
 #: ../data/ui/preferences.blp:124
 msgid "Display"
-msgstr "디스플레이"
+msgstr "표시"
 
 #: ../data/ui/preferences.blp:127
 msgid "Display Mode"
-msgstr "디스플레이 모드"
+msgstr "표시 모드"
 
 #: ../data/ui/preferences.blp:130
 msgid "Grid"
@@ -523,7 +522,7 @@ msgstr "서버 로고 표시"
 
 #: ../data/ui/preferences.blp:142
 msgid "Badges"
-msgstr "뱃지"
+msgstr "배지"
 
 #: ../data/ui/preferences.blp:145
 msgid "Number of Unread Chapters"
@@ -548,7 +547,7 @@ msgstr "시작할 때 업데이트"
 
 #: ../data/ui/preferences.blp:211
 msgid "Automatically update library at startup"
-msgstr "시작할 때 라이브러리를 자동 업데이트"
+msgstr "시작할 때 라이브러리 자동 업데이트"
 
 #: ../data/ui/preferences.blp:215
 msgid "Auto Download of New Chapters"
@@ -556,7 +555,7 @@ msgstr "새 챕터 자동 다운로드"
 
 #: ../data/ui/preferences.blp:216
 msgid "Automatically download new chapters"
-msgstr "새 챕터를 자동으로 다운로드"
+msgstr "새 챕터 자동 다운로드"
 
 #: ../data/ui/preferences.blp:224
 msgid "Languages"
@@ -580,31 +579,31 @@ msgstr "롱 스트립 감지"
 
 #: ../data/ui/preferences.blp:243
 msgid "Automatically detect long vertical strip when possible"
-msgstr "가능할 경우 세로로 긴 스트립을 자동으로 감지"
+msgstr "가능한 경우 세로로 긴 스트립 자동 감지"
 
 #: ../data/ui/preferences.blp:249
 msgid "NSFW Content (18+)"
-msgstr "NSFW 컨텐츠 (18+)"
+msgstr "NSFW 콘텐츠 (18+)"
 
 #: ../data/ui/preferences.blp:250
 msgid "Whether to enable servers with NSFW content"
-msgstr "NSFW 컨텐츠를 포함하는 서버 활성화 여부"
+msgstr "NSFW 콘텐츠가 포함된 서버 활성화 여부"
 
 #: ../data/ui/preferences.blp:254
 msgid "NSFW Only Content (18+)"
-msgstr "NSFW 전용 컨텐츠 (18+)"
+msgstr "NSFW 전용 콘텐츠 (18+)"
 
 #: ../data/ui/preferences.blp:255
 msgid "Whether to enable servers with NSFW only content"
-msgstr "NSFW 컨텐츠만 있는 서버 활성화 여부"
+msgstr "NSFW 콘텐츠만 있는 서버 활성화 여부"
 
 #: ../data/ui/preferences.blp:259
 msgid ""
 "These settings do not prevent potentially incorrectly flagged servers from "
 "surfacing NSFW content."
 msgstr ""
-"이 설정은 잘못 분류된 서버에서 NSFW 컨텐츠를 노출하는 것을 방지하지 못할 수 "
-"있습니다."
+"이 설정으로는 잘못 분류되었을 수 있는 서버에서 NSFW 콘텐츠가 표시되는 것을 "
+"막을 수 없습니다."
 
 #: ../data/ui/preferences.blp:274 ../data/ui/reader.blp:10
 msgid "Reader"
@@ -624,7 +623,7 @@ msgstr "➡ 왼쪽에서 오른쪽으로"
 
 #: ../data/ui/preferences.blp:284
 msgid "⬇ Vertical"
-msgstr "⬇ 수직"
+msgstr "⬇ 세로"
 
 #: ../data/ui/preferences.blp:285
 msgid "⬇ Webtoon"
@@ -632,11 +631,11 @@ msgstr "⬇ 웹툰"
 
 #: ../data/ui/preferences.blp:291 ../data/ui/reader_settings.blp:25
 msgid "Scaling Filter"
-msgstr "스케일링 필터"
+msgstr "크기 조정 필터"
 
 #: ../data/ui/preferences.blp:292
 msgid "Interpolation method used when scaling images"
-msgstr "이미지를 확대할 때 사용되는 보간 기법"
+msgstr "이미지 크기를 조정할 때 사용하는 보간 방식"
 
 #: ../data/ui/preferences.blp:302 ../data/ui/reader_settings.blp:29
 msgid "Background Color"
@@ -644,11 +643,11 @@ msgstr "배경 색상"
 
 #: ../data/ui/preferences.blp:314
 msgid "Page Numbering"
-msgstr "페이지 넘버링"
+msgstr "페이지 번호"
 
 #: ../data/ui/preferences.blp:315 ../data/ui/reader_settings.blp:49
 msgid "Hide the page numbering at the bottom of the screen while reading"
-msgstr "읽는 동안 화면 하단에 페이지 번호 숨기기"
+msgstr "읽는 동안 화면 하단의 페이지 번호 숨기기"
 
 #: ../data/ui/preferences.blp:319
 msgid "Fullscreen"
@@ -665,15 +664,15 @@ msgstr "페이지 읽기 모드"
 
 #: ../data/ui/preferences.blp:326
 msgid "Right to Left / Left to Right / Vertical"
-msgstr "오른쪽에서 왼쪽 / 왼쪽에서 오른쪽 / 수직"
+msgstr "오른쪽에서 왼쪽 / 왼쪽에서 오른쪽 / 세로"
 
 #: ../data/ui/preferences.blp:329 ../data/ui/reader_settings.blp:21
 msgid "Scaling"
-msgstr "스케일링"
+msgstr "크기 조정"
 
 #: ../data/ui/preferences.blp:330
 msgid "Type of scaling to adapt image"
-msgstr "이미지 맞춤 스케일링 유형"
+msgstr "이미지에 적용할 크기 조정 방식"
 
 #: ../data/ui/preferences.blp:342
 msgid "Landscape Pages Zoom"
@@ -695,18 +694,18 @@ msgid ""
 "NOTE: Requires more CPU usage and can cause rendering and animation "
 "slowdowns, especially on mobile devices."
 msgstr ""
-"이미지 흰색 여백을 자릅니다\n"
+"이미지의 흰색 여백 자르기\n"
 "\n"
-"주의: CPU 사용량이 증가하여 모바일 기기 등에서 렌더링 및 애니메이션이 느려질 "
-"수 있습니다."
+"참고: CPU 사용량이 늘어나며, 특히 모바일 기기에서 렌더링과 애니메이션이 "
+"느려질 수 있습니다."
 
 #: ../data/ui/preferences.blp:352 ../data/ui/reader_settings.blp:43
 msgid "Borders Cropping Threshold"
-msgstr ""
+msgstr "여백 자르기 임계값"
 
 #: ../data/ui/preferences.blp:353 ../data/ui/reader_settings.blp:44
 msgid "Control which pixels are classified as 'white' during borders detection"
-msgstr ""
+msgstr "여백 감지 시 '흰색'으로 분류할 픽셀 기준 조정"
 
 #: ../data/ui/preferences.blp:358 ../data/ui/shortcuts.blp:98
 #: ../data/ui/shortcuts.blp:104
@@ -715,7 +714,7 @@ msgstr "웹툰 읽기 모드"
 
 #: ../data/ui/preferences.blp:359
 msgid "Long Strip aka Infinite Vertical Canvas"
-msgstr "롱스트립(무한 수직 캔버스)"
+msgstr "롱 스트립(무한 세로 캔버스)"
 
 #: ../data/ui/preferences.blp:364
 msgid "Reset to Default"
@@ -735,7 +734,7 @@ msgstr "스크롤 이동량"
 
 #: ../data/ui/preferences.blp:384
 msgid "Percentage of page height to scroll on click or Page Up/Down"
-msgstr "클릭 또는 페이지 업/다운에서 스크롤할 페이지 높이 비율"
+msgstr "클릭하거나 Page Up/Down을 누를 때 스크롤할 페이지 높이 비율"
 
 #: ../data/ui/preferences.blp:395
 msgid "Drag Sensitivity"
@@ -747,27 +746,27 @@ msgstr "드래그 스크롤 감도 배수"
 
 #: ../data/ui/preferences.blp:408 ../data/ui/reader_settings.blp:54
 msgid "OCR Translator"
-msgstr ""
+msgstr "OCR 번역기"
 
 #: ../data/ui/preferences.blp:411 ../data/ui/reader_settings.blp:57
 msgid "OCR Language"
-msgstr ""
+msgstr "OCR 언어"
 
 #: ../data/ui/preferences.blp:412
 msgid "Default language to use for OCR text recognitions"
-msgstr ""
+msgstr "OCR 텍스트 인식에 사용할 기본 언어"
 
 #: ../data/ui/preferences.blp:416
 msgid "Translator"
-msgstr ""
+msgstr "번역기"
 
 #: ../data/ui/preferences.blp:417
 msgid "Service to use for translations"
-msgstr ""
+msgstr "번역에 사용할 서비스"
 
 #: ../data/ui/preferences.blp:428
 msgid "Edit Translator Settings"
-msgstr ""
+msgstr "번역기 설정 편집"
 
 #: ../data/ui/preferences.blp:440
 msgid "Advanced"
@@ -783,15 +782,15 @@ msgstr "데이터"
 
 #: ../data/ui/preferences.blp:451
 msgid "Data not saved in the library"
-msgstr "데이터가 라이브러리가 저장되지 않았습니다"
+msgstr "라이브러리에 저장되지 않은 데이터"
 
 #: ../data/ui/preferences.blp:454
 msgid "Clear Chapters Cache and Database"
-msgstr "화차 캐시 및 데이터베이스 비우기"
+msgstr "챕터 캐시 및 데이터베이스 비우기"
 
 #: ../data/ui/preferences.blp:469
 msgid "Clear Chapters Cache and Database on Exit"
-msgstr "종료 시 화차 캐시 및 데이터베이스 비우기"
+msgstr "종료 시 챕터 캐시 및 데이터베이스 비우기"
 
 #: ../data/ui/preferences.blp:474 ../data/ui/webview.blp:10
 msgid "WebView"
@@ -799,7 +798,7 @@ msgstr "WebView"
 
 #: ../data/ui/preferences.blp:477
 msgid "Clear Data"
-msgstr "데이터 정리"
+msgstr "데이터 지우기"
 
 #: ../data/ui/preferences.blp:496
 msgid "Use Up-to-date Servers Modules"
@@ -811,12 +810,12 @@ msgid ""
 "code repository and updated at each startup, is used instead of the one "
 "delivered with the application."
 msgstr ""
-"앱에 기본 포함된 버전 대신 소스 코드 리포지토리에서 설치하여 시작할 때마다 업"
-"데이트되는 대체 서버 모듈을 사용합니다."
+"앱에 포함된 서버 모듈 대신, 소스 코드 저장소에서 설치되어 시작할 때마다 "
+"업데이트되는 대체 버전을 사용합니다."
 
 #: ../data/ui/preferences.blp:501
 msgid "Suggest Submitting a Bug Report in Case of Error"
-msgstr "오류 발생 시 버그 리포트 제출하기"
+msgstr "오류 발생 시 버그 보고서 제출 제안"
 
 #: ../data/ui/preferences.blp:502
 msgid ""
@@ -824,8 +823,9 @@ msgid ""
 "has arisen), you will be prompted to create a bug report using a pre-"
 "formatted text to copy/paste."
 msgstr ""
-"서버에 오류가 발생하면(업데이트되었거나 예외가 발생한 경우), 복사해 붙여넣을 "
-"수 있는 양식화된 텍스트로 버그 리포트를 작성하도록 안내합니다."
+"서버에서 오류가 발생하면(서버가 업데이트되었거나 예상치 못한 상황이 생긴 "
+"경우), 복사해 붙여넣을 수 있는 양식화된 텍스트로 버그 보고서를 작성하도록 "
+"안내합니다."
 
 #: ../data/ui/preferences.blp:507
 msgid "Credentials Storage"
@@ -852,8 +852,8 @@ msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
 msgstr ""
-"애니메이션이 끊기고 부자연스럽게 보일 때 전자책(E-Ink) 끼리 사용하면 유용합니"
-"다. (화면 주사율이 낮을 때)"
+"E Ink 전자책 단말기에서 (화면 주사율이 낮아) 애니메이션이 심하게 끊기고 "
+"거슬리는 것을 막는 데 유용합니다"
 
 #: ../data/ui/preferences.blp:524
 msgid ""
@@ -861,9 +861,9 @@ msgid ""
 "environment and therefore cannot toggle reduced motion animations globally "
 "via GNOME Settings (Accessibility ⇨ Seeing ⇨ Reduced Motion)."
 msgstr ""
-"이 설정은 그놈 데스크톱 환경을 사용하지 않아 그놈 설정에서 시스템 전체 애니메"
-"이션 줄이기를 설정할 수 없는 사용자를 위한 기능입니다 (접근성 ➡ 시각 ➡ 동작 "
-"줄이기)."
+"이 설정은 GNOME 데스크톱 환경을 사용하지 않아 GNOME 설정(접근성 ⇨ 보기 ⇨ "
+"동작 줄이기)에서 시스템 전체의 동작 줄이기를 켤 수 없는 사용자를 위한 "
+"것입니다."
 
 #: ../data/ui/preferences_server_params.blp:10
 #: ../data/ui/preferences_server_params.blp:16
@@ -880,35 +880,35 @@ msgstr "서버 언어"
 #: ../data/ui/preferences_translator_params.blp:10
 #: ../data/ui/preferences_translator_params.blp:16
 msgid "Translator Settings"
-msgstr ""
+msgstr "번역기 설정"
 
 #: ../data/ui/preferences_translator_params.blp:22
 msgid "Service"
-msgstr ""
+msgstr "서비스"
 
 #: ../data/ui/preferences_translator_params.blp:27
 msgid "Instance URL"
-msgstr ""
+msgstr "인스턴스 URL"
 
 #: ../data/ui/preferences_translator_params.blp:36
 msgid "API Key"
-msgstr ""
+msgstr "API 키"
 
 #: ../data/ui/preferences_translator_params.blp:56
 msgid "Validate"
-msgstr ""
+msgstr "검증"
 
 #: ../data/ui/preferences_translator_params.blp:69
 msgid "Behavior"
-msgstr ""
+msgstr "동작"
 
 #: ../data/ui/preferences_translator_params.blp:72
 msgid "Translator Language"
-msgstr ""
+msgstr "번역 언어"
 
 #: ../data/ui/preferences_translator_params.blp:73
 msgid "Default language to use as target language for translations"
-msgstr ""
+msgstr "번역 대상 언어로 사용할 기본 언어"
 
 #: ../data/ui/reader.blp:27
 msgid "Back"
@@ -916,47 +916,47 @@ msgstr "뒤로"
 
 #: ../data/ui/reader.blp:35
 msgid "Toggle Fullscreen Mode"
-msgstr "전체 화면 모드"
+msgstr "전체 화면 모드 전환"
 
 #: ../data/ui/reader.blp:47
 msgid "Toggle OCR Translator"
-msgstr ""
+msgstr "OCR 번역기 켜기/끄기"
 
 #: ../data/ui/reader.blp:104 ../data/ui/reader.blp:158
 msgid "Copy"
-msgstr ""
+msgstr "복사"
 
 #: ../data/ui/reader.blp:122
 msgid "Translate"
-msgstr ""
+msgstr "번역"
 
 #: ../data/ui/reader_settings.blp:9
 msgid "Reader Settings"
-msgstr ""
+msgstr "리더 설정"
 
 #: ../data/ui/reader_settings.blp:14
 msgid "Custom"
-msgstr ""
+msgstr "사용자 지정"
 
 #: ../data/ui/reader_settings.blp:18
 msgid "Pages"
-msgstr ""
+msgstr "페이지"
 
 #: ../data/ui/reader_settings.blp:33
 msgid "Zoom Landscape Pages"
-msgstr "가로 화면 확대"
+msgstr "가로 페이지 확대"
 
 #: ../data/ui/reader_settings.blp:38
 msgid "Crop Borders"
-msgstr "여백 제거"
+msgstr "여백 자르기"
 
 #: ../data/ui/reader_settings.blp:39
 msgid "Crop white borders of pages"
-msgstr ""
+msgstr "페이지의 흰색 여백 자르기"
 
 #: ../data/ui/reader_settings.blp:48
 msgid "Hide Page Numbering"
-msgstr "페이지 넘버링 숨기기"
+msgstr "페이지 번호 숨기기"
 
 #: ../data/ui/shortcuts.blp:10
 msgctxt "Shortcut window description"
@@ -976,17 +976,17 @@ msgstr "키보드 단축키 열기"
 #: ../data/ui/shortcuts.blp:23
 msgctxt "Shortcut window description"
 msgid "Quit"
-msgstr "끝내기"
+msgstr "종료"
 
 #: ../data/ui/shortcuts.blp:29
 msgctxt "Shortcut window description"
 msgid "Explorer"
-msgstr ""
+msgstr "탐색"
 
 #: ../data/ui/shortcuts.blp:32
 msgctxt "Shortcut window description"
 msgid "Search For Servers"
-msgstr ""
+msgstr "서버 검색"
 
 #: ../data/ui/shortcuts.blp:38
 msgctxt "Shortcut window description"
@@ -1026,12 +1026,12 @@ msgstr "만화 카드"
 #: ../data/ui/shortcuts.blp:70
 msgctxt "Shortcut window description"
 msgid "Select All Chapters"
-msgstr "모든 화 선택"
+msgstr "모든 챕터 선택"
 
 #: ../data/ui/shortcuts.blp:76
 msgctxt "Shortcut window description"
 msgid "Reader"
-msgstr "뷰어"
+msgstr "리더"
 
 #: ../data/ui/shortcuts.blp:79
 msgctxt "Shortcut window description"
@@ -1076,12 +1076,12 @@ msgstr "확대/축소 초기화"
 #: ../data/ui/shortcuts.blp:128
 msgctxt "Shortcut window description"
 msgid "Toggle OCR Translator"
-msgstr ""
+msgstr "OCR 번역기 켜기/끄기"
 
 #: ../data/ui/shortcuts.blp:135
 msgctxt "Shortcut window description"
 msgid "Toggle Fullscreen Mode"
-msgstr "전체 화면 모드"
+msgstr "전체 화면 모드 전환"
 
 #: ../data/ui/shortcuts.blp:142
 msgctxt "Shortcut window description"
@@ -1101,7 +1101,7 @@ msgstr "모든 다운로드 선택"
 #: ../data/ui/shortcuts.blp:157
 msgctxt "Shortcut window description"
 msgid "History"
-msgstr ""
+msgstr "이력"
 
 #: ../data/ui/support.blp:10 ../data/ui/support.blp:16
 msgid "Support Development"
@@ -1133,12 +1133,12 @@ msgstr ""
 
 #: ../data/ui/support.blp:84
 msgid "Weekly, monthly or yearly donation"
-msgstr "매주, 매월 또는 매년 단위 기부"
+msgstr "주간, 월간 또는 연간 후원"
 
 #: ../data/ui/support.blp:90 ../data/ui/support.blp:106
 #: ../data/ui/support.blp:122 ../data/ui/support.blp:136
 msgid "Donate and Support"
-msgstr "기부 및 후원"
+msgstr "후원하기"
 
 #: ../data/ui/support.blp:100 ../data/ui/support.blp:132
 msgid "One-time donation"
@@ -1146,7 +1146,7 @@ msgstr "일회성 후원"
 
 #: ../data/ui/support.blp:116
 msgid "One-time or monthly donation"
-msgstr "정기 후원 (또는 월 정기 기부)"
+msgstr "일회성 또는 월간 후원"
 
 #: ../data/ui/support.blp:144
 msgid "Copy to Clipboard"
@@ -1175,9 +1175,8 @@ msgid ""
 "currently making them incompatible with the current version of the "
 "application. Please update it if a more recent version exists."
 msgstr ""
-"현재 변경 사항이 애플리케이션의 현재 버전과 호환되지 않으므로 외부 서버 모듈 "
-"업데이트이 일시 중지되었습니다. 더 최신 버전이 있는 경우 업데이트해 주시기 바"
-"랍니다."
+"최근 변경 사항으로 인해 외부 서버 모듈이 현재 버전의 앱과 호환되지 않아 "
+"업데이트가 일시 중단되었습니다. 더 최신 버전의 앱이 있다면 업데이트해 주세요."
 
 #: ../komikku/application.py:438 ../komikku/application.py:688
 #: ../komikku/explorer/common.py:322
@@ -1192,11 +1191,11 @@ msgid ""
 "by buying the official comics when they are\n"
 "available in your region/language."
 msgstr ""
-"만화, 웹툰, 코믹스 뷰어\n"
+"만화, 웹툰, 코믹스 리더\n"
 "\n"
-"👉 거주하는 지역/언어로 정발판 만화가\n"
-"출시되면 공식 단행본을 구매하여 작가를\n"
-"후원할 수 있음을 잊지 마세요."
+"👉 거주 지역이나 사용 언어로 정식 출간된\n"
+"작품이 있다면, 정품을 구매해 작가를\n"
+"응원할 수 있다는 것을 잊지 마세요."
 
 #: ../komikku/application.py:462
 msgid "Supporters"
@@ -1219,7 +1218,7 @@ msgstr "텍스트 복사"
 
 #: ../komikku/application.py:614
 msgid "Context"
-msgstr "맥락"
+msgstr "컨텍스트"
 
 #: ../komikku/application.py:634
 msgid "Stack Trace"
@@ -1239,8 +1238,8 @@ msgid ""
 "unexpected case has arisen). Here is a pre-formatted text that you can copy "
 "and paste when filling out the issue."
 msgstr ""
-"서버에 문제가 발생했습니다 (서버가 업데이트되었거나 예외 상황이 발생함). 이슈"
-"를 작성할 때 복사하여 붙여넣을 수 있는 양식화된 텍스트입니다."
+"서버에 문제가 발생했습니다(서버가 업데이트되었거나 예상치 못한 상황이 생김). "
+"이슈를 작성할 때 복사해 붙여넣을 수 있는 양식화된 텍스트입니다."
 
 #: ../komikku/application.py:689
 msgid "Create an Issue"
@@ -1252,11 +1251,11 @@ msgstr "정말 종료하시겠습니까?"
 
 #: ../komikku/application.py:726
 msgid "Some chapters are currently being downloaded."
-msgstr "일부 화를 현재 다운로드하는 중입니다."
+msgstr "일부 챕터를 다운로드하는 중입니다."
 
 #: ../komikku/application.py:728
 msgid "Some mangas are currently being updated."
-msgstr "일부 만화를 현재 업데이트 중입니다."
+msgstr "일부 만화를 업데이트하는 중입니다."
 
 #: ../komikku/application.py:732
 msgid "Quit?"
@@ -1285,17 +1284,17 @@ msgstr "필터"
 #: ../komikku/preferences/__init__.py:169
 #: ../komikku/preferences/__init__.py:192
 msgid "Clear?"
-msgstr ""
+msgstr "지우시겠습니까?"
 
 #: ../komikku/card/__init__.py:222
 msgid "Are you sure you want to clear all chapters?"
-msgstr "모든 챕터(화)를 정리하시겠습니까?"
+msgstr "모든 챕터를 지우시겠습니까?"
 
 #: ../komikku/card/__init__.py:223 ../komikku/card/chapters_list.py:724
 #: ../komikku/library/__init__.py:341 ../komikku/preferences/__init__.py:171
 #: ../komikku/preferences/__init__.py:194
 msgid "Clear"
-msgstr "정리"
+msgstr "지우기"
 
 #: ../komikku/card/__init__.py:267
 msgid "Unknown"
@@ -1303,7 +1302,7 @@ msgstr "알 수 없음"
 
 #: ../komikku/card/__init__.py:369
 msgid "Read progress synchronization with server completed successfully"
-msgstr "서버와 읽기 진행도 동기화가 완료되었습니다"
+msgstr "서버와 읽기 진행 상황 동기화를 완료했습니다"
 
 #: ../komikku/card/__init__.py:375
 msgid "Failed to get manga URL"
@@ -1317,12 +1316,12 @@ msgid ""
 "Please switch to another server."
 msgstr ""
 "공지\n"
-"{0}은 이제 더 이상 지원하지 않습니다.\n"
-"다른 서버로 전환해주세요."
+"{0}은(는) 더 이상 지원되지 않습니다.\n"
+"다른 서버로 전환해 주세요."
 
 #: ../komikku/card/__init__.py:492 ../komikku/card/chapters_list.py:728
 msgid "Clear and Reset"
-msgstr "정리 및 초기화"
+msgstr "지우기 및 초기화"
 
 #: ../komikku/card/__init__.py:492 ../komikku/card/chapters_list.py:728
 msgid "Reset"
@@ -1333,15 +1332,15 @@ msgstr "초기화"
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
-msgstr[0] "{0} 선택됨"
+msgstr[0] "{0}개 선택됨"
 
 #: ../komikku/card/chapters_list.py:355
 msgid "No chapters found"
-msgstr "챕터(화) 없음"
+msgstr "챕터 없음"
 
 #: ../komikku/card/chapters_list.py:418 ../komikku/card/chapters_list.py:517
 msgid "Failed to update chapters reading status"
-msgstr "챕터(화) 읽기 상태 업데이트 실패"
+msgstr "챕터 읽기 상태 업데이트 실패"
 
 #: ../komikku/card/chapters_list.py:656
 msgid "%m/%d/%Y"
@@ -1361,15 +1360,15 @@ msgstr "읽지 않음으로 표시"
 
 #: ../komikku/card/chapters_list.py:746
 msgid "Mark Previous Chapters as Read"
-msgstr "이전 챕터(화)를 읽음으로 표시"
+msgstr "이전 챕터를 읽음으로 표시"
 
 #: ../komikku/card/info_box.py:80
 msgid "Show Less"
-msgstr ""
+msgstr "간략히"
 
 #: ../komikku/card/info_box.py:80 ../komikku/card/info_box.py:178
 msgid "Show More"
-msgstr ""
+msgstr "더 보기"
 
 #: ../komikku/card/info_box.py:110
 msgid "Unknown author"
@@ -1382,41 +1381,41 @@ msgstr "알 수 없는 상태"
 
 #: ../komikku/card/info_box.py:124
 msgid "Local"
-msgstr ""
+msgstr "로컬"
 
 #: ../komikku/card/info_box.py:165
 msgid "%m/%d/%Y %H:%M"
-msgstr ""
+msgstr "%Y/%m/%d %H:%M"
 
 #: ../komikku/card/info_box.py:183
 msgid "Donate"
-msgstr ""
+msgstr "후원하기"
 
 #: ../komikku/card/tracking.py:72
 msgid "Failed to get data from tracker"
-msgstr "트래커로부터 데이터를 받아오는 데 실패했습니다"
+msgstr "트래커에서 데이터를 가져오지 못했습니다"
 
 #: ../komikku/card/tracking.py:100
 msgid "No tracking services available"
-msgstr ""
+msgstr "사용할 수 있는 트래킹 서비스가 없습니다"
 
 #: ../komikku/card/tracking.py:105
 msgid ""
 "The chapter numbers are unknown. Automatic synchronization of reading "
 "progress is not possible."
-msgstr ""
+msgstr "챕터 번호를 알 수 없어 읽기 진행 상황을 자동으로 동기화할 수 없습니다."
 
 #: ../komikku/card/tracking.py:195
 msgid "Track"
-msgstr ""
+msgstr "트래킹"
 
 #: ../komikku/card/tracking.py:221
 msgid "Use"
-msgstr ""
+msgstr "사용"
 
 #: ../komikku/card/tracking.py:229
 msgid "Cancel Tracking"
-msgstr ""
+msgstr "트래킹 취소"
 
 #: ../komikku/card/tracking.py:235 ../komikku/servers/comick/__init__.py:77
 #: ../komikku/servers/comix/__init__.py:58
@@ -1439,29 +1438,29 @@ msgstr ""
 #: ../komikku/servers/weebdex/__init__.py:61
 #: ../komikku/servers/zenko/__init__.py:57
 msgid "Status"
-msgstr ""
+msgstr "상태"
 
 #: ../komikku/card/tracking.py:244
 msgid "Score"
-msgstr ""
+msgstr "점수"
 
 #: ../komikku/card/tracking.py:249
 msgid "Chapter"
-msgstr ""
+msgstr "챕터"
 
 #: ../komikku/card/tracking.py:261 ../komikku/categories_editor.py:78
 #: ../komikku/library/__init__.py:406
 msgid "Delete?"
-msgstr ""
+msgstr "삭제하시겠습니까?"
 
 #: ../komikku/card/tracking.py:262
 msgid "Are you sure you want to cancel tracking?"
-msgstr ""
+msgstr "트래킹을 취소하시겠습니까?"
 
 #: ../komikku/card/tracking.py:263 ../komikku/categories_editor.py:80
 #: ../komikku/categories_editor.py:176 ../komikku/library/__init__.py:408
 msgid "Delete"
-msgstr ""
+msgstr "삭제"
 
 #: ../komikku/card/tracking.py:378 ../komikku/preferences/trackers.py:42
 msgid "Connection is expired"
@@ -1475,7 +1474,7 @@ msgstr "{} 검색"
 #: ../komikku/card/tracking.py:528 ../komikku/explorer/search/search.py:86
 #: ../komikku/explorer/search/search_global.py:169
 msgid "Oops, search failed. Please try again."
-msgstr "이런. 검색에 실패했습니다. 다시 시도해보세요."
+msgstr "이런, 검색에 실패했습니다. 다시 시도해 주세요."
 
 #: ../komikku/card/tracking.py:532 ../komikku/explorer/search/search.py:90
 msgid "No Results Found"
@@ -1483,7 +1482,7 @@ msgstr "검색 결과가 없습니다"
 
 #: ../komikku/card/tracking.py:533 ../komikku/explorer/search/search.py:91
 msgid "Try a different search"
-msgstr ""
+msgstr "다른 검색어로 시도해 보세요"
 
 #: ../komikku/categories_editor.py:79
 #, python-brace-format
@@ -1491,6 +1490,8 @@ msgid ""
 "Are you sure you want to delete\n"
 "\"{0}\" category?"
 msgstr ""
+"\"{0}\" 카테고리를\n"
+"삭제하시겠습니까?"
 
 #: ../komikku/categories_editor.py:182
 msgid "Edit"
@@ -1590,35 +1591,34 @@ msgstr "뉴트로이스 프라이드 색상"
 
 #: ../komikku/consts.py:111
 msgid "Random Colors"
-msgstr "무작위(랜덤) 색상"
+msgstr "무작위 색상"
 
 #: ../komikku/downloader.py:274
 #, python-brace-format
 msgid "[{0}] Chapters download ended"
-msgstr ""
+msgstr "[{0}] 챕터 다운로드 완료"
 
 #: ../komikku/explorer/common.py:123
 #, python-brace-format
 msgid "{0} chapter"
 msgid_plural "{0} chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "챕터 {0}개"
 
 #: ../komikku/explorer/common.py:125
 #, python-brace-format
 msgid "Last Chapter: {}"
-msgstr ""
+msgstr "마지막 챕터: {}"
 
 #: ../komikku/explorer/common.py:127
 #, python-brace-format
 msgid "Last Volume: {}"
-msgstr ""
+msgstr "마지막 권: {}"
 
 #: ../komikku/explorer/common.py:245 ../komikku/preferences/servers.py:396
 #: ../komikku/preferences/servers.py:450
 #: ../komikku/servers/mangatube/__init__.py:150
 msgid "18+"
-msgstr "만 18세 이상 이용가"
+msgstr "18+"
 
 #: ../komikku/explorer/common.py:268
 msgid "Help"
@@ -1626,89 +1626,91 @@ msgstr "도움말"
 
 #: ../komikku/explorer/common.py:269
 msgid "Local Folder"
-msgstr ""
+msgstr "로컬 폴더"
 
 #: ../komikku/explorer/common.py:271
 msgid ""
 "A specific folder structure is required for local comics to be properly "
 "processed."
-msgstr ""
+msgstr "로컬 만화를 올바르게 처리하려면 정해진 폴더 구조가 필요합니다."
 
 #: ../komikku/explorer/common.py:272
 msgid ""
 "Each comic must have its own folder which must contain the chapters/volumes "
 "as archive files in CBZ, CBR, CBT, EPUB or PDF formats."
 msgstr ""
+"만화마다 별도의 폴더가 있어야 하며, 그 안에 챕터/권이 CBZ, CBR, CBT, EPUB "
+"또는 PDF 형식의 압축 파일로 들어 있어야 합니다."
 
 #: ../komikku/explorer/common.py:273
 msgid "The folder's name will be used as name for the comic."
-msgstr ""
+msgstr "폴더 이름이 만화 제목으로 사용됩니다."
 
 #: ../komikku/explorer/common.py:274
 msgid ""
 "NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."
-msgstr ""
+msgstr "참고: CBR 압축 파일을 열려면 'unrar' 또는 'unar' 명령줄 도구가 필요합니다."
 
 #: ../komikku/explorer/common.py:280
 msgid "Open local folder"
-msgstr ""
+msgstr "로컬 폴더 열기"
 
 #: ../komikku/explorer/common.py:286 ../komikku/explorer/common.py:288
 #: ../komikku/explorer/common.py:304 ../komikku/explorer/common.py:307
 msgid "Content Information"
-msgstr ""
+msgstr "콘텐츠 정보"
 
 #: ../komikku/explorer/common.py:293
 #, python-brace-format
 msgid "Type: {0}"
-msgstr ""
+msgstr "유형: {0}"
 
 #: ../komikku/explorer/common.py:296
 #, python-brace-format
 msgid ""
 "Copyrighted: Reproduction and distribution authorized under certain "
 "conditions ({0} license)"
-msgstr ""
+msgstr "저작권 보호: 특정 조건에서 복제 및 배포 허용 ({0} 라이선스)"
 
 #: ../komikku/explorer/common.py:299
 msgid "Royalty-free, Public domain"
-msgstr ""
+msgstr "저작권료 없음, 퍼블릭 도메인"
 
 #: ../komikku/explorer/common.py:301 ../komikku/explorer/common.py:312
 msgid "Copyrighted works"
-msgstr ""
+msgstr "저작권 보호 작품"
 
 #: ../komikku/explorer/common.py:311
 msgid "Use with caution!"
-msgstr ""
+msgstr "주의해서 사용하세요!"
 
 #: ../komikku/explorer/common.py:314
 msgid "Licensed/Published and/or Unlicensed works"
-msgstr ""
+msgstr "정식 라이선스/출간 작품 및/또는 비공식 작품"
 
 #: ../komikku/explorer/common.py:315
 msgid "It may be partially or totally illegal"
-msgstr ""
+msgstr "일부 또는 전부가 불법일 수 있습니다"
 
 #: ../komikku/explorer/common.py:330
 msgid "Toggle pinned status"
-msgstr ""
+msgstr "고정 상태 전환"
 
 #: ../komikku/explorer/search/__init__.py:283
 msgid "Search was cancelled"
-msgstr ""
+msgstr "검색이 취소되었습니다"
 
 #: ../komikku/explorer/search/__init__.py:290
 msgid "Oops, server website URL is unknown."
-msgstr ""
+msgstr "이런, 서버 웹사이트 URL을 알 수 없습니다."
 
 #: ../komikku/explorer/search/__init__.py:380
 msgid "Search for Reading"
-msgstr ""
+msgstr "읽을 만화 검색"
 
 #: ../komikku/explorer/search/__init__.py:382
 msgid "Empty search is allowed."
-msgstr ""
+msgstr "검색어 없이도 검색할 수 있습니다."
 
 #: ../komikku/explorer/search/__init__.py:384
 msgid ""
@@ -1716,45 +1718,48 @@ msgid ""
 "\n"
 "<b>id:ID from comic URL</b>"
 msgstr ""
+"다음 구문으로 특정 만화를 찾을 수도 있습니다:\n"
+"\n"
+"<b>id:만화 URL의 ID</b>"
 
 #: ../komikku/explorer/search/__init__.py:412
 msgid "Global Search"
-msgstr ""
+msgstr "글로벌 검색"
 
 #: ../komikku/explorer/search/__init__.py:414
 msgid "Search globally by name"
-msgstr ""
+msgstr "모든 서버에서 이름으로 검색"
 
 #: ../komikku/explorer/search/__init__.py:416
 msgid "Search for Comics"
-msgstr ""
+msgstr "만화 검색"
 
 #: ../komikku/explorer/search/__init__.py:488
 msgid "Oops, failed to retrieve manga's information."
-msgstr ""
+msgstr "이런, 만화 정보를 가져오지 못했습니다."
 
 #: ../komikku/explorer/search/latest_updates.py:74
 msgid "Oops, failed to retrieve latest updates."
-msgstr ""
+msgstr "이런, 최신 업데이트를 가져오지 못했습니다."
 
 #: ../komikku/explorer/search/latest_updates.py:78
 msgid "No Latest Updates Found"
-msgstr ""
+msgstr "최신 업데이트 없음"
 
 #: ../komikku/explorer/search/latest_updates.py:86
 #: ../komikku/explorer/search/most_popular.py:86
 #: ../komikku/explorer/search/search.py:100
 #: ../komikku/explorer/search/search_global.py:95
 msgid "A request is already in progress."
-msgstr ""
+msgstr "이미 요청을 처리하는 중입니다."
 
 #: ../komikku/explorer/search/most_popular.py:74
 msgid "Oops, failed to retrieve most popular."
-msgstr ""
+msgstr "이런, 인기 작품을 가져오지 못했습니다."
 
 #: ../komikku/explorer/search/most_popular.py:78
 msgid "No Most Popular Found"
-msgstr ""
+msgstr "인기 작품 없음"
 
 #: ../komikku/explorer/search/search_global.py:166
 msgid "Search cancelled"
@@ -1773,12 +1778,12 @@ msgstr "결과가 없습니다"
 #: ../komikku/servers/skymangas/__init__.py:84
 #: ../komikku/servers/zenko/__init__.py:80
 msgid "Other"
-msgstr ""
+msgstr "기타"
 
 #: ../komikku/explorer/servers.py:150
 msgid ""
 "It appears that you have not yet defined any server languages in Preferences."
-msgstr ""
+msgstr "설정에서 서버 언어를 아직 지정하지 않은 것 같습니다."
 
 #: ../komikku/explorer/servers.py:223
 msgid "Pinned"
@@ -1794,15 +1799,15 @@ msgstr "어제"
 
 #: ../komikku/history.py:40
 msgid "%A, %B %e"
-msgstr ""
+msgstr "%B %e일 %A"
 
 #: ../komikku/history.py:94
 msgid "Resume"
-msgstr "재개"
+msgstr "이어 읽기"
 
 #: ../komikku/library/__init__.py:340
 msgid "Are you sure you want to clear selected mangas?"
-msgstr ""
+msgstr "선택한 만화를 지우시겠습니까?"
 
 #: ../komikku/library/__init__.py:402
 msgid "Are you sure you want to delete this manga?"
@@ -1814,40 +1819,40 @@ msgstr "선택한 만화를 정말로 삭제하시겠습니까?"
 
 #: ../komikku/library/__init__.py:428
 msgid "Are you sure you want to download all chapters of selected mangas?"
-msgstr ""
+msgstr "선택한 만화의 모든 챕터를 다운로드하시겠습니까?"
 
 #: ../komikku/library/__init__.py:430
 msgid "Download?"
-msgstr ""
+msgstr "다운로드하시겠습니까?"
 
 #: ../komikku/library/__init__.py:457
 msgid "Unread"
-msgstr ""
+msgstr "읽지 않음"
 
 #: ../komikku/library/__init__.py:458
 msgid "Series with unread chapters"
-msgstr ""
+msgstr "읽지 않은 챕터가 있는 시리즈"
 
 #: ../komikku/library/__init__.py:461
 #: ../komikku/models/database/downloads.py:20
 msgid "Downloaded"
-msgstr ""
+msgstr "다운로드됨"
 
 #: ../komikku/library/__init__.py:462
 msgid "Series with downloaded chapters"
-msgstr ""
+msgstr "다운로드한 챕터가 있는 시리즈"
 
 #: ../komikku/library/__init__.py:465
 msgid "Recents"
-msgstr ""
+msgstr "최근"
 
 #: ../komikku/library/__init__.py:466
 msgid "Series with new chapters"
-msgstr ""
+msgstr "새 챕터가 있는 시리즈"
 
 #: ../komikku/library/__init__.py:685
 msgid "Welcome to Komikku"
-msgstr ""
+msgstr "Komikku에 오신 것을 환영합니다"
 
 #: ../komikku/library/__init__.py:697
 msgid "Loading…"
@@ -1855,15 +1860,15 @@ msgstr "불러오는 중…"
 
 #: ../komikku/library/__init__.py:821
 msgid "Failed to update reading status"
-msgstr ""
+msgstr "읽기 상태 업데이트 실패"
 
 #: ../komikku/library/__init__.py:849
 msgid "Add New Comic"
-msgstr ""
+msgstr "새 만화 추가"
 
 #: ../komikku/library/__init__.py:876 ../komikku/library/categories_list.py:146
 msgid "Uncategorized"
-msgstr ""
+msgstr "미분류"
 
 #: ../komikku/library/categories_list.py:140
 #: ../komikku/servers/asurascans/__init__.py:38
@@ -1888,11 +1893,11 @@ msgstr ""
 #: ../komikku/servers/skymangas/__init__.py:78
 #: ../komikku/servers/webtoon/__init__.py:60
 msgid "All"
-msgstr ""
+msgstr "전체"
 
 #: ../komikku/models/database/downloads.py:19
 msgid "Download pending"
-msgstr ""
+msgstr "다운로드 대기 중"
 
 #: ../komikku/models/database/downloads.py:21
 msgid "Downloading"
@@ -1900,11 +1905,11 @@ msgstr "다운로드 중"
 
 #: ../komikku/models/database/downloads.py:22
 msgid "Download canceled"
-msgstr ""
+msgstr "다운로드 취소됨"
 
 #: ../komikku/models/database/downloads.py:23
 msgid "Download error"
-msgstr ""
+msgstr "다운로드 오류"
 
 #: ../komikku/models/database/mangas.py:46
 #: ../komikku/servers/jmanga/__init__.py:53
@@ -1916,7 +1921,7 @@ msgstr ""
 #: ../komikku/servers/skymangas/__init__.py:48
 #: ../komikku/servers/weebcentral/__init__.py:66
 msgid "Complete"
-msgstr ""
+msgstr "완결"
 
 #: ../komikku/models/database/mangas.py:47
 #: ../komikku/servers/comick/__init__.py:81
@@ -1941,7 +1946,7 @@ msgstr ""
 #: ../komikku/servers/weebdex/__init__.py:65
 #: ../komikku/servers/zenko/__init__.py:61
 msgid "Ongoing"
-msgstr ""
+msgstr "연재 중"
 
 #: ../komikku/models/database/mangas.py:48
 #: ../komikku/servers/mangakawaii/__init__.py:51
@@ -1949,7 +1954,7 @@ msgstr ""
 #: ../komikku/servers/mangaworld/__init__.py:80
 #: ../komikku/servers/skymangas/__init__.py:50
 msgid "Suspended"
-msgstr ""
+msgstr "연재 중지"
 
 #: ../komikku/models/database/mangas.py:49
 #: ../komikku/servers/comix/__init__.py:64
@@ -1966,23 +1971,23 @@ msgstr ""
 #: ../komikku/servers/weebdex/__init__.py:67
 #: ../komikku/servers/zenko/__init__.py:63
 msgid "Hiatus"
-msgstr ""
+msgstr "휴재"
 
 #: ../komikku/preferences/__init__.py:170
 msgid "Are you sure you want to clear chapters cache and database?"
-msgstr ""
+msgstr "챕터 캐시와 데이터베이스를 비우시겠습니까?"
 
 #: ../komikku/preferences/__init__.py:189
 msgid "Failed to clear WebView data"
-msgstr ""
+msgstr "WebView 데이터를 지우지 못했습니다"
 
 #: ../komikku/preferences/__init__.py:193
 msgid "Are you sure you want to clear WebView data (cache, storage, cookies)?"
-msgstr ""
+msgstr "WebView 데이터(캐시, 저장소, 쿠키)를 지우시겠습니까?"
 
 #: ../komikku/preferences/__init__.py:218
 msgid "Disable animations?"
-msgstr ""
+msgstr "애니메이션을 비활성화하시겠습니까?"
 
 #: ../komikku/preferences/__init__.py:219
 msgid ""
@@ -1990,39 +1995,46 @@ msgid ""
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
+"애니메이션을 비활성화하시겠습니까?\n"
+"\n"
+"리더의 제스처 탐색이 더 이상 제대로 작동하지 않습니다."
 
 #: ../komikku/preferences/__init__.py:220
 msgid "Disable"
-msgstr ""
+msgstr "비활성화"
 
 #: ../komikku/preferences/__init__.py:697 ../komikku/preferences/servers.py:72
 msgid "System keyring service is disabled. Credential cannot be saved."
-msgstr ""
+msgstr "시스템 키링 서비스가 비활성화되어 있어 인증 정보를 저장할 수 없습니다."
 
 #: ../komikku/preferences/__init__.py:702 ../komikku/preferences/servers.py:77
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
 msgstr ""
+"인증 정보를 저장할 키링 백엔드를 찾을 수 없습니다. 대체 수단으로 평문 저장을 "
+"사용하세요."
 
 #: ../komikku/preferences/__init__.py:708 ../komikku/preferences/servers.py:83
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
 msgstr ""
+"인증 정보를 저장할 키링 백엔드를 찾을 수 없습니다. 대체 수단으로 평문 저장을 "
+"사용합니다."
 
 #: ../komikku/preferences/__init__.py:738
 msgid "Invalid instance URL"
-msgstr ""
+msgstr "잘못된 인스턴스 URL"
 
 #: ../komikku/preferences/__init__.py:740
 #: ../komikku/preferences/__init__.py:754
 msgid "Unavailable service"
-msgstr ""
+msgstr "사용할 수 없는 서비스"
 
 #: ../komikku/preferences/__init__.py:752
 msgid "Invalid API key"
-msgstr ""
+msgstr "잘못된 API 키"
 
 #: ../komikku/preferences/servers.py:44
 msgid "User Account"
@@ -2038,15 +2050,15 @@ msgstr "사용자 이름"
 
 #: ../komikku/preferences/servers.py:59 ../komikku/preferences/trackers.py:64
 msgid "Password"
-msgstr "암호"
+msgstr "비밀번호"
 
 #: ../komikku/preferences/servers.py:92
 msgid "Test"
-msgstr ""
+msgstr "테스트"
 
 #: ../komikku/preferences/servers.py:419 ../komikku/preferences/servers.py:456
 msgid "Edit Server Settings"
-msgstr ""
+msgstr "서버 설정 편집"
 
 #: ../komikku/preferences/trackers.py:36 ../komikku/preferences/trackers.py:88
 #: ../komikku/preferences/trackers.py:118
@@ -2055,66 +2067,66 @@ msgstr "연결 해제"
 
 #: ../komikku/preferences/trackers.py:43
 msgid "Reconnect"
-msgstr ""
+msgstr "다시 연결"
 
 #: ../komikku/preferences/trackers.py:46 ../komikku/preferences/trackers.py:71
 #: ../komikku/preferences/trackers.py:104
 msgid "Connect"
-msgstr ""
+msgstr "연결"
 
 #: ../komikku/preferences/trackers.py:92
 msgid "Failed to request client access"
-msgstr ""
+msgstr "클라이언트 접근 요청 실패"
 
 #: ../komikku/preferences/trackers.py:95
 msgid "Webview is currently in used. Please retry later."
-msgstr ""
+msgstr "WebView가 사용 중입니다. 나중에 다시 시도해 주세요."
 
 #: ../komikku/preferences/trackers.py:117
 #, python-brace-format
 msgid "Disconnect from {}"
-msgstr ""
+msgstr "{}에서 연결 해제"
 
 #: ../komikku/reader/__init__.py:335
 msgid "Page successfully saved"
-msgstr ""
+msgstr "페이지를 저장했습니다"
 
 #: ../komikku/reader/ocr_translator.py:149
 #: ../komikku/reader/ocr_translator.py:154
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "클립보드에 복사했습니다"
 
 #: ../komikku/reader/pager/__init__.py:178
 msgid "Failed to sync read progress with server"
-msgstr ""
+msgstr "서버와 읽기 진행 상황을 동기화하지 못했습니다"
 
 #: ../komikku/reader/pager/__init__.py:498
 #: ../komikku/reader/pager/webtoon.py:104
 msgid "There is no previous chapter."
-msgstr ""
+msgstr "이전 챕터가 없습니다."
 
 #: ../komikku/reader/pager/__init__.py:500
 #: ../komikku/reader/pager/webtoon.py:102
 msgid "It was the last chapter."
-msgstr ""
+msgstr "마지막 챕터였습니다."
 
 #: ../komikku/reader/pager/__init__.py:671
 #: ../komikku/reader/pager/webtoon.py:180
 msgid "This chapter is inaccessible."
-msgstr ""
+msgstr "이 챕터에 접근할 수 없습니다."
 
 #: ../komikku/reader/pager/page.py:347
 msgid "Failed to load image"
-msgstr ""
+msgstr "이미지를 불러오지 못했습니다"
 
 #: ../komikku/reader/pager/page.py:349
 #, python-brace-format
 msgid "Corrupted file or unsupported image format ({0})"
-msgstr ""
+msgstr "손상된 파일이거나 지원하지 않는 이미지 형식입니다 ({0})"
 
 #: ../komikku/reader/pager/page.py:392
 msgid "Retry"
-msgstr ""
+msgstr "다시 시도"
 
 #: ../komikku/reader/settings.py:54
 msgid "Adapt to Screen"
@@ -2162,39 +2174,39 @@ msgstr "밝기"
 
 #: ../komikku/reader/settings.py:150
 msgid "Make pages brighter or darker"
-msgstr ""
+msgstr "페이지를 더 밝게 또는 어둡게 조정"
 
 #: ../komikku/reader/settings.py:157
 msgid "Contrast"
-msgstr ""
+msgstr "대비"
 
 #: ../komikku/reader/settings.py:158
 msgid "Increase or decrease the contrast of pages"
-msgstr ""
+msgstr "페이지 대비를 높이거나 낮춤"
 
 #: ../komikku/reader/settings.py:165
 msgid "Grayscale"
-msgstr ""
+msgstr "회색조"
 
 #: ../komikku/reader/settings.py:166
 msgid "Convert pages to grayscale"
-msgstr ""
+msgstr "페이지를 회색조로 변환"
 
 #: ../komikku/reader/settings.py:173
 msgid "Sepia"
-msgstr ""
+msgstr "세피아"
 
 #: ../komikku/reader/settings.py:174
 msgid "Give a more yellow/brown appearance to pages"
-msgstr ""
+msgstr "페이지를 누렇거나 갈색빛이 돌게 표시"
 
 #: ../komikku/reader/settings.py:181
 msgid "Saturation"
-msgstr ""
+msgstr "채도"
 
 #: ../komikku/reader/settings.py:182
 msgid "Super-saturate or desaturate pages"
-msgstr ""
+msgstr "페이지 채도를 높이거나 낮춤"
 
 #: ../komikku/servers/annyo/__init__.py:22
 #: ../komikku/servers/existentialcomics/__init__.py:23
@@ -2209,7 +2221,7 @@ msgstr ""
 #: ../komikku/servers/wildlife/__init__.py:16
 #: ../komikku/servers/xkcd/__init__.py:24
 msgid "Self-publishing"
-msgstr ""
+msgstr "자가 출판"
 
 #: ../komikku/servers/annyo/__init__.py:22
 #: ../komikku/servers/comick/__init__.py:149
@@ -2226,11 +2238,11 @@ msgstr ""
 #: ../komikku/servers/wildlife/__init__.py:16
 #: ../komikku/servers/xkcd/__init__.py:24
 msgid "Webcomic"
-msgstr ""
+msgstr "웹코믹"
 
 #: ../komikku/servers/aralosbd/__init__.py:21
 msgid "Self-publishing platform"
-msgstr ""
+msgstr "자가 출판 플랫폼"
 
 #: ../komikku/servers/asurascans/__init__.py:33
 #: ../komikku/servers/comix/__init__.py:71
@@ -2253,7 +2265,7 @@ msgstr ""
 #: ../komikku/servers/webtoon/__init__.py:55
 #: ../komikku/servers/zenko/__init__.py:69
 msgid "Type"
-msgstr ""
+msgstr "유형"
 
 #: ../komikku/servers/asurascans/__init__.py:34
 #: ../komikku/servers/invinciblecomicsvf/__init__.py:38
@@ -2270,7 +2282,7 @@ msgstr ""
 #: ../komikku/servers/skymangas/__init__.py:57
 #: ../komikku/servers/webtoon/__init__.py:56
 msgid "Filter by Type"
-msgstr ""
+msgstr "유형으로 필터링"
 
 #: ../komikku/servers/asurascans/__init__.py:39
 #: ../komikku/servers/coloredcouncil/__init__.py:44
@@ -2295,7 +2307,7 @@ msgstr ""
 #: ../komikku/servers/weebcentral/__init__.py:52
 #: ../komikku/servers/zenko/__init__.py:74
 msgid "Manga"
-msgstr ""
+msgstr "일본 만화"
 
 #: ../komikku/servers/asurascans/__init__.py:40
 #: ../komikku/servers/coloredcouncil/__init__.py:43
@@ -2320,7 +2332,7 @@ msgstr ""
 #: ../komikku/servers/weebcentral/__init__.py:53
 #: ../komikku/servers/zenko/__init__.py:75
 msgid "Manhwa"
-msgstr ""
+msgstr "한국 만화"
 
 #: ../komikku/servers/asurascans/__init__.py:41
 #: ../komikku/servers/comick/__init__.py:96
@@ -2344,67 +2356,67 @@ msgstr ""
 #: ../komikku/servers/weebcentral/__init__.py:54
 #: ../komikku/servers/zenko/__init__.py:76
 msgid "Manhua"
-msgstr ""
+msgstr "중국 만화"
 
 #: ../komikku/servers/bdplus/__init__.py:58
 msgid "Genre"
-msgstr ""
+msgstr "장르"
 
 #: ../komikku/servers/bdplus/__init__.py:59
 msgid "Filter by Genre"
-msgstr ""
+msgstr "장르로 필터링"
 
 #: ../komikku/servers/bilibili/__init__.py:38
 msgid "Price"
-msgstr ""
+msgstr "가격"
 
 #: ../komikku/servers/bilibili/__init__.py:39
 msgid "Filter by price"
-msgstr ""
+msgstr "가격으로 필터링"
 
 #: ../komikku/servers/bilibili/__init__.py:44
 msgid "Free"
-msgstr ""
+msgstr "무료"
 
 #: ../komikku/servers/bilibili/__init__.py:45
 msgid "Paid"
-msgstr ""
+msgstr "유료"
 
 #: ../komikku/servers/coloredcouncil/__init__.py:37
 msgid "Format"
-msgstr ""
+msgstr "형식"
 
 #: ../komikku/servers/coloredcouncil/__init__.py:38
 msgid "Filter by format"
-msgstr ""
+msgstr "형식으로 필터링"
 
 #: ../komikku/servers/coloredcouncil/__init__.py:50
 msgid "Version"
-msgstr ""
+msgstr "버전"
 
 #: ../komikku/servers/coloredcouncil/__init__.py:51
 msgid "Filter by version"
-msgstr ""
+msgstr "버전으로 필터링"
 
 #: ../komikku/servers/coloredcouncil/__init__.py:56
 msgid "Color"
-msgstr ""
+msgstr "컬러"
 
 #: ../komikku/servers/coloredcouncil/__init__.py:57
 msgid "B/W"
-msgstr ""
+msgstr "흑백"
 
 #: ../komikku/servers/comick/__init__.py:65
 #: ../komikku/servers/mangadex/__init__.py:58
 #: ../komikku/servers/weebdex/__init__.py:48
 msgid "Rating"
-msgstr ""
+msgstr "등급"
 
 #: ../komikku/servers/comick/__init__.py:66
 #: ../komikku/servers/mangadex/__init__.py:59
 #: ../komikku/servers/weebdex/__init__.py:49
 msgid "Filter by Content Ratings"
-msgstr ""
+msgstr "콘텐츠 등급으로 필터링"
 
 #: ../komikku/servers/comick/__init__.py:69
 #: ../komikku/servers/comix/__init__.py:49
@@ -2413,7 +2425,7 @@ msgstr ""
 #: ../komikku/servers/mangak/__init__.py:51
 #: ../komikku/servers/weebdex/__init__.py:52
 msgid "Safe"
-msgstr ""
+msgstr "전체 이용가"
 
 #: ../komikku/servers/comick/__init__.py:70
 #: ../komikku/servers/comix/__init__.py:50
@@ -2422,7 +2434,7 @@ msgstr ""
 #: ../komikku/servers/mangak/__init__.py:52
 #: ../komikku/servers/weebdex/__init__.py:53
 msgid "Suggestive"
-msgstr ""
+msgstr "선정적"
 
 #: ../komikku/servers/comick/__init__.py:71
 #: ../komikku/servers/comix/__init__.py:51
@@ -2431,7 +2443,7 @@ msgstr ""
 #: ../komikku/servers/mangak/__init__.py:53
 #: ../komikku/servers/weebdex/__init__.py:54
 msgid "Erotica"
-msgstr ""
+msgstr "에로"
 
 #: ../komikku/servers/comick/__init__.py:78
 #: ../komikku/servers/comix/__init__.py:59
@@ -2445,7 +2457,7 @@ msgstr ""
 #: ../komikku/servers/weebdex/__init__.py:62
 #: ../komikku/servers/zenko/__init__.py:58
 msgid "Filter by Statuses"
-msgstr ""
+msgstr "상태로 필터링"
 
 #: ../komikku/servers/comick/__init__.py:82
 #: ../komikku/servers/comix/__init__.py:63
@@ -2461,7 +2473,7 @@ msgstr ""
 #: ../komikku/servers/weebdex/__init__.py:66
 #: ../komikku/servers/zenko/__init__.py:62 ../komikku/trackers/__init__.py:68
 msgid "Completed"
-msgstr ""
+msgstr "완결"
 
 #: ../komikku/servers/comick/__init__.py:83
 #: ../komikku/servers/comix/__init__.py:65
@@ -2475,45 +2487,45 @@ msgstr ""
 #: ../komikku/servers/weebcentral/__init__.py:68
 #: ../komikku/servers/weebdex/__init__.py:68
 msgid "Canceled"
-msgstr ""
+msgstr "연재 취소"
 
 #: ../komikku/servers/comick/__init__.py:84
 msgid "Paused"
-msgstr ""
+msgstr "일시 중지"
 
 #: ../komikku/servers/comick/__init__.py:90
 msgid "Origination"
-msgstr ""
+msgstr "발행 국가"
 
 #: ../komikku/servers/comick/__init__.py:91
 msgid "[Latest Updates only] Filter by Origination"
-msgstr ""
+msgstr "[최신 업데이트 전용] 발행 국가로 필터링"
 
 #: ../komikku/servers/comick/__init__.py:102
 msgid "Countries"
-msgstr ""
+msgstr "국가"
 
 #: ../komikku/servers/comick/__init__.py:104
 msgid "[Search and Most Popular only] Filter by Country (origination)"
-msgstr ""
+msgstr "[검색 및 인기 작품 전용] 국가(발행 국가)로 필터링"
 
 #: ../komikku/servers/comick/__init__.py:108
 msgid "Japan (Manga)"
-msgstr ""
+msgstr "일본"
 
 #: ../komikku/servers/comick/__init__.py:109
 msgid "Korea (Manhwa)"
-msgstr ""
+msgstr "한국"
 
 #: ../komikku/servers/comick/__init__.py:110
 msgid "China (Manhua)"
-msgstr ""
+msgstr "중국"
 
 #: ../komikku/servers/comick/__init__.py:116
 #: ../komikku/servers/comix/__init__.py:84
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
-msgstr ""
+msgstr "대상 독자층"
 
 #: ../komikku/servers/comick/__init__.py:117
 #: ../komikku/servers/comix/__init__.py:85
@@ -2521,7 +2533,7 @@ msgstr ""
 #: ../komikku/servers/mangafire/__init__.py:147
 #: ../komikku/servers/weebdex/__init__.py:75
 msgid "Filter by Publication Demographics"
-msgstr ""
+msgstr "대상 독자층으로 필터링"
 
 #: ../komikku/servers/comick/__init__.py:120
 #: ../komikku/servers/comix/__init__.py:91
@@ -2533,7 +2545,7 @@ msgstr ""
 #: ../komikku/servers/skymangas/__init__.py:79
 #: ../komikku/servers/weebdex/__init__.py:78
 msgid "Shounen"
-msgstr ""
+msgstr "소년"
 
 #: ../komikku/servers/comick/__init__.py:121
 #: ../komikku/servers/comix/__init__.py:90
@@ -2545,7 +2557,7 @@ msgstr ""
 #: ../komikku/servers/skymangas/__init__.py:80
 #: ../komikku/servers/weebdex/__init__.py:79
 msgid "Shoujo"
-msgstr ""
+msgstr "소녀"
 
 #: ../komikku/servers/comick/__init__.py:122
 #: ../komikku/servers/comix/__init__.py:89
@@ -2557,7 +2569,7 @@ msgstr ""
 #: ../komikku/servers/skymangas/__init__.py:81
 #: ../komikku/servers/weebdex/__init__.py:81
 msgid "Seinen"
-msgstr ""
+msgstr "청년"
 
 #: ../komikku/servers/comick/__init__.py:123
 #: ../komikku/servers/comix/__init__.py:88
@@ -2569,41 +2581,41 @@ msgstr ""
 #: ../komikku/servers/skymangas/__init__.py:82
 #: ../komikku/servers/weebdex/__init__.py:80
 msgid "Josei"
-msgstr ""
+msgstr "여성"
 
 #: ../komikku/servers/comick/__init__.py:124
 msgid "None"
-msgstr ""
+msgstr "없음"
 
 #: ../komikku/servers/comick/__init__.py:130
 #: ../komikku/servers/mangadex/__init__.py:98
 msgid "Tags"
-msgstr ""
+msgstr "태그"
 
 #: ../komikku/servers/comick/__init__.py:131
 #: ../komikku/servers/mangadex/__init__.py:99
 msgid "Filter by Formats"
-msgstr ""
+msgstr "형식으로 필터링"
 
 #: ../komikku/servers/comick/__init__.py:134
 #: ../komikku/servers/mangadex/__init__.py:102
 msgid "4-Koma"
-msgstr ""
+msgstr "4컷 만화"
 
 #: ../komikku/servers/comick/__init__.py:135
 #: ../komikku/servers/mangadex/__init__.py:103
 msgid "Adaptation"
-msgstr ""
+msgstr "각색"
 
 #: ../komikku/servers/comick/__init__.py:136
 #: ../komikku/servers/mangadex/__init__.py:104
 msgid "Anthology"
-msgstr ""
+msgstr "앤솔로지"
 
 #: ../komikku/servers/comick/__init__.py:137
 #: ../komikku/servers/mangadex/__init__.py:105
 msgid "Award Winning"
-msgstr ""
+msgstr "수상작"
 
 #: ../komikku/servers/comick/__init__.py:138
 #: ../komikku/servers/dbmultiverse/__init__.py:58
@@ -2613,27 +2625,27 @@ msgstr ""
 #: ../komikku/servers/mangapill/__init__.py:43
 #: ../komikku/servers/rncalation/__init__.py:45
 msgid "Doujinshi"
-msgstr ""
+msgstr "동인지"
 
 #: ../komikku/servers/comick/__init__.py:139
 #: ../komikku/servers/mangadex/__init__.py:107
 msgid "Fan Colored"
-msgstr ""
+msgstr "팬 채색"
 
 #: ../komikku/servers/comick/__init__.py:140
 #: ../komikku/servers/mangadex/__init__.py:108
 msgid "Full Color"
-msgstr ""
+msgstr "풀컬러"
 
 #: ../komikku/servers/comick/__init__.py:141
 #: ../komikku/servers/mangadex/__init__.py:109
 msgid "Long Strip"
-msgstr ""
+msgstr "롱 스트립"
 
 #: ../komikku/servers/comick/__init__.py:144
 #: ../komikku/servers/mangadex/__init__.py:110
 msgid "Official Colored"
-msgstr ""
+msgstr "공식 채색"
 
 #: ../komikku/servers/comick/__init__.py:147
 #: ../komikku/servers/mangadex/__init__.py:111
@@ -2643,180 +2655,180 @@ msgstr ""
 #: ../komikku/servers/mangaworld/__init__.py:66
 #: ../komikku/servers/weebdex/__init__.py:251
 msgid "Oneshot"
-msgstr ""
+msgstr "단편"
 
 #: ../komikku/servers/comick/__init__.py:148
 msgid "User Created"
-msgstr ""
+msgstr "사용자 제작"
 
 #: ../komikku/servers/comick/__init__.py:155
 #: ../komikku/servers/mangadex/__init__.py:119
 msgid "Genres"
-msgstr ""
+msgstr "장르"
 
 #: ../komikku/servers/comick/__init__.py:156
 #: ../komikku/servers/mangadex/__init__.py:120
 msgid "Filter by Genres"
-msgstr ""
+msgstr "장르로 필터링"
 
 #: ../komikku/servers/comick/__init__.py:159
 #: ../komikku/servers/mangadex/__init__.py:123
 msgid "Action"
-msgstr ""
+msgstr "액션"
 
 #: ../komikku/servers/comick/__init__.py:160
 msgid "Adult"
-msgstr ""
+msgstr "성인"
 
 #: ../komikku/servers/comick/__init__.py:161
 #: ../komikku/servers/mangadex/__init__.py:124
 msgid "Adventure"
-msgstr ""
+msgstr "모험"
 
 #: ../komikku/servers/comick/__init__.py:162
 #: ../komikku/servers/mangadex/__init__.py:126
 msgid "Comedy"
-msgstr ""
+msgstr "코미디"
 
 #: ../komikku/servers/comick/__init__.py:163
 #: ../komikku/servers/mangadex/__init__.py:127
 msgid "Crime"
-msgstr ""
+msgstr "범죄"
 
 #: ../komikku/servers/comick/__init__.py:164
 #: ../komikku/servers/mangadex/__init__.py:128
 msgid "Drama"
-msgstr ""
+msgstr "드라마"
 
 #: ../komikku/servers/comick/__init__.py:165
 msgid "Ecchi"
-msgstr ""
+msgstr "엣치"
 
 #: ../komikku/servers/comick/__init__.py:166
 #: ../komikku/servers/mangadex/__init__.py:129
 msgid "Fantasy"
-msgstr ""
+msgstr "판타지"
 
 #: ../komikku/servers/comick/__init__.py:167
 msgid "Gender Bender"
-msgstr ""
+msgstr "성전환"
 
 #: ../komikku/servers/comick/__init__.py:168
 #: ../komikku/servers/mangadex/__init__.py:131
 msgid "Historical"
-msgstr ""
+msgstr "역사"
 
 #: ../komikku/servers/comick/__init__.py:169
 #: ../komikku/servers/mangadex/__init__.py:132
 msgid "Horror"
-msgstr ""
+msgstr "호러"
 
 #: ../komikku/servers/comick/__init__.py:170
 #: ../komikku/servers/mangadex/__init__.py:133
 msgid "Isekai"
-msgstr ""
+msgstr "이세계"
 
 #: ../komikku/servers/comick/__init__.py:171
 #: ../komikku/servers/mangadex/__init__.py:134
 msgid "Magical Girls"
-msgstr ""
+msgstr "마법소녀"
 
 #: ../komikku/servers/comick/__init__.py:172
 msgid "Mature"
-msgstr ""
+msgstr "성인 취향"
 
 #: ../komikku/servers/comick/__init__.py:173
 #: ../komikku/servers/mangadex/__init__.py:135
 msgid "Mecha"
-msgstr ""
+msgstr "메카"
 
 #: ../komikku/servers/comick/__init__.py:174
 #: ../komikku/servers/mangadex/__init__.py:136
 msgid "Medical"
-msgstr ""
+msgstr "의학"
 
 #: ../komikku/servers/comick/__init__.py:175
 #: ../komikku/servers/mangadex/__init__.py:137
 msgid "Mystery"
-msgstr ""
+msgstr "미스터리"
 
 #: ../komikku/servers/comick/__init__.py:176
 #: ../komikku/servers/mangadex/__init__.py:138
 msgid "Philosophical"
-msgstr ""
+msgstr "철학"
 
 #: ../komikku/servers/comick/__init__.py:177
 msgid "Psychological"
-msgstr ""
+msgstr "심리"
 
 #: ../komikku/servers/comick/__init__.py:178
 #: ../komikku/servers/mangadex/__init__.py:139
 msgid "Romance"
-msgstr ""
+msgstr "로맨스"
 
 #: ../komikku/servers/comick/__init__.py:179
 #: ../komikku/servers/mangadex/__init__.py:140
 msgid "Sci-Fi"
-msgstr ""
+msgstr "SF"
 
 #: ../komikku/servers/comick/__init__.py:180
 #: ../komikku/servers/mangatown/__init__.py:56
 msgid "Shoujo Ai"
-msgstr ""
+msgstr "소녀애"
 
 #: ../komikku/servers/comick/__init__.py:181
 #: ../komikku/servers/mangadex/__init__.py:141
 msgid "Slice of Life"
-msgstr ""
+msgstr "일상"
 
 #: ../komikku/servers/comick/__init__.py:182
 #: ../komikku/servers/mangadex/__init__.py:142
 msgid "Sports"
-msgstr ""
+msgstr "스포츠"
 
 #: ../komikku/servers/comick/__init__.py:183
 #: ../komikku/servers/mangadex/__init__.py:143
 msgid "Superhero"
-msgstr ""
+msgstr "슈퍼히어로"
 
 #: ../komikku/servers/comick/__init__.py:184
 #: ../komikku/servers/mangadex/__init__.py:144
 msgid "Thriller"
-msgstr ""
+msgstr "스릴러"
 
 #: ../komikku/servers/comick/__init__.py:185
 #: ../komikku/servers/mangadex/__init__.py:145
 msgid "Tragedy"
-msgstr ""
+msgstr "비극"
 
 #: ../komikku/servers/comick/__init__.py:186
 #: ../komikku/servers/mangadex/__init__.py:146
 msgid "Wuxia"
-msgstr ""
+msgstr "무협"
 
 #: ../komikku/servers/comick/__init__.py:187
 #: ../komikku/servers/mangaball/__init__.py:78
 #: ../komikku/servers/mangatown/__init__.py:55
 msgid "Yaoi"
-msgstr ""
+msgstr "야오이"
 
 #: ../komikku/servers/comick/__init__.py:188
 #: ../komikku/servers/mangaball/__init__.py:77
 #: ../komikku/servers/mangatown/__init__.py:59
 msgid "Yuri"
-msgstr ""
+msgstr "백합"
 
 #: ../komikku/servers/comix/__init__.py:44
 #: ../komikku/servers/mangafire/__init__.py:120
 #: ../komikku/servers/mangak/__init__.py:45
 msgid "Content Rating"
-msgstr ""
+msgstr "콘텐츠 등급"
 
 #: ../komikku/servers/comix/__init__.py:45
 #: ../komikku/servers/mangafire/__init__.py:121
 #: ../komikku/servers/mangak/__init__.py:46
 msgid "Filter by Content Rating"
-msgstr ""
+msgstr "콘텐츠 등급으로 필터링"
 
 #: ../komikku/servers/comix/__init__.py:52
 #: ../komikku/servers/mangadex/__init__.py:65
@@ -2824,7 +2836,7 @@ msgstr ""
 #: ../komikku/servers/mangak/__init__.py:54
 #: ../komikku/servers/weebdex/__init__.py:55
 msgid "Pornographic"
-msgstr ""
+msgstr "포르노"
 
 #: ../komikku/servers/comix/__init__.py:72
 #: ../komikku/servers/dynasty/__init__.py:41
@@ -2837,69 +2849,69 @@ msgstr ""
 #: ../komikku/servers/weebcentral/__init__.py:49
 #: ../komikku/servers/zenko/__init__.py:70
 msgid "Filter by Types"
-msgstr ""
+msgstr "유형으로 필터링"
 
 #: ../komikku/servers/dbmultiverse/__init__.py:58
 #: ../komikku/servers/dbnewhope/__init__.py:30
 msgid "Fan Webcomic"
-msgstr ""
+msgstr "팬 웹코믹"
 
 #: ../komikku/servers/dynasty/__init__.py:40
 msgid "Categories"
-msgstr ""
+msgstr "카테고리"
 
 #: ../komikku/servers/dynasty/__init__.py:44
 msgid "Anthologies"
-msgstr ""
+msgstr "앤솔러지"
 
 #: ../komikku/servers/dynasty/__init__.py:45
 msgid "Doujins"
-msgstr ""
+msgstr "동인지"
 
 #: ../komikku/servers/dynasty/__init__.py:46
 msgid "Issues"
-msgstr ""
+msgstr "호"
 
 #: ../komikku/servers/dynasty/__init__.py:47
 msgid "Series"
-msgstr ""
+msgstr "시리즈"
 
 #: ../komikku/servers/dynasty/__init__.py:48
 msgid "Chapters"
-msgstr ""
+msgstr "챕터"
 
 #: ../komikku/servers/dynasty/__init__.py:54
 msgid "With Tags"
-msgstr ""
+msgstr "포함할 태그"
 
 #: ../komikku/servers/dynasty/__init__.py:55
 msgid "Comma separated list of tags to search for"
-msgstr ""
+msgstr "검색할 태그 목록 (쉼표로 구분)"
 
 #: ../komikku/servers/dynasty/__init__.py:61
 msgid "Without Tags"
-msgstr ""
+msgstr "제외할 태그"
 
 #: ../komikku/servers/dynasty/__init__.py:62
 msgid "Comma separated list of tags to exclude from search"
-msgstr ""
+msgstr "검색에서 제외할 태그 목록 (쉼표로 구분)"
 
 #: ../komikku/servers/exceptions.py:10
 #, python-brace-format
 msgid "Error: {}"
-msgstr ""
+msgstr "오류: {}"
 
 #: ../komikku/servers/exceptions.py:16
 msgid "Local archive is corrupt."
-msgstr ""
+msgstr "로컬 압축 파일이 손상되었습니다."
 
 #: ../komikku/servers/exceptions.py:21
 msgid "Unable to extract page. Maybe the 'unrar' tool is missing?"
-msgstr ""
+msgstr "페이지를 추출할 수 없습니다. 'unrar' 도구가 설치되어 있는지 확인해 주세요."
 
 #: ../komikku/servers/exceptions.py:26
 msgid "Failed to complete browser challenge. Please try again."
-msgstr ""
+msgstr "브라우저 인증을 완료하지 못했습니다. 다시 시도해 주세요."
 
 #: ../komikku/servers/exceptions.py:31
 msgid "No longer exists."
@@ -2910,18 +2922,18 @@ msgstr "더 이상 존재하지 않습니다."
 #: ../komikku/servers/rawkuma/__init__.py:40
 #: ../komikku/servers/weebcentral/__init__.py:48
 msgid "Types"
-msgstr ""
+msgstr "유형"
 
 #: ../komikku/servers/flamescans/__init__.py:48
 #: ../komikku/servers/mangafire/__init__.py:159
 #: ../komikku/servers/weebcentral/__init__.py:61
 msgid "Statuses"
-msgstr ""
+msgstr "상태"
 
 #: ../komikku/servers/flamescans/__init__.py:55
 #: ../komikku/trackers/__init__.py:70
 msgid "Dropped"
-msgstr ""
+msgstr "중단"
 
 #: ../komikku/servers/jmanga/__init__.py:47
 #: ../komikku/servers/mangaball/__init__.py:85
@@ -2934,16 +2946,16 @@ msgstr ""
 #: ../komikku/servers/rncalation/__init__.py:53
 #: ../komikku/servers/skymangas/__init__.py:42
 msgid "Filter by Status"
-msgstr ""
+msgstr "상태로 필터링"
 
 #: ../komikku/servers/kavita/__init__.py:32
 #: ../komikku/servers/komga/__init__.py:26
 msgid "Self-hosted digital library"
-msgstr ""
+msgstr "자체 호스팅 디지털 라이브러리"
 
 #: ../komikku/servers/local/__init__.py:351
 msgid "Comics stored locally as archives in CBZ/CBR/CBT or PDF formats"
-msgstr ""
+msgstr "CBZ/CBR/CBT 또는 PDF 형식의 압축 파일로 로컬에 저장된 만화"
 
 #: ../komikku/servers/mangaball/__init__.py:67
 #: ../komikku/servers/mangak/__init__.py:74
@@ -2951,14 +2963,14 @@ msgstr ""
 #: ../komikku/servers/skymangas/__init__.py:73
 #: ../komikku/servers/weebdex/__init__.py:74
 msgid "Demographic"
-msgstr ""
+msgstr "독자층"
 
 #: ../komikku/servers/mangaball/__init__.py:68
 #: ../komikku/servers/mangak/__init__.py:75
 #: ../komikku/servers/mangatown/__init__.py:47
 #: ../komikku/servers/skymangas/__init__.py:74
 msgid "Filter by Publication Demographic"
-msgstr ""
+msgstr "대상 독자층으로 필터링"
 
 #: ../komikku/servers/mangaball/__init__.py:72
 #: ../komikku/servers/mangaball/__init__.py:89
@@ -2972,7 +2984,7 @@ msgstr ""
 #: ../komikku/servers/rncalation/__init__.py:57
 #: ../komikku/servers/weebcentral/__init__.py:40
 msgid "Any"
-msgstr ""
+msgstr "상관없음"
 
 #: ../komikku/servers/mangaball/__init__.py:108
 #: ../komikku/servers/mangakawaii/__init__.py:64
@@ -2980,7 +2992,7 @@ msgstr ""
 #: ../komikku/servers/multi/manga_stream/__init__.py:85
 #: ../komikku/servers/zenko/__init__.py:78
 msgid "Comic"
-msgstr ""
+msgstr "코믹스"
 
 #: ../komikku/servers/mangaball/__init__.py:114
 #: ../komikku/servers/multi/madara/__init__.py:434
@@ -2991,77 +3003,79 @@ msgstr "성인 콘텐츠"
 #: ../komikku/servers/mangaball/__init__.py:115
 #: ../komikku/servers/multi/madara/__init__.py:435
 msgid "Whether to show series containing adult content"
-msgstr ""
+msgstr "성인 콘텐츠가 포함된 시리즈 표시 여부"
 
 #: ../komikku/servers/mangadex/__init__.py:112
 msgid "Self-Published"
-msgstr ""
+msgstr "자가 출판"
 
 #: ../komikku/servers/mangadex/__init__.py:125
 msgid "Boys Love"
-msgstr ""
+msgstr "BL"
 
 #: ../komikku/servers/mangadex/__init__.py:130
 msgid "Girls Love"
-msgstr ""
+msgstr "GL"
 
 #: ../komikku/servers/mangadex/__init__.py:152
 msgid "Tags Inclusion Mode"
-msgstr ""
+msgstr "태그 포함 모드"
 
 #: ../komikku/servers/mangadex/__init__.py:153
 msgid "Include manga that match <b>all</b> tags (AND) or <b>any</b> tag (OR)"
 msgstr ""
+"<b>모든</b> 태그와 일치하는 만화(AND) 또는 <b>하나 이상의</b> 태그와 "
+"일치하는 만화(OR) 포함"
 
 #: ../komikku/servers/mangadex/__init__.py:157
 msgid "AND"
-msgstr ""
+msgstr "AND"
 
 #: ../komikku/servers/mangadex/__init__.py:158
 msgid "OR"
-msgstr ""
+msgstr "OR"
 
 #: ../komikku/servers/mangadex/__init__.py:167
 #: ../komikku/servers/weebdex/__init__.py:98
 msgid "Data Saver Mode"
-msgstr ""
+msgstr "데이터 절약 모드"
 
 #: ../komikku/servers/mangadex/__init__.py:168
 #: ../komikku/servers/weebdex/__init__.py:99
 msgid "Fetch lower quality images to save bandwidth"
-msgstr ""
+msgstr "대역폭을 절약하기 위해 저화질 이미지 가져오기"
 
 #: ../komikku/servers/mangafire/__init__.py:146
 msgid "Demographics"
-msgstr ""
+msgstr "독자층"
 
 #: ../komikku/servers/mangak/__init__.py:80
 msgid "Boy (Shounen + Seinen)"
-msgstr ""
+msgstr "남성향 (소년 + 청년)"
 
 #: ../komikku/servers/mangak/__init__.py:81
 msgid "Girl (Shoujo + Josei)"
-msgstr ""
+msgstr "여성향 (소녀 + 여성)"
 
 #: ../komikku/servers/mangakawaii/__init__.py:70
 #: ../komikku/servers/mangatube/__init__.py:134
 msgid "Webtoon"
-msgstr ""
+msgstr "웹툰"
 
 #: ../komikku/servers/mangapill/__init__.py:41
 #: ../komikku/servers/rawkuma/__init__.py:47
 msgid "Novel"
-msgstr ""
+msgstr "소설"
 
 #: ../komikku/servers/mangapill/__init__.py:46
 #: ../komikku/servers/skymangas/__init__.py:66
 #: ../komikku/servers/weebcentral/__init__.py:55
 msgid "OEL"
-msgstr ""
+msgstr "OEL (영어 원작 만화)"
 
 #: ../komikku/servers/mangatown/__init__.py:58
 msgid "Shounen Ai"
-msgstr ""
+msgstr "소년애"
 
 #: ../komikku/servers/mangatown/__init__.py:71
 msgid "New"
@@ -3069,28 +3083,28 @@ msgstr "신규"
 
 #: ../komikku/servers/mangatube/__init__.py:126
 msgid "Type of Serie"
-msgstr ""
+msgstr "시리즈 유형"
 
 #: ../komikku/servers/mangatube/__init__.py:137
 #: ../komikku/servers/zenko/__init__.py:79
 msgid "Light Novel"
-msgstr ""
+msgstr "라이트 노벨"
 
 #: ../komikku/servers/mangatube/__init__.py:143
 msgid "Age Rating"
-msgstr ""
+msgstr "연령 등급"
 
 #: ../komikku/servers/mangatube/__init__.py:144
 msgid "Maturity"
-msgstr ""
+msgstr "연령 제한"
 
 #: ../komikku/servers/mangatube/__init__.py:148
 msgid "Without"
-msgstr ""
+msgstr "제한 없음"
 
 #: ../komikku/servers/mangatube/__init__.py:149
 msgid "16+"
-msgstr ""
+msgstr "16+"
 
 #: ../komikku/servers/multi/mangareader/__init__.py:119
 #, python-brace-format
@@ -3099,19 +3113,19 @@ msgstr "{0} 언어를 지원하지 않습니다"
 
 #: ../komikku/servers/readmanhwa/__init__.py:45
 msgid "NSFW Content"
-msgstr "NSFW(성인용) 콘텐츠"
+msgstr "NSFW 콘텐츠"
 
 #: ../komikku/servers/readmanhwa/__init__.py:46
 msgid "Whether to show manga containing NSFW content"
-msgstr "NSFW(성인용) 콘텐츠가 포함된 만화 표시 여부"
+msgstr "NSFW 콘텐츠가 포함된 만화 표시 여부"
 
 #: ../komikku/servers/skymangas/__init__.py:65
 msgid "Manfra"
-msgstr ""
+msgstr "프랑스 만화"
 
 #: ../komikku/servers/skymangas/__init__.py:83
 msgid "Kodomo"
-msgstr ""
+msgstr "아동"
 
 #: ../komikku/servers/suwayomi/__init__.py:33
 msgid "Manga reader server"
@@ -3172,11 +3186,11 @@ msgstr "다시 읽는 중"
 #: ../komikku/updater.py:93
 #, python-brace-format
 msgid "{0} seems down. Please try updating later"
-msgstr "{0} 서버가 다운된 것 같습니다. 나중에 다시 업데이트를 시도해주세요"
+msgstr "{0} 서버가 다운된 것 같습니다. 나중에 다시 업데이트해 주세요"
 
 #: ../komikku/updater.py:125
 msgid "Library update completed with errors"
-msgstr "라이브러리 업데이트를 완료했으나 오류가 있습니다"
+msgstr "라이브러리 업데이트 완료 (오류 있음)"
 
 #: ../komikku/updater.py:127
 msgid "Library update completed"
@@ -3184,7 +3198,7 @@ msgstr "라이브러리 업데이트 완료"
 
 #: ../komikku/updater.py:130
 msgid "Update completed with errors"
-msgstr "업데이트가 완료되었지만 오류가 있습니다"
+msgstr "업데이트 완료 (오류 있음)"
 
 #: ../komikku/updater.py:132
 msgid "Update completed"
@@ -3200,11 +3214,11 @@ msgstr[0] "{0}개 업데이트 성공"
 #, python-brace-format
 msgid "{0} new chapter"
 msgid_plural "{0} new chapters"
-msgstr[0] "{0}개의 새 화"
+msgstr[0] "새 챕터 {0}개"
 
 #: ../komikku/updater.py:139 ../komikku/updater.py:161
 msgid "No new chapters"
-msgstr "새로운 화 없음"
+msgstr "새 챕터 없음"
 
 #: ../komikku/updater.py:142
 #, python-brace-format
@@ -3214,7 +3228,7 @@ msgstr[0] "{0}개 업데이트 실패"
 
 #: ../komikku/updater.py:180
 msgid "Oops, update has failed. Please try again."
-msgstr "이런! 업데이트에 실패했습니다. 다시 시도해주세요."
+msgstr "이런, 업데이트에 실패했습니다. 다시 시도해 주세요."
 
 #: ../komikku/updater.py:198
 msgid "Library update started"
@@ -3234,7 +3248,7 @@ msgstr "잠시만 기다려 주세요…"
 
 #: ../komikku/webview.py:496
 msgid "Please complete CAPTCHA"
-msgstr "CAPTCHA 인증을 완료해주세요"
+msgstr "CAPTCHA를 완료해 주세요"
 
 #~ msgid "Synopsis"
 #~ msgstr "시놉시스"
