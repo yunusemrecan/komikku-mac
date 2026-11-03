@@ -420,7 +420,7 @@ class Page(Gtk.Overlay):
             for side in self.sides:
                 if side is None:
                     # Blank page
-                    imgs.append(Image.new('RGB', (1, 1), (255, 255, 255)))
+                    imgs.append(None)
                     continue
 
                 if not side.path and not side.buffer:
@@ -441,18 +441,46 @@ class Page(Gtk.Overlay):
             if self.reader.reading_mode == 'right-to-left':
                 imgs.reverse()
 
-            w = sum([img.width for img in imgs])
-            h = max([img.height for img in imgs])
+            maxw = max([img.width for img in imgs if img])
+            h = max([img.height for img in imgs if img])
+
+            w = 0
+            for img in imgs:
+                if img:
+                    if img.height < h:
+                        # Image is shorter in height, it will be scale up
+                        # Reserve more width
+                        ratio = h / img.height
+                        w += int(img.width * ratio)
+                    else:
+                        w += img.width
+                else:
+                    # Reserve more width to simulate a blank page
+                    w += maxw
+
             double_img = Image.new('RGB', (w, h), (255, 255, 255))
             x = 0
             for img in imgs:
-                double_img.paste(img, (x, 0))
-                x += img.width
+                if img:
+                    if img.height < h:
+                        # Scale up image
+                        ratio = h / img.height
+                        new_img = img.resize((int(img.width * ratio), int(img.height * ratio)))
+                        img.close()
+                        img = new_img
+
+                    double_img.paste(img, (x, 0))
+                    x += img.width
+
+                    img.close()
+                else:
+                    x += maxw
 
             with BytesIO() as io_buffer:
                 # Use the very fast/lossless TIFF format (Pillow uses libtiff)
                 double_img.save(io_buffer, 'tiff')
                 buffer = io_buffer.getvalue()
+                double_img.close()
 
             image.load(path=None, buffer=buffer, callback=on_loaded)
 
