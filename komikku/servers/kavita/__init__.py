@@ -204,7 +204,7 @@ class Kavita(Server):
                         last_read=last_read,
                         last_page_read_index=chapter['pagesRead'] - 1,
                     )
-                data['chapters'].append(chapter_data)
+                    data['chapters'].append(chapter_data)
 
         elif resp_data['chapters']:
             # Chapters only, no volumes
