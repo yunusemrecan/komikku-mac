@@ -177,33 +177,33 @@ class PagedPager(Adw.Bin, BasePager):
             # Page index should always be an even number in double page view
             page_index -= 1
 
+        # Add center page
+        center_page = Page(self, chapter, page_index, self.double_page, 1)
+        self.carousel.append(center_page)
+        center_page.connect('resolved', self.on_center_page_resolved)
+        center_page.connect('rendered', self.on_page_rendered)
+        center_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
+        center_page.render()
+
+    def on_center_page_resolved(self, page):
         direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
 
-        # Left page
-        index = page_index + direction * 2 if self.double_page else page_index + direction
-        left_page = Page(self, chapter, index, self.double_page, 1)
-        self.carousel.append(left_page)
+        # Add left page
+        left_page = Page(self, page.chapter, page.index_start + direction, self.double_page, direction)
+        self.carousel.prepend(left_page)
         left_page.connect('rendered', self.on_page_rendered)
         left_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
 
-        # Center page
-        center_page = Page(self, chapter, page_index, self.double_page, 1)
-        self.carousel.append(center_page)
-        center_page.connect('rendered', self.on_page_rendered)
-        center_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
-
-        # Right page
-        index = page_index - direction * 2 if self.double_page else page_index - direction
-        right_page = Page(self, chapter, index, self.double_page, 1)
+        # Add right page
+        right_page = Page(self, page.chapter, page.index_end - direction, self.double_page, -direction)
         self.carousel.append(right_page)
         right_page.connect('rendered', self.on_page_rendered)
         right_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
 
         def finalize():
             # Scroll to center page
-            self.carousel.scroll_to(self.carousel.get_nth_page(1), False)
+            self.carousel.scroll_to(page, False)
 
-            center_page.render()
             GLib.timeout_add(500, left_page.render)
             GLib.timeout_add(500, right_page.render)
 

@@ -27,6 +27,7 @@ class Page(Gtk.Overlay):
     __gtype_name__ = 'Page'
     __gsignals__ = {
         'rendered': (GObject.SignalFlags.RUN_FIRST, None, (bool, bool, )),
+        'resolved': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     def __init__(self, pager, chapter, index, double=False, direction=1):
@@ -47,7 +48,7 @@ class Page(Gtk.Overlay):
         self.image = None
         self.retry_button = None
 
-        self._status = None    # rendering, allocable, rendered, offlimit, disposed
+        self._status = None    # rendering, resolved, allocable, rendered, offlimit, disposed
         self.error = None      # connection error, server error, corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
         self.obscured = True
@@ -242,6 +243,7 @@ class Page(Gtk.Overlay):
         self.reader.pager.interactive = True
 
     def render(self, retry=False):
+        """Resolve page sides (chapter, index), retrieve image path(s)/buffer(s), then set image"""
         def on_complete(errors):
             for code, error in errors.items():
                 if code in ('connection', 'server'):
@@ -331,7 +333,7 @@ class Page(Gtk.Overlay):
                             }
 
             if self.double:
-                # Detect last page of a chapter with an odd number of pages
+                # Detect single side page (last page when chapter has an odd number of pages)
                 # One of the two sides must be a blank page
                 if self.sides[0].index > self.sides[1].index:
                     # Reading forward
@@ -341,6 +343,8 @@ class Page(Gtk.Overlay):
                     self.sides[0] = self.sides[1]
                     self.sides[1] = None
 
+            self.status = 'resolved'
+            self.emit('resolved')
             GLib.idle_add(on_complete, errors)
 
         if self.status is not None and self.error is None:
