@@ -120,10 +120,23 @@
     <url type="donation">https://febvre.info/donate.html</url>
 
     <releases>
+        <release version="51.3.0" date="2026-11-06">
+            <description translate="no">
+                <ul>
+                    <li>[Reader] RTL/LTR/Vertical pager: Added double page view</li>
+                    <li>[Servers] BDplus (FR): Update</li>
+                    <li>[Servers] JManga (JA): Update</li>
+                    <li>[Servers] Kavita: Fixed wrong volume listing</li>
+                    <li>[Servers] LanorTrad (FR): Update</li>
+                    <li>[L10n] Updated French and Korean translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="51.2.1" date="2026-10-28">
             <description translate="no">
                 <ul>
-                    <li>[Reader] General settings: Add `Inversion` filter</li>
+                    <li>[Reader] General settings: Added `Inversion` filter</li>
                     <li>[Servers] Anime-Sama (FR): Update</li>
                     <li>[Servers] JManga (JA): Update</li>
                     <li>[Servers] Armoni Scans (TR): Disabled</li>
@@ -137,7 +150,7 @@
                     <li>[Servers] Perf Scan (FR): Disabled</li>
                     <li>[Servers] Raijin Scan (FR): Disabled</li>
                     <li>[Servers] Read Comic Online (EN): Disabled</li>
-                    <li>[Servers] Shadow Manga (ES): Add `Adult Content` filter</li>
+                    <li>[Servers] Shadow Manga (ES): Added `Adult Content` filter</li>
                     <li>[L10n] Updated Finnish and Ukrainian translations</li>
                 </ul>
                 <p>Happy reading.</p>

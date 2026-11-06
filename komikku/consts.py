@@ -273,22 +273,12 @@ CREDITS = {
 
 RELEASE_NOTES = """
 <ul>
-    <li>[Reader] General settings: Add `Inversion` filter</li>
-    <li>[Servers] Anime-Sama (FR): Update</li>
+    <li>[Reader] RTL/LTR/Vertical pager: Added double page view</li>
+    <li>[Servers] BDplus (FR): Update</li>
     <li>[Servers] JManga (JA): Update</li>
-    <li>[Servers] Armoni Scans (TR): Disabled</li>
-    <li>[Servers] Comix (EN): Disabled</li>
-    <li>[Servers] Flame Comics (EN): Disabled</li>
-    <li>[Servers] KaliScan (EN): Disabled</li>
-    <li>[Servers] KomikLovers (ID): Disabled</li>
+    <li>[Servers] Kavita: Fixed wrong volume listing</li>
     <li>[Servers] LanorTrad (FR): Update</li>
-    <li>[Servers] Manga Stop (pt_BR): Disabled</li>
-    <li>[Servers] MangaReader (cc) (EN): Disabled</li>
-    <li>[Servers] Perf Scan (FR): Disabled</li>
-    <li>[Servers] Raijin Scan (FR): Disabled</li>
-    <li>[Servers] Read Comic Online (EN): Disabled</li>
-    <li>[Servers] Shadow Manga (ES): Add `Adult Content` filter</li>
-    <li>[L10n] Updated Finnish and Ukrainian translations</li>
+    <li>[L10n] Updated French and Korean translations</li>
 </ul>
 <p>Happy reading.</p>
 """
