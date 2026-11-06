@@ -53,9 +53,10 @@ komikku/preferences/servers.py
 komikku/preferences/trackers.py
 komikku/reader/__init__.py
 komikku/reader/ocr_translator.py
-komikku/reader/pager/__init__.py
-komikku/reader/pager/page.py
-komikku/reader/pager/webtoon.py
+komikku/reader/pagers/__init__.py
+komikku/reader/pagers/longstrip_pager.py
+komikku/reader/pagers/paged_pager.py
+komikku/reader/pagers/page.py
 komikku/reader/settings.py
 komikku/servers/annyo/__init__.py
 komikku/servers/aralosbd/__init__.py
@@ -104,6 +105,7 @@ komikku/servers/rawkuma/__init__.py
 komikku/servers/readcomicsonline/__init__.py
 komikku/servers/readmanhwa/__init__.py
 komikku/servers/rncalation/__init__.py
+komikku/servers/shadowmanga/__init__.py
 komikku/servers/skymangas/__init__.py
 komikku/servers/smbc/__init__.py
 komikku/servers/suwayomi/__init__.py
