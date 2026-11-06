@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 01:07+0100\n"
+"POT-Creation-Date: 2026-11-06 14:36+0100\n"
 "PO-Revision-Date: 2025-05-27 09:01+0000\n"
 "Last-Translator: Roger VC <rogervilarasau@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/komikku/main/ca/"
@@ -60,6 +60,10 @@ msgid "RTL, LTR, Vertical and Webtoon reading modes"
 msgstr "Modes de lectura RTL, LTR, Vertical i Webtoon"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:20
+msgid "Double page view"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
 msgid ""
 "Support several types of navigation: keyboard arrow keys, right and left "
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
@@ -70,119 +74,119 @@ msgstr ""
 "(panell/pantalla tàctil), roda del ratolí, gest de lliscament de 2 dits "
 "(panell tàctil), gest de lliscament (pantalla tàctil)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:22
 msgid "Categories to organize your library"
 msgstr "Categories per organitzar la vostra biblioteca"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
 msgid "Automatic update of series"
 msgstr "Actualització automàtica de sèries"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
 msgid "Automatic download of new chapters"
 msgstr "Descàrrega automàtica de nous capítols"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
 msgid "Reading history"
 msgstr "Història de la lectura"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:28
 msgid "Light and dark themes"
 msgstr "Temes clars i foscos"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
 msgid "reader"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
 msgid "viewer"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
 msgid "scanlation"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "comic"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manga"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhwa"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "manhua"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
 msgid "webtoon"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
 msgid "webcomic"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
 msgid "book"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
 msgid "ebook"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:44
 msgid "offline"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:63
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:64
 msgid "The Library page"
 msgstr "Pàgina de la biblioteca"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:67
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:68
 msgid "The Library page with the category sidebar open"
 msgstr "Pàgina de la biblioteca amb la barra lateral de categories oberta"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:71
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:72
 msgid "The Preferences page (General settings)"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:75
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:76
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "La pàgina d'explorador en format mòbil (Llista de servidors)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:79
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:80
 msgid "The Details page"
 msgstr "La pàgina de detalls"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:83
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:84
 msgid "The Details page (chapters list)"
 msgstr "La pàgina de detalls (llista de capitols)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:87
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:88
 msgid "The Reader page"
 msgstr "Pàgina del lector"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:91
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:92
 msgid "The Reader page in mobile format"
 msgstr "Pàgina del lector en format mòbil"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:96
 msgid "The Reader page with the OCR Translator in use"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:100
 msgid "The Category editor page in mobile format"
 msgstr "Pàgina d'editor de categories en format mòbil"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:103
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:104
 msgid "The Reading history page in mobile format"
 msgstr "Pàgina de l'historial de lectura en format mòbil"
 

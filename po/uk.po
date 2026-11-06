@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 01:07+0100\n"
+"POT-Creation-Date: 2026-11-06 14:36+0100\n"
 "PO-Revision-Date: 2026-10-04 07:51+0000\n"
 "Last-Translator: Димко <Dymkovych@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
@@ -69,6 +69,10 @@ msgstr ""
 "Кілька режимів читання: правосторонній, лівосторонній, вертикальний та вебтун"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:20
+msgid "Double page view"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
 msgid ""
 "Support several types of navigation: keyboard arrow keys, right and left "
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
@@ -79,121 +83,121 @@ msgstr ""
 "колесо миші, проведення двома пальцями на сенсорній панелі та проведення на "
 "сенсорному екрані"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:22
 msgid "Categories to organize your library"
 msgstr "Категорії для організації бібліотеки"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr ""
 "Автоматичне відстеження серій за допомогою AniList, MangaUpdates та "
 "MyAnimeList"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
 msgid "Automatic update of series"
 msgstr "Автоматичне оновлення серій"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
 msgid "Automatic download of new chapters"
 msgstr "Автоматичне довантаження нових розділів"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
 msgid "Reading history"
 msgstr "Історія читання"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:28
 msgid "Light and dark themes"
 msgstr "Світла та темна теми"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
 msgid "reader"
 msgstr "читач"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
 msgid "viewer"
 msgstr "глядач"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
 msgid "scanlation"
 msgstr "сканування"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "comic"
 msgstr "комікс"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manga"
 msgstr "манга"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhwa"
 msgstr "манхва"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "manhua"
 msgstr "маньхуа"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
 msgid "webtoon"
 msgstr "вебтун"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
 msgid "webcomic"
 msgstr "вебкомікс"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
 msgid "book"
 msgstr "книга"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
 msgid "ebook"
 msgstr "електронна книга"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:44
 msgid "offline"
 msgstr "офлайн"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:63
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:64
 msgid "The Library page"
 msgstr "Сторінка Бібліотека"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:67
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:68
 msgid "The Library page with the category sidebar open"
 msgstr "Сторінка Бібліотека з відкритою бічною панеллю категорій"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:71
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:72
 msgid "The Preferences page (General settings)"
 msgstr "Сторінка Параметри (Загальні налаштування)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:75
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:76
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "Сторінка провідника в мобільному вигляді (Список серверів)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:79
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:80
 msgid "The Details page"
 msgstr "Сторінка «Деталі»"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:83
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:84
 msgid "The Details page (chapters list)"
 msgstr "Сторінка «Деталі» (список розділів)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:87
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:88
 msgid "The Reader page"
 msgstr "Сторінка читача"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:91
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:92
 msgid "The Reader page in mobile format"
 msgstr "Сторінка читача у мобільному форматі"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:96
 msgid "The Reader page with the OCR Translator in use"
 msgstr "Сторінка читача з увімкненим розпізнаванням і перекладом"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:100
 msgid "The Category editor page in mobile format"
 msgstr "Редактор категорій в мобільному вигляді"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:103
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:104
 msgid "The Reading history page in mobile format"
 msgstr "Історія в мобільному вигляді"
 

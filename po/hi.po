@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.41.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 01:07+0100\n"
+"POT-Creation-Date: 2026-11-06 14:36+0100\n"
 "PO-Revision-Date: 2024-08-16 15:54+0000\n"
 "Last-Translator: Scrambled777 <weblate.scrambled777@simplelogin.com>\n"
 "Language-Team: Hindi <https://hosted.weblate.org/projects/komikku/main/hi/>\n"
@@ -59,6 +59,10 @@ msgid "RTL, LTR, Vertical and Webtoon reading modes"
 msgstr "RTL, LTR, वर्टिकल और वेबटून पठन मोड"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:20
+msgid "Double page view"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
 msgid ""
 "Support several types of navigation: keyboard arrow keys, right and left "
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
@@ -68,119 +72,119 @@ msgstr ""
 "स्क्रीन), माउस व्हील, 2-उंगली स्वाइप जेस्चर (टचपैड), स्वाइप जेस्चर (टच स्क्रीन) के माध्यम से "
 "दाएं और बाएं नेविगेशन लेआउट"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:22
 msgid "Categories to organize your library"
 msgstr "आपकी लाइब्रेरी को व्यवस्थित करने के लिए श्रेणियाँ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
 msgid "Automatic update of series"
 msgstr "श्रृंखला का स्वचालित अद्यतन"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
 msgid "Automatic download of new chapters"
 msgstr "नए अध्यायों का स्वचालित डाउनलोड"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
 msgid "Reading history"
 msgstr "पठन इतिहास"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:28
 msgid "Light and dark themes"
 msgstr "हल्की और गहरी थीम"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
 msgid "reader"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
 msgid "viewer"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
 msgid "scanlation"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "comic"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manga"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhwa"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "manhua"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
 msgid "webtoon"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
 msgid "webcomic"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
 msgid "book"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
 msgid "ebook"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:44
 msgid "offline"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:63
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:64
 msgid "The Library page"
 msgstr "लाइब्रेरी पृष्ठ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:67
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:68
 msgid "The Library page with the category sidebar open"
 msgstr "श्रेणी पार्श्वपट्टी के साथ लाइब्रेरी पृष्ठ खुला है"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:71
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:72
 msgid "The Preferences page (General settings)"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:75
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:76
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "मोबाइल प्रारूप में अन्वेषक पृष्ठ (सर्वर सूची)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:79
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:80
 msgid "The Details page"
 msgstr "विवरण पृष्ठ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:83
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:84
 msgid "The Details page (chapters list)"
 msgstr "विवरण पृष्ठ (अध्याय सूची)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:87
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:88
 msgid "The Reader page"
 msgstr "पाठक पृष्ठ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:91
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:92
 msgid "The Reader page in mobile format"
 msgstr "मोबाइल प्रारूप में पाठक पृष्ठ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:96
 msgid "The Reader page with the OCR Translator in use"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:100
 msgid "The Category editor page in mobile format"
 msgstr "मोबाइल प्रारूप में श्रेणी संपादक पृष्ठ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:103
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:104
 msgid "The Reading history page in mobile format"
 msgstr "मोबाइल प्रारूप में पठन इतिहास पृष्ठ"
 

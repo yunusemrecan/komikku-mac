@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 50.5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 01:07+0100\n"
+"POT-Creation-Date: 2026-11-06 14:36+0100\n"
 "PO-Revision-Date: 2026-09-06 15:51+0000\n"
 "Last-Translator: Bhalet Chakma <bhalet002@gmail.com>\n"
 "Language-Team: Bengali <https://hosted.weblate.org/projects/komikku/main/bn/"
@@ -65,6 +65,10 @@ msgid "RTL, LTR, Vertical and Webtoon reading modes"
 msgstr "RTL, LTR, ভার্টিক্যাল এবং ওয়েবটুন ফরম্যাট এ পড়ার মোড আছে"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:20
+msgid "Double page view"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
 msgid ""
 "Support several types of navigation: keyboard arrow keys, right and left "
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
@@ -74,120 +78,120 @@ msgstr ""
 "মাধ্যমে ডান ও বাম নেভিগেশন লেআউট (টাচপ্যাড/টাচ স্ক্রিন), মাউস হুইল, ২-আঙুলের "
 "সোয়াইপ জেসচার (টাচপ্যাড), সোয়াইপ জেসচার (টাচপ্যাড)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:22
 msgid "Categories to organize your library"
 msgstr "ক্যাটাগরির মাধ্যমে লাইব্রেরি শুন্দির করে সাজাতে পারবেন"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:23
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
 msgid "Automatic tracking of series with AniList, MangaUpdates and MyAnimeList"
 msgstr ""
 "অটোমেটিক ট্র্যাকিং সাপোর্ট রয়েছে অনিলিস্ট, মাঙ্গা আপডেট এবং MyAnimeList এর জন্যে"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:24
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
 msgid "Automatic update of series"
 msgstr "সিরিজ অটোমেটিক আপডেট করবে"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:25
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
 msgid "Automatic download of new chapters"
 msgstr "নতুন চ্যাপ্টার অটোমেটিক ডাউনলোড করা যায়"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:26
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
 msgid "Reading history"
 msgstr "পড়ার হিস্টরি"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:27
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:28
 msgid "Light and dark themes"
 msgstr "সাদা এবং গাঢ় থিম"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:32
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
 msgid "reader"
 msgstr "রিডার"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:33
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
 msgid "viewer"
 msgstr "ভিউয়ার"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:34
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
 msgid "scanlation"
 msgstr "স্ক্যানলেশন"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:35
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
 msgid "comic"
 msgstr "কমিক"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:36
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
 msgid "manga"
 msgstr "মাঙ্গা"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:37
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
 msgid "manhwa"
 msgstr "মানহওয়া"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:38
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
 msgid "manhua"
 msgstr "মানহুয়া"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:39
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
 msgid "webtoon"
 msgstr "ওয়েবটুন"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:40
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
 msgid "webcomic"
 msgstr "ওয়েবকমিক"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:41
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
 msgid "book"
 msgstr "বই"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:42
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
 msgid "ebook"
 msgstr "ই-বই"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:43
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:44
 msgid "offline"
 msgstr "অফলাইন"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:63
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:64
 msgid "The Library page"
 msgstr "লাইব্রেরি পেজ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:67
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:68
 msgid "The Library page with the category sidebar open"
 msgstr "ক্যাটাগরির স্লাইডার সহবলিব্রেরি পেজ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:71
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:72
 msgid "The Preferences page (General settings)"
 msgstr "পছন্দের সেটিং পেজ (সাধারণ সেটিংস)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:75
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:76
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "এক্সপ্লোরার পেজ মোবাইল ফরম্যাট এ (সার্ভার লিস্ট)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:79
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:80
 msgid "The Details page"
 msgstr "ডিটেইল পেজ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:83
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:84
 msgid "The Details page (chapters list)"
 msgstr "ডিটেইল পেজ (চ্যাপ্টার লিস্ট)"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:87
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:88
 msgid "The Reader page"
 msgstr "রিডার পেজ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:91
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:92
 msgid "The Reader page in mobile format"
 msgstr "রিডার পেজ মোবাইল ফরম্যাট এ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:95
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:96
 msgid "The Reader page with the OCR Translator in use"
 msgstr ""
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:99
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:100
 msgid "The Category editor page in mobile format"
 msgstr "ক্যাটাগরির এডিটর পেজ মোবাইল ফরম্যাট এ"
 
-#: ../data/info.febvre.Komikku.metainfo.xml.in.in:103
+#: ../data/info.febvre.Komikku.metainfo.xml.in.in:104
 msgid "The Reading history page in mobile format"
 msgstr "রিডিং হিস্টরি পেজ মোবাইল ফরম্যাট এ"
 
