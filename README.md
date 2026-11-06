@@ -21,6 +21,7 @@
 * Online/Offline reading
 * Support for locally stored series (in [CBZ/CBR/CBT](https://en.wikipedia.org/wiki/Comic_book_archive), EPUB and PDF formats)
 * RTL (Right To Left), LTR (Left To Right), Vertical and Webtoon reading modes
+* Double page view
 * Several types of navigation:
   * Keyboard arrow keys
   * Right and left navigation layout via mouse click or tapping (touchpad/touch screen)
