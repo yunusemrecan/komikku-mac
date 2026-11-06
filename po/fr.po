@@ -4,21 +4,22 @@
 # rene-coty <irenee.thirion@e.email>, 2024.
 # paul verot <paulverot@free.fr>, 2024.
 # "Hinata NekoNya (ひなたねこにゃ)" <nicolasmkz30960@gmail.com>, 2024.
+# Valéry Febvre <valos@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-06 01:07+0100\n"
-"PO-Revision-Date: 2026-10-01 00:17+0000\n"
-"Last-Translator: Valéry Febvre <vfebvre@easter-eggs.com>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/"
-">\n"
+"PO-Revision-Date: 2026-11-06 11:39+0000\n"
+"Last-Translator: Valéry Febvre <valos@users.noreply.hosted.weblate.org>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/>"
+"\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.10.dev0\n"
+"X-Generator: Weblate 2026.11.2.dev0\n"
 
 #: ../data/info.febvre.Komikku.desktop.in:2
 msgid "@prettyname@"
@@ -639,11 +640,11 @@ msgstr "⬇ Webtoon"
 
 #: ../data/ui/preferences.blp:291
 msgid "Double Page"
-msgstr ""
+msgstr "Double page"
 
 #: ../data/ui/preferences.blp:292
 msgid "Use two pages side by side view"
-msgstr ""
+msgstr "Afficher deux pages côte à côte"
 
 #: ../data/ui/preferences.blp:296 ../data/ui/reader_settings.blp:25
 msgid "Scaling Filter"
@@ -2213,11 +2214,12 @@ msgstr "Convertir les pages en niveaux de gris"
 
 #: ../komikku/reader/settings.py:42
 msgid "Inversion"
-msgstr ""
+msgstr "Inversion"
 
 #: ../komikku/reader/settings.py:43
 msgid "Convert pages to grayscale and invert black and white"
 msgstr ""
+"Convertir les pages en niveaux de gris et inverser les noirs et les blancs"
 
 #: ../komikku/reader/settings.py:50
 msgid "Sepia"
