@@ -70,7 +70,10 @@ class Application(Adw.Application):
     logger = None
 
     def __init__(self):
-        super().__init__(application_id=self.application_id, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
+        super().__init__(
+            application_id=self.application_id,
+            flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE | Gio.ApplicationFlags.REPLACE | Gio.ApplicationFlags.ALLOW_REPLACEMENT
+        )
 
         self.window = None
 
@@ -752,7 +755,11 @@ available in your region/language."""))
 
     def restart(self, message):
         def confirm_callback():
-            os.execv(sys.argv[0], sys.argv)
+            try:
+                Gio.Subprocess.new(['flatpak-spawn', '/app/bin/komikku', '--gapplication-replace'], Gio.SubprocessFlags.NONE)
+            except GLib.Error:
+                # We are not inside a flatpak sandbox
+                os.execv(sys.argv[0], sys.argv)
 
         self.open_dialog(
             _('Restart?'),
