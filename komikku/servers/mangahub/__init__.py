@@ -49,7 +49,7 @@ class Mangahub(Server):
 
     base_url = 'https://mangahub.io'
     logo_url = base_url + '/favicon-32x32.png'
-    api_url = 'https://api.mghcdn.com/graphql'
+    api_url = base_url + '/graphql'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/chapter/{0}/{1}'
     cover_url = 'https://thumb.mghcdn.com/{0}'
