@@ -95,7 +95,6 @@ class CardPage(Adw.NavigationPage):
         # Drag gesture
         self.gesture_drag = Gtk.GestureDrag.new()
         self.gesture_drag.set_touch_only(True)
-        self.gesture_drag.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.gesture_drag.connect('drag-end', self.on_gesture_drag_end)
         self.gesture_drag.connect('drag-update', self.on_gesture_drag_update)
         self.stack.add_controller(self.gesture_drag)
@@ -296,7 +295,7 @@ class CardPage(Adw.NavigationPage):
         if self.pool_to_update_offset > 2 * 150:
             self.on_update_request()
 
-        self.gesture_drag.set_state(Gtk.EventSequenceState.CLAIMED)
+        self.gesture_drag.set_state(Gtk.EventSequenceState.DENIED)
 
     def on_gesture_drag_update(self, _controller, _offset_x, offset_y):
         _active, start_x, start_y = self.gesture_drag.get_start_point()
@@ -323,6 +322,8 @@ class CardPage(Adw.NavigationPage):
             self.pool_to_update_revealer.set_margin_top(self.toolbar_view.get_top_bar_height())
             self.pool_to_update_revealer.props.transition_type = Gtk.RevealerTransitionType.NONE
             self.pool_to_update_revealer.set_reveal_child(True)
+
+            self.gesture_drag.set_state(Gtk.EventSequenceState.CLAIMED)
         else:
             self.pool_to_update_spinner.props.margin_top = max(0, min(150, offset_y / 2))
 
