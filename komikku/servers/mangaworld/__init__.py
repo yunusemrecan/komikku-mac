@@ -28,7 +28,7 @@ def get_mwcookie(func):
                 break
 
         if not found:
-            _html, cookies = get_page_html(server.base_url, user_agent=USER_AGENT, with_cookies=True)
+            _html, cookies = get_page_html(server.base_url, headers={'User-Agent': USER_AGENT}, with_cookies=True)
 
             for cookie in cookies:
                 if cookie.name == 'MWCookie':
@@ -46,7 +46,7 @@ class Mangaworld(Server):
     lang = 'it'
     is_nsfw = True
 
-    base_url = 'https://www.mangaworld.cx'
+    base_url = 'https://www.mangaworld.mx'
     logo_url = base_url + '/public/assets/seo/favicon-32x32.png'
     search_url = base_url + '/archive'
     manga_url = base_url + '/manga/{0}'
