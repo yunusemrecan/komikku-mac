@@ -233,7 +233,7 @@ class WebviewPage(Adw.NavigationPage):
         self.exited_auto = True
         self.window.navigationview.pop()
 
-    def load_page(self, uri=None, challenger=None, user_agent=None, auto_load_images=True):
+    def load_page(self, uri=None, challenger=None, headers=None, auto_load_images=True):
         if self.lock or not self.exited:
             # Already in use or page exiting is not ended (pop animation not ended)
             return False
@@ -242,7 +242,10 @@ class WebviewPage(Adw.NavigationPage):
         self.exited = False
         self.exited_auto = False
 
-        self.webkit_webview.get_settings().set_user_agent(user_agent or self.user_agent)
+        if headers is None:
+            headers = {}
+
+        self.webkit_webview.get_settings().set_user_agent(headers.get('User-Agent', self.user_agent))
         self.webkit_webview.get_settings().set_auto_load_images(auto_load_images)
 
         self.challenger = challenger
@@ -254,7 +257,15 @@ class WebviewPage(Adw.NavigationPage):
 
         logger.debug('Load page %s', uri)
 
-        GLib.idle_add(self.webkit_webview.load_uri, uri)
+        if headers:
+            request = WebKit.URIRequest.new(uri)
+            request_headers = request.get_http_headers()
+            for name, value in headers.items():
+                request_headers.replace(name, value)
+
+            GLib.idle_add(self.webkit_webview.load_request, request)
+        else:
+            GLib.idle_add(self.webkit_webview.load_uri, uri)
 
         return True
 
@@ -662,14 +673,14 @@ def eval_js(code, uri=None, wait_ready=False):
     return res
 
 
-def get_page_html(url, user_agent=None, wait_js_code=None, with_cookies=False):
+def get_page_html(url, headers=None, wait_js_code=None, with_cookies=False):
     cookies = None
     error = None
     html = None
     webview = Gio.Application.get_default().window.webview
 
     def load_page():
-        if not webview.load_page(uri=url, user_agent=user_agent, auto_load_images=False):
+        if not webview.load_page(uri=url, headers=headers, auto_load_images=False):
             return True
 
         webview.connect_webview_signal('load-changed', on_load_changed)
@@ -754,14 +765,14 @@ def get_page_html(url, user_agent=None, wait_js_code=None, with_cookies=False):
     return html if not with_cookies else (html, cookies)
 
 
-def get_page_resources(url, paths, timeout=20, user_agent=None):
+def get_page_resources(url, paths, timeout=20, headers=None):
     """
     Returns all resources loaded by a page
 
     :param url: Page URL
     :param paths: List of paths to which resource URIs must match
     :param timeout: Timeout in seconds (optional)
-    :param user_agent: User agent (optional)
+    :param headers: Headers (optional)
     """
 
     data = None
@@ -773,7 +784,7 @@ def get_page_resources(url, paths, timeout=20, user_agent=None):
     def load_page():
         nonlocal ts_start
 
-        if not webview.load_page(uri=url, user_agent=user_agent, auto_load_images=False):
+        if not webview.load_page(uri=url, headers=headers, auto_load_images=False):
             return True
 
         ts_start = time.time()
@@ -829,7 +840,7 @@ def get_page_resources(url, paths, timeout=20, user_agent=None):
     return list(data.values())
 
 
-def get_tracker_access_token(url, app_redirect_url, user_agent=None):
+def get_tracker_access_token(url, app_redirect_url, headers=None):
     """Use webview to request a client access token to a tracker
 
     User will be asked to approve client permission.
@@ -837,7 +848,7 @@ def get_tracker_access_token(url, app_redirect_url, user_agent=None):
 
     :param url: Authorization request URL
     :param app_redirect_url: App redirection URL
-    :param user_agent: User agent (optional)
+    :param headers: Headers (optional)
     """
 
     error = None
@@ -845,7 +856,7 @@ def get_tracker_access_token(url, app_redirect_url, user_agent=None):
     webview = Gio.Application.get_default().window.webview
 
     def load_page():
-        if not webview.load_page(uri=url, user_agent=user_agent):
+        if not webview.load_page(uri=url, headers=headers):
             return False
 
         # We assume that this function is always called from preferences
