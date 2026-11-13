@@ -5,6 +5,7 @@
 from collections import deque
 import datetime
 from gettext import gettext as _
+import logging
 import os
 import sys
 import threading
@@ -82,6 +83,11 @@ class Application(Adw.Application):
         GLib.set_application_name('Komikku')
 
         # Logger
+        logging.basicConfig(
+            format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%d-%m-%y %H:%M:%S',
+            level=logging.DEBUG if self.profile == 'development' else logging.INFO
+        )
+
         formatter = colorlog.ColoredFormatter(
             '%(log_color)s%(levelname)-8s%(reset)s | %(bold)s%(name)s%(reset)s | %(message)s',
             log_colors={
