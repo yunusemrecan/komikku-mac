@@ -23,6 +23,8 @@ class Rawkuma(Server):
     id = 'rawkuma'
     name = 'Rawkuma'
     lang = 'ja'
+    status = 'disabled'
+
     is_nsfw = True
 
     base_url = 'https://rawkuma.net'
