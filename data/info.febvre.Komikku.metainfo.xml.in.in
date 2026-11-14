@@ -120,6 +120,19 @@
     <url type="donation">https://febvre.info/donate.html</url>
 
     <releases>
+        <release version="51.4.0" date="2026-11-15">
+            <description translate="no">
+                <ul>
+                    <li>[Card] Fixed Pull-to-Update</li>
+                    <li>[Servers] Added Niadd (DE/ES/FR/IT/pt_BR/RU)</li>
+                    <li>[Servers] MangaHub (EN): Update</li>
+                    <li>[Servers] MangaWorld (IT): Update</li>
+                    <li>[Servers] Rawkuma (JA): Disabled</li>
+                    <li>[L10n] Updated Korean and Russian translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="51.3.0" date="2026-11-06">
             <description translate="no">
                 <ul>

@@ -273,12 +273,12 @@ CREDITS = {
 
 RELEASE_NOTES = """
 <ul>
-    <li>[Reader] RTL/LTR/Vertical pager: Added double page view</li>
-    <li>[Servers] BDplus (FR): Update</li>
-    <li>[Servers] JManga (JA): Update</li>
-    <li>[Servers] Kavita: Fixed wrong volume listing</li>
-    <li>[Servers] LanorTrad (FR): Update</li>
-    <li>[L10n] Updated French and Korean translations</li>
+    <li>[Card] Fixed Pull-to-Update</li>
+    <li>[Servers] Added Niadd (DE/ES/FR/IT/pt_BR/RU)</li>
+    <li>[Servers] MangaHub (EN): Update</li>
+    <li>[Servers] MangaWorld (IT): Update</li>
+    <li>[Servers] Rawkuma (JA): Disabled</li>
+    <li>[L10n] Updated Korean and Russian translations</li>
 </ul>
 <p>Happy reading.</p>
 """
