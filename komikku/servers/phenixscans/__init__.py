@@ -15,6 +15,7 @@ class Phenixscans(Server):
     id = 'phenixscans'
     name = 'Phenix Scans'
     lang = 'fr'
+    status = 'disabled'
 
     has_cf = True
 
