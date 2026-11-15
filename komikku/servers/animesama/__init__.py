@@ -188,18 +188,18 @@ class Animesama(Server):
         soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
-        for element in soup.select('#containerAjoutsScans > div'):
-            a_element = element.a
-            img_element = a_element.img
+        for element in soup.select('#containerAjoutsScans > .as-carte'):
+            a_element = element.select_one('.as-carte-lien')
+            img_element = element.select_one('.as-carte-image img')
 
-            if last_element := element.select_one('.card-info .info-text'):
+            if last_element := element.select_one('.as-carte-info span:first-child'):
                 last_chapter = last_element.text.strip()
             else:
                 last_chapter = None
 
             results.append(dict(
                 slug=a_element.get('href').split('/')[-4],
-                name=a_element.select_one('.card-title').text.strip(),
+                name=element.select_one('.as-carte-titre').text.strip(),
                 cover=img_element.get('src'),
                 last_chapter=last_chapter,
             ))
@@ -210,6 +210,7 @@ class Animesama(Server):
         params = {
             'search': term,
             'type[]': 'Scans',
+            'tri': 'pertinence',
         }
 
         r = self.session_get(
@@ -237,7 +238,7 @@ class Animesama(Server):
 
             results.append(dict(
                 slug=slug,
-                name=a_element.select_one('.card-title').text.strip(),
+                name=a_element.select_one('.as-carte-titre').text.strip(),
                 cover=img_element.get('src'),
             ))
 
