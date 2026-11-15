@@ -43,6 +43,7 @@ class Mangamana(Server):
     id = 'mangamana'
     name = 'Manga Mana'
     lang = 'fr'
+    status = 'disabled'
 
     has_cf = True
 
