@@ -22,7 +22,6 @@ class Animesama(Server):
     chapter_url = base_url + '/catalogue/{0}/scan/vf/'
     api_chapters_url = base_url + '/s2/scans/get_nb_chap_et_img.php'
     image_url = base_url + '/s2/scans/{0}/{1}/{2}.jpg'
-    cover_url = 'https://raw.githubusercontent.com/Anime-Sama/IMG/img/contenu/{0}.jpg'
 
     long_strip_genres = ['Webcomic']
 
@@ -58,7 +57,7 @@ class Animesama(Server):
         ))
 
         data['name'] = soup.select_one('#titreOeuvre').text.strip()
-        data['cover'] = self.cover_url.format(data['slug'])
+        data['cover'] = soup.select_one('.oe-affiche img').get('src')
 
         if element := soup.select_one('.oe-infos > dt:-soup-contains("Auteur") ~ dd'):
             data['authors'].append(element.text.strip())
@@ -192,7 +191,7 @@ class Animesama(Server):
             a_element = element.select_one('.as-carte-lien')
             img_element = element.select_one('.as-carte-image img')
 
-            if last_element := element.select_one('.as-carte-info span:first-child'):
+            if last_element := element.select_one('.as-carte-info span'):
                 last_chapter = last_element.text.strip()
             else:
                 last_chapter = None
