@@ -88,7 +88,7 @@ class Niadd(Server):
     is_nsfw = True
 
     base_url = 'https://www.niadd.com'
-    logo_url = base_url + '/favicon.png'
+    logo_url = base_url + '/files/images/favicon.ico?v=178'
     search_url = base_url + '/ajax/search/'
     latest_updates_url = base_url + '/list/New-Update/'
     most_populars_url = base_url + '/list/Hot-Manga/'
