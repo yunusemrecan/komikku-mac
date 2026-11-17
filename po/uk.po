@@ -9,13 +9,14 @@
 # Максим Горпиніч <gorpinicmaksim0@gmail.com>, 2025.
 # Димко <Term0@ukr.net>, 2026.
 # Димко <Dymkovych@proton.me>, 2026.
+# Silent Rain <silentrain@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-06 14:36+0100\n"
-"PO-Revision-Date: 2026-10-04 07:51+0000\n"
-"Last-Translator: Димко <Dymkovych@proton.me>\n"
+"PO-Revision-Date: 2026-11-17 19:51+0000\n"
+"Last-Translator: Silent Rain <silentrain@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
 "uk/>\n"
 "Language: uk\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.12.dev0\n"
 
 #: ../data/info.febvre.Komikku.desktop.in:2
 msgid "@prettyname@"
@@ -70,7 +71,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:20
 msgid "Double page view"
-msgstr ""
+msgstr "Двосторінковий режим"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
 msgid ""
@@ -2045,7 +2046,9 @@ msgstr "Вимкнути"
 
 #: ../komikku/preferences/__init__.py:705 ../komikku/preferences/servers.py:72
 msgid "System keyring service is disabled. Credential cannot be saved."
-msgstr "Службу Keyring вимкнено. Обліковий запис не вдається зберегти."
+msgstr ""
+"Службу зберігання облікових даних вимкнено. Обліковий запис не вдається "
+"зберегти."
 
 #: ../komikku/preferences/__init__.py:710 ../komikku/preferences/servers.py:77
 msgid ""
@@ -2199,6 +2202,7 @@ msgstr ""
 #: ../komikku/reader/settings.py:43
 msgid "Convert pages to grayscale and invert black and white"
 msgstr ""
+"Перетворити кольори сторінок на відтінки сірого та інвертувати чорний і білий"
 
 #: ../komikku/reader/settings.py:50
 msgid "Sepia"
