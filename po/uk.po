@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-06 14:36+0100\n"
 "PO-Revision-Date: 2026-11-17 19:51+0000\n"
-"Last-Translator: Silent Rain <silentrain@users.noreply.hosted.weblate.org>\n"
+"Last-Translator: Димко <Dymkovych@proton.me>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
 "uk/>\n"
 "Language: uk\n"
@@ -71,7 +71,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:20
 msgid "Double page view"
-msgstr "Двосторінковий режим"
+msgstr "Двосторінковий перегляд"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:21
 msgid ""
@@ -653,7 +653,7 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:292
 msgid "Use two pages side by side view"
-msgstr ""
+msgstr "Перегляд двох сторінок поруч"
 
 #: ../data/ui/preferences.blp:296 ../data/ui/reader_settings.blp:25
 msgid "Scaling Filter"
@@ -2197,7 +2197,7 @@ msgstr "Перетворити сторінки на градації сірог
 
 #: ../komikku/reader/settings.py:42
 msgid "Inversion"
-msgstr ""
+msgstr "Інверсія"
 
 #: ../komikku/reader/settings.py:43
 msgid "Convert pages to grayscale and invert black and white"
