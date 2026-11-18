@@ -5,6 +5,7 @@
 flake8
 flake8-pyproject
 flake8-quotes
+flatpak_pip_generator
 pre-commit
 pytest
 pytest-steps
