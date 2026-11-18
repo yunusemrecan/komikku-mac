@@ -22,7 +22,6 @@ from komikku.utils import get_buffer_mime_type
 
 
 class Hiveworks(Server):
-    lang = 'en'
     true_search = False
 
     manga_url = None
