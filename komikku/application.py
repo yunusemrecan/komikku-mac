@@ -444,6 +444,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
         def complete(res, status):
             if res is True:
                 if status == 'updated':
+                    self.application.logger.info('Servers modules have been updated but no restart is required')
+                elif status in ('created', 'updated-need-restart'):
                     self.restart(_('Servers modules have been updated'))
 
             elif res is False:
@@ -455,10 +457,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
                         body=_('Updating of external server modules is temporarily suspended, as changes are currently making them incompatible with the current version of the application. Please update it if a more recent version exists.'),
                         cancel_label=_('Close'),
                     )
-                    self.application.logger.info('Failed to updates servers modules: incompatible app version')
+                    self.application.logger.warning('Failed to update servers modules: incompatible app version')
 
             else:
-                self.application.logger.info('Failed to update servers modules')
+                self.application.logger.error('Failed to update servers modules')
 
         thread = threading.Thread(target=run)
         thread.daemon = True
