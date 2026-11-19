@@ -18,3 +18,6 @@ requests >= 2.32.4
 tzlocal
 Unidecode
 curl_cffi >= 0.6.3
+# Imported by upstream modules but not listed in its requirements
+cryptography
+pytz
