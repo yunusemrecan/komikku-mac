@@ -1,0 +1,99 @@
+name: Build macOS app
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backend-linux:
+    name: Backend smoke test (Linux, no GTK)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install -r backend/requirements-mac.txt
+      - run: python backend/tests/smoke_test.py
+
+  build:
+    name: Build Komikku.app (Apple Silicon)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          sw_vers
+          swift --version
+          xcodebuild -version
+
+      - name: Build app bundle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="0.1.0+$(git rev-parse --short HEAD)"
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then VERSION="${GITHUB_REF#refs/tags/v}"; fi
+          KOMIKKU_MAC_VERSION="$VERSION" scripts/build_app.sh --arch arm64
+
+      - name: Smoke test bundled backend
+        run: |
+          python3 backend/tests/smoke_test.py \
+            --python dist/Komikku.app/Contents/Resources/python/bin/python3 \
+            --backend dist/Komikku.app/Contents/Resources/backend \
+            --upstream dist/Komikku.app/Contents/Resources/upstream
+
+      - name: Live smoke test (MangaDex)
+        continue-on-error: true
+        run: |
+          python3 backend/tests/smoke_test.py --live \
+            --python dist/Komikku.app/Contents/Resources/python/bin/python3 \
+            --backend dist/Komikku.app/Contents/Resources/backend \
+            --upstream dist/Komikku.app/Contents/Resources/upstream
+
+      - name: Launch check
+        run: |
+          # Start the app for a few seconds and make sure it stays alive
+          dist/Komikku.app/Contents/MacOS/Komikku &
+          PID=$!
+          sleep 15
+          if kill -0 $PID 2>/dev/null; then
+            echo "App is running"
+            kill $PID
+          else
+            echo "App exited early"; wait $PID; exit 1
+          fi
+          cat ~/Library/Logs/Komikku/backend.log || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Komikku-macos-arm64
+          path: dist/Komikku-macos-arm64.zip
+
+      - name: Publish rolling "nightly" pre-release
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete nightly --yes --cleanup-tag || true
+          gh release create nightly dist/Komikku-macos-arm64.zip \
+            --prerelease --target "$GITHUB_SHA" \
+            --title "Nightly ($(git rev-parse --short HEAD))" \
+            --notes "Son main derlemesi. İmzasız: ilk açılışta sağ tık → Aç, ya da \`xattr -dr com.apple.quarantine /Applications/Komikku.app\`."
+
+      - name: Publish tagged release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "$GITHUB_REF_NAME" dist/Komikku-macos-arm64.zip --generate-notes

@@ -1,0 +1,20 @@
+# Upstream requirements minus GTK (PyGObject), libmagic (pure-Python shim) and OCR
+beautifulsoup4
+brotli >= 1.2.0
+colorlog
+colorthief
+dateparser >= 1.1.6
+ebooklib >= 0.20
+emoji
+keyring >= 21.6.0
+lxml >= 5.2.1
+natsort
+piexif
+pillow >= 11.3.0
+PyJWT >= 2.10.1
+pypdf >= 6.7.3
+rarfile
+requests >= 2.32.4
+tzlocal
+Unidecode
+curl_cffi >= 0.6.3
