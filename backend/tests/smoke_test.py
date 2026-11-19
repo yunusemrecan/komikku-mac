@@ -84,7 +84,8 @@ def main():
     if args.upstream:
         env['KOMIKKU_UPSTREAM'] = os.path.abspath(args.upstream)
 
-    client = Client(args.python, os.path.abspath(args.backend), env)
+    python = os.path.abspath(args.python) if os.sep in args.python else args.python
+    client = Client(python, os.path.abspath(args.backend), env)
     try:
         hello = client.call('app.hello')
         check(f'app.hello (upstream {hello["upstream_commit"]})', hello['data_dir'].startswith(home))
