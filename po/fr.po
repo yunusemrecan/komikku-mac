@@ -5,13 +5,14 @@
 # paul verot <paulverot@free.fr>, 2024.
 # "Hinata NekoNya (ひなたねこにゃ)" <nicolasmkz30960@gmail.com>, 2024.
 # Valéry Febvre <valos@users.noreply.hosted.weblate.org>, 2026.
+# ABCraft19 <abcraft19@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-06 14:36+0100\n"
-"PO-Revision-Date: 2026-11-06 13:51+0000\n"
-"Last-Translator: Valéry Febvre <valos@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-11-19 20:59+0000\n"
+"Last-Translator: ABCraft19 <abcraft19@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/>"
 "\n"
 "Language: fr\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.11.2.dev0\n"
+"X-Generator: Weblate 2026.12.dev0\n"
 
 #: ../data/info.febvre.Komikku.desktop.in:2
 msgid "@prettyname@"
@@ -35,7 +36,7 @@ msgstr "manga;lecteur;visionneuse;comic;manhwa;manhua;webtoon;webcomic;scantrad;
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:11
 msgid "Discover and read manga & comics"
-msgstr "Découvrez et lisez des mangas et comics"
+msgstr "Découvrez et lisez des mangas &amp comics"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:13
 msgid ""
@@ -47,7 +48,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:15
 msgid "Why you will love Komikku?"
-msgstr "Pourquoi vous allez aimer Komikku ?"
+msgstr "Pourquoi vous allez aimer Komikku ?"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
@@ -74,7 +75,7 @@ msgid ""
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
 "wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)"
 msgstr ""
-"Prise en charge de plusieurs types de navigation : touches fléchées du "
+"Prise en charge de plusieurs types de navigation : touches fléchées du "
 "clavier, disposition de la navigation à droite et à gauche par clic ou "
 "tapotement de la souris (pavé tactile / écran tactile), roue de la souris, "
 "geste de balayage à deux doigts (pavé tactile), geste de balayage (écran "
