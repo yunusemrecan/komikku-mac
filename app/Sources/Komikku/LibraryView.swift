@@ -25,11 +25,9 @@ struct LibraryView: View {
     }
 
     private var title: String {
-        switch category {
-        case nil: return "Kütüphane"
-        case -1?: return "Kategorisiz"
-        case let id?: return model.categories.first { $0.id == id }?.label ?? "Kategori"
-        }
+        guard let category else { return "Kütüphane" }
+        if category == -1 { return "Kategorisiz" }
+        return model.categories.first { $0.id == category }?.label ?? "Kategori"
     }
 
     var body: some View {
