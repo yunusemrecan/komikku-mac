@@ -87,7 +87,17 @@ struct ContentView: View {
             AppLog.write("autotest: opening \(manga.name) / \(chapter.title)")
             openReader(ReaderTarget(mangaId: manga.id, chapterId: chapter.id))
             if screens {
-                try? await Task.sleep(for: .seconds(50))
+                // Arrow keys: page fits -> turns; zoomed -> pans without turning
+                try? await Task.sleep(for: .seconds(22))
+                let key = Notification.Name.komikkuAutotestKey
+                NotificationCenter.default.post(name: key, object: "left")
+                try? await Task.sleep(for: .seconds(3))
+                NotificationCenter.default.post(name: key, object: "zoom")
+                try? await Task.sleep(for: .seconds(2))
+                NotificationCenter.default.post(name: key, object: "left")
+                try? await Task.sleep(for: .seconds(2))
+                NotificationCenter.default.post(name: key, object: "unzoom")
+                try? await Task.sleep(for: .seconds(21))
                 AppLog.write("autotest: library")
                 select(.library)
                 try? await Task.sleep(for: .seconds(22))

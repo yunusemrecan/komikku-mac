@@ -24,10 +24,12 @@ final class ScrollHandle {
         let document = clip.documentRect
         let flipped = clip.isFlipped
 
-        let minX = document.minX
-        let maxX = max(document.minX, document.maxX - visible.width)
-        let minY = document.minY
-        let maxY = max(document.minY, document.maxY - visible.height)
+        // Content insets (e.g. the toolbar drawn over the content) extend the scroll range
+        let insets = clip.contentInsets
+        let minX = document.minX - insets.left
+        let maxX = max(minX, document.maxX + insets.right - visible.width)
+        let minY = document.minY - (flipped ? insets.top : insets.bottom)
+        let maxY = max(minY, document.maxY + (flipped ? insets.bottom : insets.top) - visible.height)
 
         let target = NSPoint(
             x: min(max(visible.origin.x + dx, minX), maxX),
@@ -45,8 +47,11 @@ final class ScrollHandle {
         guard let clip = clip else { return }
         let visible = clip.bounds
         let document = clip.documentRect
-        let top = clip.isFlipped ? document.minY : max(document.minY, document.maxY - visible.height)
-        let end = clip.isFlipped ? max(document.minY, document.maxY - visible.height) : document.minY
+        let insets = clip.contentInsets
+        let low = document.minY - (clip.isFlipped ? insets.top : insets.bottom)
+        let high = max(low, document.maxY + (clip.isFlipped ? insets.bottom : insets.top) - visible.height)
+        let top = clip.isFlipped ? low : high
+        let end = clip.isFlipped ? high : low
         move(to: NSPoint(x: visible.origin.x, y: bottom ? end : top), animated: animated)
     }
 

@@ -79,6 +79,8 @@ jobs:
           echo "----- app.log"; cat ~/Library/Logs/Komikku/app.log
           echo "----- backend.log (tail)"; tail -40 ~/Library/Logs/Komikku/backend.log
           grep -q "page 0 displayed" ~/Library/Logs/Komikku/app.log || { echo "Reader did not display a page"; exit 1; }
+          grep -q "keytest: left fits=true turned=true" ~/Library/Logs/Komikku/app.log || { echo "Arrow key did not turn a page that fits"; exit 1; }
+          grep -q "keytest: left fits=false turned=false" ~/Library/Logs/Komikku/app.log || { echo "Arrow key turned a zoomed page instead of panning"; exit 1; }
           grep -q "backend restarted" ~/Library/Logs/Komikku/app.log || { echo "Backend was not restarted after a crash"; exit 1; }
           grep -q "after restart library=1" ~/Library/Logs/Komikku/app.log || { echo "Library not reloaded after restart"; exit 1; }
           [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }

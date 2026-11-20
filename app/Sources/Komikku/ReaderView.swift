@@ -43,6 +43,10 @@ final class ReaderModel {
     let webtoonScroll = ScrollHandle()
     /// Last page turn went backwards: show the end of the new page (when it scrolls)
     var navigatedBackward = false
+    /// Whether the displayed page/spread is larger than the window (set by PagedPager
+    /// from its own size computation; drives arrow keys: pan vs. turn the page)
+    @ObservationIgnored var overflowX = false
+    @ObservationIgnored var overflowY = false
     private var globals: [String: Any] = [:]
 
     var loading = false
@@ -450,6 +454,9 @@ struct ReaderView: View {
         .focusEffectDisabled()
         .focused($focused)
         .onKeyPress(phases: [.down, .repeat]) { press in handleKey(press) }
+        .onReceive(NotificationCenter.default.publisher(for: .komikkuAutotestKey)) { note in
+            runAutotestKey(note.object as? String ?? "")
+        }
         .toolbar { toolbar }
         .task(id: target) {
             AppLog.write("reader: opened for \(target) embedded=\(embedded)")
@@ -587,6 +594,24 @@ struct ReaderView: View {
         }
     }
 
+    /// CI: simulate a key in the reader and log whether the page turned.
+    private func runAutotestKey(_ command: String) {
+        guard let model, ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST"] != nil else { return }
+        switch command {
+        case "zoom":
+            model.zoom = 2.5
+            AppLog.write("keytest: zoomed to 2.5")
+        case "unzoom":
+            model.resetZoom()
+        default:
+            let before = model.index
+            let key: KeyEquivalent = command == "left" ? .leftArrow : .rightArrow
+            _ = pagedKey(key, [], false, model)
+            let fits = !model.overflowX
+            AppLog.write("keytest: \(command) fits=\(fits) turned=\(model.index != before) index \(before)->\(model.index)")
+        }
+    }
+
     private func handleKey(_ press: KeyPress) -> KeyPress.Result {
         guard let model else { return .ignored }
 
@@ -616,16 +641,18 @@ struct ReaderView: View {
             }
         }
 
-        return model.mode == .webtoon ? webtoonKey(press, model) : pagedKey(press, model)
+        return model.mode == .webtoon
+            ? webtoonKey(press.key, press.modifiers, model)
+            : pagedKey(press.key, press.modifiers, press.phase == .repeat, model)
     }
 
     /// Webtoon: the keyboard scrolls the strip, like a web page.
-    private func webtoonKey(_ press: KeyPress, _ model: ReaderModel) -> KeyPress.Result {
+    private func webtoonKey(_ key: KeyEquivalent, _ modifiers: EventModifiers, _ model: ReaderModel) -> KeyPress.Result {
         let scroll = model.webtoonScroll
         let height = max(scroll.viewport.height, 200)
-        let shift = press.modifiers.contains(.shift)
+        let shift = modifiers.contains(.shift)
 
-        switch press.key {
+        switch key {
         case .downArrow:
             scroll.scroll(dy: height * 0.15)
         case .upArrow:
@@ -648,32 +675,37 @@ struct ReaderView: View {
 
     /// Paged modes: when the page is larger than the window (zoom, fit width…),
     /// keys first move around the page and only turn it at the edge.
-    private func pagedKey(_ press: KeyPress, _ model: ReaderModel) -> KeyPress.Result {
+    private func pagedKey(_ key: KeyEquivalent, _ modifiers: EventModifiers, _ repeating: Bool,
+                          _ model: ReaderModel) -> KeyPress.Result {
         let rtl = model.mode == .rightToLeft
         let scroll = model.pagedScroll
         let size = scroll.viewport
         let stepX = max(size.width, 200) * 0.2
         let stepY = max(size.height, 200) * 0.2
         let bigY = max(size.height, 200) * 0.9
-        let repeating = press.phase == .repeat
 
         // Turn the page only on a fresh press, so holding a key just pans
         func turn(_ action: () -> Void) { if !repeating { action() } }
 
-        switch press.key {
+        // Page fits on screen in that direction: the key turns the page.
+        // Page is larger (zoomed, fit width…): the key pans, and turns only at the edge.
+        let panX = model.overflowX
+        let panY = model.overflowY
+
+        switch key {
         case .rightArrow:
-            if !scroll.scroll(dx: stepX) { turn { rtl ? model.previous() : model.next() } }
+            if !(panX && scroll.scroll(dx: stepX)) { turn { rtl ? model.previous() : model.next() } }
         case .leftArrow:
-            if !scroll.scroll(dx: -stepX) { turn { rtl ? model.next() : model.previous() } }
+            if !(panX && scroll.scroll(dx: -stepX)) { turn { rtl ? model.next() : model.previous() } }
         case .downArrow:
-            if !scroll.scroll(dy: stepY) { turn { model.next() } }
+            if !(panY && scroll.scroll(dy: stepY)) { turn { model.next() } }
         case .upArrow:
-            if !scroll.scroll(dy: -stepY) { turn { model.previous() } }
+            if !(panY && scroll.scroll(dy: -stepY)) { turn { model.previous() } }
         case .space:
-            if press.modifiers.contains(.shift) {
-                if !scroll.scroll(dy: -bigY) { turn { model.previous() } }
+            if modifiers.contains(.shift) {
+                if !(panY && scroll.scroll(dy: -bigY)) { turn { model.previous() } }
             } else {
-                if !scroll.scroll(dy: bigY) { turn { model.next() } }
+                if !(panY && scroll.scroll(dy: bigY)) { turn { model.next() } }
             }
         case .pageDown:
             turn { model.next() }
@@ -773,6 +805,10 @@ struct PagedPager: View {
                 }
             }
             .scrollDisabled(!scrolls)
+            .onChange(of: [size.width, size.height, container.width, container.height], initial: true) { _, _ in
+                model.overflowX = size.width > container.width + 1
+                model.overflowY = size.height > container.height + 1
+            }
             .onChange(of: model.index) { _, _ in
                 // New page: start at its top (or its end when paging backwards)
                 DispatchQueue.main.async {
@@ -909,4 +945,8 @@ struct LoadingLabel: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
+}
+
+extension Notification.Name {
+    static let komikkuAutotestKey = Notification.Name("komikku.autotest.key")
 }
