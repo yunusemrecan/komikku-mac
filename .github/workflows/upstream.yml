@@ -1,8 +1,10 @@
 name: Track upstream Komikku
 
-# Every week (and on demand): move the `upstream` submodule to the latest
-# Komikku commit, check that the backend still works with it, then commit and
-# start a macOS build, which publishes a new nightly.
+# Every week (and on demand):
+#   - move the `upstream` submodule to the latest Komikku commit
+#   - refresh the hash-pinned Python dependency lock
+#   - test the backend, and propose the result as a pull request.
+# Nothing reaches `main` (and the nightly) until the PR is merged by a human.
 
 on:
   schedule:
@@ -10,21 +12,33 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write
+  contents: write        # push the update branch
+  pull-requests: write   # open/update the PR
+  issues: write          # fallback when Actions may not open PRs
+  actions: write         # start the macOS build of the branch
 
 concurrency:
   group: upstream
   cancel-in-progress: false
 
+env:
+  BRANCH: auto/upstream-update
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           submodules: recursive
           fetch-depth: 0
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+
+      - name: Tools (hash-pinned)
+        run: pip install --quiet --require-hashes -r scripts/build-tools.lock
 
       - name: Move submodule to upstream main
         id: bump
@@ -35,44 +49,86 @@ jobs:
           NEW=$(git -C upstream rev-parse HEAD)
           echo "old=$OLD" >> "$GITHUB_OUTPUT"
           echo "new=$NEW" >> "$GITHUB_OUTPUT"
-          if [ "$OLD" = "$NEW" ]; then
+
+      - name: Refresh dependency lock
+        run: |
+          cp backend/requirements-mac.lock /tmp/old.lock
+          uv pip compile backend/requirements-mac.txt --universal --python-version 3.13 \
+            --generate-hashes --no-header --upgrade -o backend/requirements-mac.lock
+          uv pip compile scripts/build-tools.in --universal --python-version 3.13 \
+            --generate-hashes --no-header --upgrade -o scripts/build-tools.lock
+
+      - name: Anything to propose?
+        id: diff
+        run: |
+          if git diff --quiet && git diff --quiet --submodule=short upstream; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Upstream unchanged ($NEW)"
+            echo "Nothing changed"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "Upstream ${OLD:0:8} -> ${NEW:0:8}:"
-            git -C upstream log --oneline "$OLD..$NEW" | head -50
+            git status --short
           fi
 
-      - uses: actions/setup-python@v5
-        if: steps.bump.outputs.changed == 'true'
-        with:
-          python-version: '3.13'
-
-      - name: Backend tests against new upstream
-        if: steps.bump.outputs.changed == 'true'
+      - name: Backend tests (new upstream + new lock)
+        if: steps.diff.outputs.changed == 'true'
         run: |
-          pip install --quiet -r backend/requirements-mac.txt
+          pip install --quiet --require-hashes -r backend/requirements-mac.lock
           python backend/tests/smoke_test.py
-          # Network test: informative only (some sites may be down)
           python backend/tests/smoke_test.py --live || echo "::warning::Live smoke test failed"
 
-      - name: Commit and start a macOS build
-        if: steps.bump.outputs.changed == 'true'
+      - name: Open or update the pull request
+        if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OLD: ${{ steps.bump.outputs.old }}
           NEW: ${{ steps.bump.outputs.new }}
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add upstream backend/requirements-mac.lock scripts/build-tools.lock
+          git commit -m "Update upstream Komikku to ${NEW:0:8} and refresh dependency locks"
+          git push --force origin "$BRANCH"
+
+          # Human-readable summary for review
           {
-            echo "Update upstream Komikku to ${NEW:0:8}"
+            echo "Otomatik haftalık güncelleme — **birleştirmeden (merge) önce göz at.** / Weekly automatic update — **review before merging.**"
             echo
-            git -C upstream log --format='- %s' "$OLD..$NEW" | head -40
-          } > /tmp/msg
-          git add upstream
-          git commit -F /tmp/msg
-          git push origin HEAD:main
-          # Pushes made with GITHUB_TOKEN do not trigger workflows; dispatch the build explicitly
-          gh workflow run build.yml --ref main
+            if [ "$OLD" != "$NEW" ]; then
+              echo "### Upstream Komikku ${OLD:0:8} → ${NEW:0:8}"
+              echo
+              git -C upstream log --format='- %s (%an)' "$OLD..$NEW" | head -60
+              echo
+              echo "[Tüm değişiklikler / full diff](https://codeberg.org/valos/Komikku/compare/$OLD...$NEW)"
+              echo
+            fi
+            echo "### Python paketleri / packages"
+            echo
+            CHANGES=$( { diff <(grep -E '^[a-z0-9_.-]+==' /tmp/old.lock | cut -d' ' -f1) \
+                              <(grep -E '^[a-z0-9_.-]+==' backend/requirements-mac.lock | cut -d' ' -f1) || true; } \
+                       | { grep -E '^[<>]' || true; } \
+                       | sed -e 's/^< /- eski \/ old: `/' -e 's/^> /- yeni \/ new: `/' -e 's/$/`/' )
+            echo "${CHANGES:-Değişiklik yok / no changes}"
+            echo
+            echo "Linux backend testleri geçti. macOS derlemesi bu dalda başlatıldı: Actions sekmesine bak."
+            echo "Linux backend tests passed. A macOS build of this branch was started (see Actions)."
+          } > /tmp/body.md
+
+          EXISTING=$(gh pr list --head "$BRANCH" --state open --json number -q '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh pr edit "$EXISTING" --body-file /tmp/body.md --title "Upstream ${NEW:0:8} + bağımlılık güncellemesi"
+          elif ! gh pr create --head "$BRANCH" --base main \
+                 --title "Upstream ${NEW:0:8} + bağımlılık güncellemesi" --body-file /tmp/body.md; then
+            # Repository setting "Allow GitHub Actions to create and approve pull requests" is off
+            {
+              echo "Actions PR açamadı (Settings → Actions → General → *Allow GitHub Actions to create and approve pull requests*)."
+              echo
+              echo "**PR'ı elle aç:** https://github.com/${GITHUB_REPOSITORY}/compare/main...${BRANCH}?expand=1"
+              echo
+              cat /tmp/body.md
+            } > /tmp/issue.md
+            gh issue create --title "Upstream güncellemesi hazır (${NEW:0:8})" --body-file /tmp/issue.md
+          fi
+
+          gh workflow run build.yml --ref "$BRANCH"

@@ -7,28 +7,33 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Read-only by default; the macOS job gets write access only to publish releases
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   backend-linux:
     name: Backend smoke test (Linux, no GTK)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           submodules: recursive
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.13'
-      - run: pip install -r backend/requirements-mac.txt
+      - run: pip install --require-hashes -r backend/requirements-mac.lock
       - run: python backend/tests/smoke_test.py
 
   build:
     name: Build Komikku.app (Apple Silicon)
     runs-on: macos-15
+    permissions:
+      contents: write        # publish nightly / tagged releases
+      id-token: write        # build provenance attestation
+      attestations: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -85,17 +90,33 @@ jobs:
           grep -q "after restart library=1" ~/Library/Logs/Komikku/app.log || { echo "Library not reloaded after restart"; exit 1; }
           [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: screenshots
           path: screenshots/
           if-no-files-found: ignore
 
-      - uses: actions/upload-artifact@v4
+      - name: Checksum
+        id: sha
+        run: |
+          SHA=$(shasum -a 256 dist/Komikku-macos-arm64.zip | cut -d' ' -f1)
+          echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
+          echo "$SHA  Komikku-macos-arm64.zip" > dist/Komikku-macos-arm64.zip.sha256
+          echo "SHA256: $SHA"
+
+      - name: Build provenance attestation
+        if: github.event_name != 'pull_request'
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
+        with:
+          subject-path: dist/Komikku-macos-arm64.zip
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: Komikku-macos-arm64
-          path: dist/Komikku-macos-arm64.zip
+          path: |
+            dist/Komikku-macos-arm64.zip
+            dist/Komikku-macos-arm64.zip.sha256
 
       - name: Publish rolling "nightly" pre-release
         if: github.ref == 'refs/heads/main'
@@ -103,13 +124,29 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release delete nightly --yes --cleanup-tag || true
-          gh release create nightly dist/Komikku-macos-arm64.zip \
+          cat > /tmp/notes.md <<NOTES
+          Son \`main\` derlemesi ($(git rev-parse --short HEAD)) — latest \`main\` build.
+
+          **SHA256:** \`${{ steps.sha.outputs.sha256 }}\`
+
+          İndirdiğin dosyanın bu CI'dan çıktığını doğrulamak için / verify this file was built by this repository's CI:
+          \`\`\`
+          shasum -a 256 Komikku-macos-arm64.zip
+          gh attestation verify Komikku-macos-arm64.zip -R ${{ github.repository }}
+          \`\`\`
+
+          İmzasız uygulama / unsigned app: ilk açılışta \`xattr -dr com.apple.quarantine /Applications/Komikku.app\`
+          NOTES
+          gh release create nightly dist/Komikku-macos-arm64.zip dist/Komikku-macos-arm64.zip.sha256 \
             --prerelease --target "$GITHUB_SHA" \
             --title "Nightly ($(git rev-parse --short HEAD))" \
-            --notes "Son main derlemesi. İmzasız: ilk açılışta sağ tık → Aç, ya da \`xattr -dr com.apple.quarantine /Applications/Komikku.app\`."
+            --notes-file /tmp/notes.md
 
       - name: Publish tagged release
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "$GITHUB_REF_NAME" dist/Komikku-macos-arm64.zip --generate-notes
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/Komikku-macos-arm64.zip dist/Komikku-macos-arm64.zip.sha256 \
+            --generate-notes \
+            --notes "SHA256: \`${{ steps.sha.outputs.sha256 }}\` — verify: \`gh attestation verify Komikku-macos-arm64.zip -R ${{ github.repository }}\`"

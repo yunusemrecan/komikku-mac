@@ -67,6 +67,25 @@ xattr -dr com.apple.quarantine /Applications/Komikku.app
 
 (or right-click → Open). Requires macOS 14+, Apple Silicon.
 
+### Verify a download
+
+Every build publishes its SHA256 and a GitHub [build provenance attestation](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations),
+so you can check that a zip was built by this repository's CI from this source:
+
+```sh
+shasum -a 256 Komikku-macos-arm64.zip        # compare with the release notes
+gh attestation verify Komikku-macos-arm64.zip -R yunusemrecan/komikku-mac
+```
+
+## Supply chain
+
+| What goes into the app | How it is controlled |
+|---|---|
+| Upstream Komikku (Codeberg) | Pinned submodule. A weekly job proposes updates as a **pull request**; nothing ships until it is merged |
+| Python packages | `backend/requirements-mac.lock`: exact versions + SHA256 of every file (`pip --require-hashes`), refreshed in the same weekly PR |
+| Embedded Python | `scripts/python-standalone.env`: pinned release, SHA256 checked before building |
+| GitHub Actions | Pinned to commit SHAs; workflows are read-only except the release step |
+
 ## Keyboard shortcuts
 
 | Where | Shortcut | Action |
@@ -94,8 +113,9 @@ scripts/build_app.sh            # -> dist/Komikku.app
 ```
 
 Every push to `main` is built by GitHub Actions on macOS and published as the `nightly` release.
+Dependencies are installed from `backend/requirements-mac.lock` (`pip install --require-hashes -r backend/requirements-mac.lock`).
 
-Development run against a checkout (any Python 3.12+ with `backend/requirements-mac.txt` installed):
+Development run against a checkout (any Python 3.12+ with the lock installed):
 
 ```sh
 KOMIKKU_BACKEND_DIR=$PWD/backend KOMIKKU_PYTHON=$(which python3) swift run --package-path app
@@ -108,6 +128,9 @@ python backend/tests/smoke_test.py --live
 ```
 
 ## Updating upstream
+
+Automatic: the weekly *Track upstream Komikku* workflow opens a PR (submodule + refreshed locks, tested).
+Manual:
 
 ```sh
 git -C upstream pull origin main && git add upstream && git commit -m "Update upstream Komikku"

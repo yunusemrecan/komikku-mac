@@ -32,7 +32,9 @@
     <string>Komikku © Valéry Febvre — GPL-3.0-or-later</string>
     <key>NSAppTransportSecurity</key>
     <dict>
-        <key>NSAllowsArbitraryLoads</key>
+        <!-- Only the challenge/captcha web view may load plain-HTTP pages
+             (some self-hosted servers); the app's own connections stay HTTPS -->
+        <key>NSAllowsArbitraryLoadsInWebContent</key>
         <true/>
     </dict>
 </dict>

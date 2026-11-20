@@ -14,7 +14,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ARCH="arm64"
-PY_VERSION="3.13"
+PY_VERSION="3.13"   # must match PBS_PYTHON in python-standalone.env
 VERSION="${KOMIKKU_MAC_VERSION:-0.1.0}"
 
 while [[ $# -gt 0 ]]; do
@@ -44,36 +44,32 @@ swift build --package-path "$ROOT/app" -c release --arch "$ARCH"
 BIN_DIR="$(swift build --package-path "$ROOT/app" -c release --arch "$ARCH" --show-bin-path)"
 cp "$BIN_DIR/Komikku" "$APP/Contents/MacOS/Komikku"
 
-echo "==> Fetching standalone Python $PY_VERSION ($PBS_ARCH)"
-PY_TARBALL="$BUILD/python-$PY_VERSION-$PBS_ARCH.tar.gz"
+echo "==> Fetching standalone Python (pinned, checksum-verified)"
+# Pinned in scripts/python-standalone.env (tag, version, SHA256 per architecture)
+source "$ROOT/scripts/python-standalone.env"
+PY_SHA256_VAR="PBS_SHA256_${PBS_ARCH}"
+PY_SHA256="${!PY_SHA256_VAR}"
+PY_NAME="cpython-${PBS_PYTHON}+${PBS_TAG}-${PBS_ARCH}-apple-darwin-install_only_stripped.tar.gz"
+PY_URL="https://github.com/astral-sh/python-build-standalone/releases/download/${PBS_TAG}/${PY_NAME//+/%2B}"
+PY_TARBALL="$BUILD/$PY_NAME"
 if [[ ! -f "$PY_TARBALL" ]]; then
-    # Resolve the newest release asset, e.g.
-    # cpython-3.13.9+20251014-aarch64-apple-darwin-install_only_stripped.tar.gz
-    API="https://api.github.com/repos/astral-sh/python-build-standalone/releases/latest"
-    AUTH=()
-    if [[ -n "${GITHUB_TOKEN:-}" ]]; then AUTH=(-H "Authorization: Bearer $GITHUB_TOKEN"); fi
-    PY_URL="$(curl -fsSL ${AUTH[@]+"${AUTH[@]}"} "$API" | python3 -c "
-import json, re, sys
-assets = json.load(sys.stdin)['assets']
-pattern = re.compile(r'^cpython-${PY_VERSION//./\\.}\.\d+\+\d+-${PBS_ARCH}-apple-darwin-install_only_stripped\.tar\.gz$')
-urls = [a['browser_download_url'] for a in assets if pattern.match(a['name'])]
-print(urls[0] if urls else '')
-")"
-    if [[ -z "$PY_URL" ]]; then
-        echo "Could not find a python-build-standalone asset for $PY_VERSION/$PBS_ARCH" >&2
-        exit 1
-    fi
     echo "    $PY_URL"
     curl -fsSL -o "$PY_TARBALL" "$PY_URL"
 fi
+echo "$PY_SHA256  $PY_TARBALL" | shasum -a 256 -c - || {
+    echo "Checksum mismatch for $PY_NAME — refusing to build" >&2
+    rm -f "$PY_TARBALL"
+    exit 1
+}
 tar -xzf "$PY_TARBALL" -C "$RES"          # creates Resources/python
 PY="$RES/python/bin/python3"
 "$PY" --version
 
 echo "==> Installing backend dependencies"
+# Exact versions + SHA256 of every file (backend/requirements-mac.lock)
 "$PY" -m pip install --disable-pip-version-check --no-warn-script-location --quiet \
-    --only-binary=lxml,pillow,brotli,curl_cffi \
-    -r "$ROOT/backend/requirements-mac.txt"
+    --require-hashes --only-binary=lxml,pillow,brotli,curl_cffi,cryptography,cffi \
+    -r "$ROOT/backend/requirements-mac.lock"
 
 echo "==> Copying backend and upstream Komikku"
 mkdir -p "$RES/backend" "$RES/upstream"
@@ -85,7 +81,8 @@ cp "$ROOT/upstream/LICENSE" "$RES/upstream/LICENSE"
 git -C "$ROOT/upstream" rev-parse --short HEAD > "$RES/upstream/UPSTREAM_COMMIT" 2>/dev/null || true
 
 echo "==> Compiling upstream translations"
-"$PY" -m pip install --quiet --disable-pip-version-check --target "$BUILD/tools" polib
+"$PY" -m pip install --quiet --disable-pip-version-check --target "$BUILD/tools" \
+    --require-hashes -r "$ROOT/scripts/build-tools.lock"
 PYTHONPATH="$BUILD/tools" "$PY" "$ROOT/scripts/compile_translations.py" "$ROOT/upstream/po" "$RES/upstream/locale"
 
 echo "==> Precompiling Python sources"
