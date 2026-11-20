@@ -85,8 +85,10 @@ echo "==> Compiling upstream translations"
     --require-hashes -r "$ROOT/scripts/build-tools.lock"
 PYTHONPATH="$BUILD/tools" "$PY" "$ROOT/scripts/compile_translations.py" "$ROOT/upstream/po" "$RES/upstream/locale"
 
-echo "==> Precompiling Python sources"
-"$PY" -m compileall -q -j 0 "$RES/backend" "$RES/upstream/komikku" >/dev/null || true
+echo "==> Precompiling Python sources (stdlib, packages, backend, upstream)"
+# Everything is compiled before signing: Python must never need to write a .pyc
+# inside the bundle afterwards (that would break the code signature)
+"$PY" -m compileall -q -j 0 "$RES/python/lib" "$RES/backend" "$RES/upstream/komikku" >/dev/null || true
 
 echo "==> Trimming bundled Python"
 rm -rf "$RES/python/lib/python$PY_VERSION/test" \
@@ -103,6 +105,9 @@ sed -e "s/@VERSION@/$VERSION/" -e "s/@BUILD@/$BUILD_NUMBER/" \
     "$ROOT/app/Resources/Info.plist" > "$APP/Contents/Info.plist"
 iconutil -c icns "$ROOT/app/Resources/AppIcon.iconset" -o "$RES/AppIcon.icns"
 printf 'APPL????' > "$APP/Contents/PkgInfo"
+
+# From here on the bundle is sealed: never let Python write bytecode into it
+export PYTHONDONTWRITEBYTECODE=1
 
 echo "==> Ad-hoc signing"
 # Re-sign every Mach-O in the embedded Python (pip may have rewritten some),
@@ -122,13 +127,16 @@ ditto -c -k --sequesterRsrc --keepParent "$APP" "$DIST/Komikku-macos-$ARCH.zip"
 
 echo "==> Disk image (drag to Applications)"
 rm -f "$DIST/Komikku-macos-$ARCH.dmg"
-PYTHONPATH="$BUILD/tools" "$PY" -c '
+PYTHONPATH="$BUILD/tools" "$PY" -B -c '
 import sys, dmgbuild
 app, root, out = sys.argv[1:4]
 dmgbuild.build_dmg(out, "Komikku", settings_file=f"{root}/scripts/dmg_settings.py",
                    defines={"app": app, "root": root})
 ' "$APP" "$ROOT" "$DIST/Komikku-macos-$ARCH.dmg"
 hdiutil verify "$DIST/Komikku-macos-$ARCH.dmg"
+
+echo "==> Signature still intact after packaging?"
+codesign --verify --deep "$APP"
 
 du -sh "$APP" "$DIST/Komikku-macos-$ARCH.zip" "$DIST/Komikku-macos-$ARCH.dmg"
 echo "Done: $APP"

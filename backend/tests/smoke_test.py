@@ -98,7 +98,8 @@ def main():
     args = parser.parse_args()
 
     home = tempfile.mkdtemp(prefix='komikku-smoke-')
-    env = dict(os.environ, KOMIKKU_MAC_HOME=home, PYTHONIOENCODING='utf-8')
+    # Never write bytecode (the tested Python may live inside the signed app bundle)
+    env = dict(os.environ, KOMIKKU_MAC_HOME=home, PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1')
     if args.upstream:
         env['KOMIKKU_UPSTREAM'] = os.path.abspath(args.upstream)
 
