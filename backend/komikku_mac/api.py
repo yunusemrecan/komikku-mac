@@ -74,6 +74,7 @@ def _jsonable(value):
 _MANGA_FIELDS = (
     'id', 'slug', 'url', 'server_id', 'name', 'authors', 'scanlators', 'genres', 'synopsis', 'status',
     'in_library', 'last_read', 'last_update', 'reading_mode', 'scaling', 'sort_order', 'double_page',
+    'background_color', 'borders_crop', 'borders_crop_threshold', 'landscape_zoom', 'page_numbering',
 )
 _CHAPTER_FIELDS = (
     'id', 'manga_id', 'slug', 'url', 'title', 'scanlators', 'date', 'num', 'num_volume', 'rank',
@@ -544,7 +545,10 @@ def manga_delete(manga_id):
 
 @method('manga.update')
 def manga_update(manga_id, fields):
-    allowed = {'reading_mode', 'scaling', 'sort_order', 'double_page'}
+    allowed = {
+        'reading_mode', 'scaling', 'sort_order', 'double_page',
+        'background_color', 'borders_crop', 'borders_crop_threshold', 'landscape_zoom', 'page_numbering',
+    }
     manga = _get_manga(manga_id)
     manga.update({k: v for k, v in fields.items() if k in allowed})
     return _manga_dict(manga)
@@ -884,6 +888,54 @@ def chapter_download(chapter_id):
             raise RPCError(f'Failed to download page {index + 1}', 'server_error')
         notify('chapter.download_progress', {'chapter_id': chapter_id, 'index': index + 1, 'count': count})
     return _chapter_dict(_get_chapter(chapter_id))
+
+
+# ---------------------------------------------------------------------------
+# Cache
+# ---------------------------------------------------------------------------
+
+def _dir_size(path):
+    total = 0
+    for root, _dirs, files in os.walk(path):
+        for name in files:
+            try:
+                total += os.path.getsize(os.path.join(root, name))
+            except OSError:
+                pass
+    return total
+
+
+def _mac_images_dir():
+    from komikku.utils import get_cache_dir
+    return os.path.join(get_cache_dir(), 'mac-images')
+
+
+@method('cache.info')
+def cache_info():
+    from komikku.utils import get_cached_data_dir
+    return {
+        'chapters_bytes': _dir_size(get_cached_data_dir()),
+        'images_bytes': _dir_size(_mac_images_dir()),
+    }
+
+
+@method('cache.clear')
+def cache_clear():
+    """Upstream's clear_cached_data (pages/mangas not in library) + cached covers/logos."""
+    import shutil
+    from komikku.models.database import clear_cached_data
+    clear_cached_data()
+    shutil.rmtree(_mac_images_dir(), ignore_errors=True)
+    return cache_info()
+
+
+def clear_cache_on_exit_if_enabled():
+    from komikku.models import Settings
+    try:
+        if Settings.get_default().clear_cached_data_on_app_close:
+            cache_clear()
+    except Exception as exc:
+        logger.warning('Failed to clear cache on exit: %s', exc)
 
 
 @method('debug.ping')

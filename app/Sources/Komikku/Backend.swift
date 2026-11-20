@@ -111,9 +111,15 @@ final class Backend: @unchecked Sendable {
         self.stdinHandle = stdinPipe.fileHandleForWriting
     }
 
+    /// Closes stdin so the backend can finish (e.g. clear cache on exit), then terminates it.
     func stop() {
         try? stdinHandle?.close()
-        process?.terminate()
+        guard let process else { return }
+        let deadline = Date().addingTimeInterval(4)
+        while process.isRunning && Date() < deadline {
+            Thread.sleep(forTimeInterval: 0.05)
+        }
+        if process.isRunning { process.terminate() }
     }
 
     func waitUntilReady() async throws {

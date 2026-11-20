@@ -82,8 +82,14 @@ struct Manga: Codable, Identifiable, Hashable {
     var inLibrary: Bool
     let lastRead: String?
     var readingMode: String?
-    /// Per-manga override of the global "double-page" setting (nil = use global)
+    /// Per-manga overrides of global reader settings (nil = use global)
     var doublePage: Int?
+    var scaling: String?
+    var backgroundColor: String?
+    var bordersCrop: Int?
+    var bordersCropThreshold: Int?
+    var landscapeZoom: Int?
+    var pageNumbering: Int?
     let coverPath: String?
     let path: String?
     let nbUnreadChapters: Int

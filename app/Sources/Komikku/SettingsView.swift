@@ -9,6 +9,8 @@ struct SettingsView: View {
         TabView {
             GeneralSettings()
                 .tabItem { Label("Genel", systemImage: "gearshape") }
+            ReaderSettings()
+                .tabItem { Label("Okuyucu", systemImage: "book") }
             LanguageSettings()
                 .tabItem { Label("Diller", systemImage: "character.bubble") }
             ServersSettings()
@@ -23,8 +25,6 @@ struct SettingsView: View {
 @MainActor
 struct GeneralSettings: View {
     @Environment(AppModel.self) private var model
-    @AppStorage(ReaderPreferences.separateWindowKey) private var readerInSeparateWindow = false
-    @AppStorage(ReaderPreferences.coverAloneKey) private var coverAlone = true
 
     private func boolBinding(_ key: String, reloadServers: Bool = false) -> Binding<Bool> {
         Binding(
@@ -40,19 +40,6 @@ struct GeneralSettings: View {
 
     var body: some View {
         Form {
-            Section("Okuyucu") {
-                Picker("Varsayılan okuma yönü", selection: Binding(
-                    get: { model.defaultReadingMode },
-                    set: { mode in Task { @MainActor in await model.setSetting("reading-mode", mode.rawValue) } }
-                )) {
-                    ForEach(ReadingMode.allCases) { Text($0.label).tag($0) }
-                }
-                Toggle("Webtoon'ları otomatik algıla", isOn: boolBinding("long-strip-detection"))
-                Toggle("Okuyucuyu ayrı pencerede aç", isOn: $readerInSeparateWindow)
-                Toggle("Çift sayfa görünümü (varsayılan)", isOn: boolBinding("double-page"))
-                Toggle("Çift sayfada kapak sayfasını tek göster", isOn: $coverAlone)
-            }
-
             Section("Kütüphane") {
                 Toggle("Açılışta kütüphaneyi güncelle", isOn: boolBinding("update-at-startup"))
                 Toggle("Yeni bölümleri otomatik indir", isOn: boolBinding("new-chapters-auto-download"))
@@ -61,6 +48,8 @@ struct GeneralSettings: View {
                     set: { value in Task { @MainActor in await model.setDesktopNotifications(value) } }
                 ))
             }
+
+            StorageSection()
 
             Section("İçerik") {
                 Toggle("Yetişkin (NSFW) içerikli sunucuları göster", isOn: boolBinding("nsfw-content", reloadServers: true))
@@ -127,5 +116,53 @@ struct AboutSettings: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+@MainActor
+struct StorageSection: View {
+    @Environment(AppModel.self) private var model
+    @State private var bytes: Int64?
+    @State private var clearing = false
+
+    var body: some View {
+        Section("Depolama") {
+            LabeledContent("Önbellek") {
+                HStack {
+                    if let bytes {
+                        Text(ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file))
+                            .monospacedDigit()
+                    } else {
+                        ProgressView().controlSize(.small)
+                    }
+                    Button("Önbelleği Temizle") {
+                        Task { @MainActor in await clear() }
+                    }
+                    .disabled(clearing)
+                }
+            }
+            Toggle("Uygulama kapanırken önbelleği temizle", isOn: Binding(
+                get: { model.settings["clear-cached-data-on-app-close"] as? Bool ?? false },
+                set: { value in Task { @MainActor in await model.setSetting("clear-cached-data-on-app-close", value) } }
+            ))
+            Text("Önbellek: kütüphanede olmayan mangaların okunan sayfaları ve kapak/logo görselleri. Kütüphanedeki indirilmiş bölümler silinmez.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .task { await refresh() }
+    }
+
+    private func refresh() async {
+        if let info = try? await model.backend.callRaw("cache.info") as? [String: Any] {
+            bytes = Int64((info["chapters_bytes"] as? Int ?? 0) + (info["images_bytes"] as? Int ?? 0))
+        }
+    }
+
+    private func clear() async {
+        clearing = true
+        defer { clearing = false }
+        _ = try? await model.backend.callRaw("cache.clear")
+        await refresh()
+        model.showToast("Önbellek temizlendi")
     }
 }

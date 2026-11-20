@@ -26,6 +26,20 @@ final class ReaderModel {
     /// width / height of pages whose image has been decoded
     var aspects: [Int: CGFloat] = [:]
     private var globalDoublePage = false
+
+    // Appearance: per-manga override, else global setting (same keys as upstream)
+    var scaling: PageScaling = .screen
+    var background: ReaderBackground = .systemStyle
+    var bordersCrop = false
+    var bordersCropThreshold = 220
+    var landscapeZoom = false
+    var pageNumbering = true
+    var filters = PageFilters(json: nil)
+    var clampSize: CGFloat = 960
+    var zoom: CGFloat = 1
+    var pixelSizes: [Int: CGSize] = [:]
+    private var globals: [String: Any] = [:]
+
     var loading = false
     var error: String?
     /// Incremented when a chapter finishes loading; webtoon view scrolls on change.
@@ -59,14 +73,16 @@ final class ReaderModel {
 
     // MARK: Loading
 
-    func start(chapterID: Int, defaultMode: ReadingMode, globalDoublePage: Bool) async {
-        self.globalDoublePage = globalDoublePage
+    func start(chapterID: Int, defaultMode: ReadingMode, settings: [String: Any]) async {
+        globals = settings
+        self.globalDoublePage = settings["double-page"] as? Bool ?? false
         AppLog.write("reader: start manga=\(mangaID) chapter=\(chapterID)")
         do {
             let manga: Manga = try await backend.call("manga.get", ["manga_id": mangaID])
             self.manga = manga
             mode = ReadingMode(rawValue: manga.readingMode ?? "") ?? defaultMode
             doublePageSetting = manga.doublePage.map { $0 == 1 } ?? globalDoublePage
+            applyAppearance(manga)
             if ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST_DOUBLE"] != nil {
                 doublePageSetting = true
             }
@@ -89,6 +105,8 @@ final class ReaderModel {
             pageCount = load.nbPages ?? load.pagePaths.count
             pagePaths = [:]
             aspects = [:]
+            pixelSizes = [:]
+            zoom = 1
             failedPages = []
             inFlight = []
             for (i, path) in load.pagePaths.enumerated() {
@@ -175,9 +193,87 @@ final class ReaderModel {
         spreads.first { $0.contains(index) } ?? [index]
     }
 
-    func recordAspect(_ i: Int, _ aspect: CGFloat) {
+    func recordSize(_ i: Int, _ size: CGSize) {
+        guard size.width > 0, size.height > 0 else { return }
+        if pixelSizes[i] != size { pixelSizes[i] = size }
+        let aspect = size.width / size.height
         if aspects[i] != aspect { aspects[i] = aspect }
     }
+
+    // MARK: Appearance
+
+    private func applyAppearance(_ manga: Manga) {
+        scaling = PageScaling(rawValue: manga.scaling ?? "")
+            ?? PageScaling(rawValue: globals["scaling"] as? String ?? "") ?? .screen
+        background = ReaderBackground(rawValue: manga.backgroundColor ?? "")
+            ?? ReaderBackground(rawValue: globals["background-color"] as? String ?? "") ?? .systemStyle
+        bordersCrop = manga.bordersCrop.map { $0 == 1 } ?? (globals["borders-crop"] as? Bool ?? false)
+        bordersCropThreshold = manga.bordersCropThreshold ?? (globals["borders-crop-threshold"] as? Int ?? 220)
+        landscapeZoom = manga.landscapeZoom.map { $0 == 1 } ?? (globals["landscape-zoom"] as? Bool ?? false)
+        pageNumbering = manga.pageNumbering.map { $0 == 1 } ?? (globals["page-numbering"] as? Bool ?? true)
+        filters = PageFilters(json: globals["page-filters"] as? String)
+        clampSize = CGFloat(globals["clamp-size"] as? Int ?? 960)
+    }
+
+    /// Crop threshold to use for page images (nil = no crop; never in webtoon mode, like upstream)
+    var cropThreshold: Int? {
+        bordersCrop && mode != .webtoon ? bordersCropThreshold : nil
+    }
+
+    /// Store a per-manga override; cleared (NULL) when equal to the global default.
+    private func persist(_ field: String, _ value: Any, equalsGlobal: Bool) {
+        let payload: Any = equalsGlobal ? NSNull() : value
+        Task {
+            _ = try? await backend.callRaw("manga.update", ["manga_id": mangaID, "fields": [field: payload]])
+        }
+    }
+
+    func setScaling(_ value: PageScaling) {
+        scaling = value
+        zoom = 1
+        persist("scaling", value.rawValue, equalsGlobal: value.rawValue == globals["scaling"] as? String)
+    }
+
+    func setBackground(_ value: ReaderBackground) {
+        background = value
+        persist("background_color", value.rawValue, equalsGlobal: value.rawValue == globals["background-color"] as? String)
+    }
+
+    func setBordersCrop(_ value: Bool) {
+        bordersCrop = value
+        persist("borders_crop", value ? 1 : 0, equalsGlobal: value == (globals["borders-crop"] as? Bool ?? false))
+    }
+
+    func setBordersCropThreshold(_ value: Int) {
+        bordersCropThreshold = value
+        persist("borders_crop_threshold", value, equalsGlobal: value == (globals["borders-crop-threshold"] as? Int ?? 220))
+    }
+
+    func setLandscapeZoom(_ value: Bool) {
+        landscapeZoom = value
+        persist("landscape_zoom", value ? 1 : 0, equalsGlobal: value == (globals["landscape-zoom"] as? Bool ?? false))
+    }
+
+    func setPageNumbering(_ value: Bool) {
+        pageNumbering = value
+        persist("page_numbering", value ? 1 : 0, equalsGlobal: value == (globals["page-numbering"] as? Bool ?? true))
+    }
+
+    /// Page filters are global in upstream
+    func setFilters(_ value: PageFilters) {
+        filters = value
+        let json = value.json
+        globals["page-filters"] = json
+        Task {
+            await AppModel.shared.setSetting("page-filters", json)
+        }
+    }
+
+    // MARK: Zoom
+
+    func zoomIn() { zoom = min(zoom * 1.25, 8) }
+    func zoomOut() { zoom = max(zoom / 1.25, 0.25) }
+    func resetZoom() { zoom = 1 }
 
     func setDoublePage(_ value: Bool) {
         doublePageSetting = value
@@ -189,7 +285,9 @@ final class ReaderModel {
 
     func pageShown(_ i: Int) {
         guard pageCount > 0 else { return }
-        index = min(max(i, 0), pageCount - 1)
+        let newIndex = min(max(i, 0), pageCount - 1)
+        if newIndex != index && mode != .webtoon { zoom = 1 }
+        index = newIndex
         prefetch(around: index)
         for page in currentSpread { pendingRead.insert(page) }
         readFlushTask?.cancel()
@@ -288,6 +386,16 @@ struct ReaderCommands: Commands {
             ))
             .disabled(reader?.isDoublePage != true)
             Divider()
+            Button("Yakınlaştır") { reader?.zoomIn() }
+                .keyboardShortcut("+", modifiers: .command)
+                .disabled(reader == nil || reader?.mode == .webtoon)
+            Button("Uzaklaştır") { reader?.zoomOut() }
+                .keyboardShortcut("-", modifiers: .command)
+                .disabled(reader == nil || reader?.mode == .webtoon)
+            Button("Gerçek Boyut") { reader?.resetZoom() }
+                .keyboardShortcut("0", modifiers: .command)
+                .disabled(reader == nil || reader?.mode == .webtoon)
+            Divider()
             Picker("Okuma Yönü", selection: Binding(
                 get: { reader?.mode ?? .rightToLeft },
                 set: { reader?.setMode($0) }
@@ -310,13 +418,17 @@ struct ReaderView: View {
     let target: ReaderTarget
     var embedded = false
 
+    @Environment(\.colorScheme) private var systemScheme
     @State private var model: ReaderModel?
     @State private var showControls = true
+    @State private var showAppearance = false
     @FocusState private var focused: Bool
+
+    private var background: ReaderBackground { model?.background ?? .systemStyle }
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            background.color(systemScheme).ignoresSafeArea()
 
             if let model {
                 content(model)
@@ -325,7 +437,7 @@ struct ReaderView: View {
                 LoadingLabel(text: "Açılıyor…")
             }
         }
-        .environment(\.colorScheme, .dark)
+        .environment(\.colorScheme, background.contentScheme(systemScheme))
         .navigationTitle(model?.title ?? "Okuyucu")
         .focusable()
         .focusEffectDisabled()
@@ -338,7 +450,7 @@ struct ReaderView: View {
             model = reader
             focused = true
             await reader.start(chapterID: target.chapterId, defaultMode: app.defaultReadingMode,
-                               globalDoublePage: app.settings["double-page"] as? Bool ?? false)
+                               settings: app.settings)
             if ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST_DOUBLE"] != nil {
                 // CI: turn one spread so the screenshot shows a pair of pages
                 try? await Task.sleep(for: .seconds(8))
@@ -364,7 +476,7 @@ struct ReaderView: View {
                     Button("Yeniden Dene") { Task { @MainActor in await model.open(chapterID: chapter.id, atEnd: false) } }
                 }
             }
-            .foregroundStyle(.white)
+            .foregroundStyle(.primary)
         } else if model.pageCount == 0 {
             LoadingLabel(text: model.loading ? "Bölüm yükleniyor…" : "Bu bölümde sayfa bulunamadı")
         } else if model.mode == .webtoon {
@@ -372,7 +484,7 @@ struct ReaderView: View {
         } else {
             PagedPager(model: model)
                 .overlay(alignment: .bottom) {
-                    if showControls { pageBar(model) }
+                    if showControls && model.pageNumbering { pageBar(model) }
                 }
                 .onHover { inside in
                     withAnimation(.easeInOut(duration: 0.2)) { showControls = inside }
@@ -431,6 +543,16 @@ struct ReaderView: View {
                 }
                 .disabled(model.nextChapter == nil)
                 .help("Sonraki bölüm (⌘])")
+
+                Button {
+                    showAppearance.toggle()
+                } label: {
+                    Label("Görünüm", systemImage: "slider.horizontal.3")
+                }
+                .help("Ölçekleme, arka plan, kırpma, filtreler")
+                .popover(isPresented: $showAppearance, arrowEdge: .bottom) {
+                    ReaderAppearancePanel(model: model)
+                }
 
                 Button {
                     model.setDoublePage(!model.doublePageSetting)
@@ -510,41 +632,94 @@ struct ReaderView: View {
 @MainActor
 struct PagedPager: View {
     let model: ReaderModel
+    @State private var pinchBase: CGFloat?
+
+    /// Pages of the current spread, left to right on screen
+    private var pages: [Int] {
+        let spread = model.currentSpread
+        return model.mode == .rightToLeft ? spread.reversed() : spread
+    }
+
+    private func aspect(_ i: Int) -> CGFloat {
+        model.aspects[i] ?? 0.7
+    }
+
+    /// Displayed size of the spread for the scaling mode and zoom.
+    private func contentSize(_ container: CGSize) -> CGSize {
+        guard container.width > 0, container.height > 0 else { return container }
+        let total = pages.reduce(0) { $0 + aspect($1) }   // width/height at equal heights
+        var size: CGSize
+
+        switch model.scaling {
+        case .width:
+            size = CGSize(width: container.width, height: container.width / total)
+        case .height:
+            size = CGSize(width: container.height * total, height: container.height)
+        case .original:
+            let scale = NSScreen.main?.backingScaleFactor ?? 2
+            let known = pages.compactMap { model.pixelSizes[$0] }
+            if known.count == pages.count {
+                let height = (known.map(\.height).max() ?? 0) / scale
+                size = CGSize(width: height * total, height: height)
+            } else {
+                size = fitSize(container, total)
+            }
+        case .screen:
+            size = fitSize(container, total)
+        }
+        return CGSize(width: size.width * model.zoom, height: size.height * model.zoom)
+    }
+
+    private func fitSize(_ container: CGSize, _ total: CGFloat) -> CGSize {
+        if pages.count == 1 && total > 1 && model.landscapeZoom {
+            // Wide page: fill the height and pan horizontally
+            return CGSize(width: container.height * total, height: container.height)
+        }
+        if container.width / container.height > total {
+            return CGSize(width: container.height * total, height: container.height)
+        }
+        return CGSize(width: container.width, height: container.width / total)
+    }
 
     var body: some View {
         GeometryReader { proxy in
-            spreadView
-                .frame(width: proxy.size.width, height: proxy.size.height)
+            let container = proxy.size
+            let size = contentSize(container)
+            let scrolls = size.width > container.width + 1 || size.height > container.height + 1
+
+            ScrollView([.horizontal, .vertical], showsIndicators: scrolls) {
+                HStack(spacing: 0) {
+                    ForEach(pages, id: \.self) { i in
+                        PageImage(model: model, index: i, fit: .screen)
+                            .frame(width: size.height * aspect(i), height: size.height)
+                    }
+                }
+                .frame(width: size.width, height: size.height)
+                .frame(minWidth: container.width, minHeight: container.height)
                 .contentShape(Rectangle())
-                .onTapGesture(coordinateSpace: .local) { location in
+                .onTapGesture(coordinateSpace: .named("pager")) { location in
                     // Click on the leading/trailing third turns pages, like a book
-                    let third = proxy.size.width / 3
+                    let third = container.width / 3
                     let rtl = model.mode == .rightToLeft
                     if location.x < third {
                         rtl ? model.next() : model.previous()
-                    } else if location.x > proxy.size.width - third {
+                    } else if location.x > container.width - third {
                         rtl ? model.previous() : model.next()
                     }
                 }
+            }
+            .scrollDisabled(!scrolls)
+            .coordinateSpace(.named("pager"))
+            .simultaneousGesture(
+                MagnifyGesture()
+                    .onChanged { value in
+                        if pinchBase == nil { pinchBase = model.zoom }
+                        model.zoom = min(max((pinchBase ?? 1) * value.magnification, 0.25), 8)
+                    }
+                    .onEnded { _ in pinchBase = nil }
+            )
         }
         .id(model.chapter?.id)
-    }
-
-    @ViewBuilder
-    private var spreadView: some View {
-        let spread = model.currentSpread
-        if spread.count == 2 {
-            // Right-to-left: the first page of the pair sits on the right, like a printed manga
-            let rtl = model.mode == .rightToLeft
-            let left = rtl ? spread[1] : spread[0]
-            let right = rtl ? spread[0] : spread[1]
-            HStack(spacing: 0) {
-                PageImage(model: model, index: left, fit: .screen, alignment: .trailing)
-                PageImage(model: model, index: right, fit: .screen, alignment: .leading)
-            }
-        } else {
-            PageImage(model: model, index: model.index, fit: .screen)
-        }
     }
 }
 
@@ -579,7 +754,7 @@ struct WebtoonPager: View {
                             .padding(40)
                     }
                 }
-                .frame(maxWidth: 900)
+                .frame(maxWidth: model.clampSize)
                 .frame(maxWidth: .infinity)
             }
             .onChange(of: model.chapterToken, initial: true) { _, _ in
@@ -621,7 +796,7 @@ struct PageImage: View {
                     Text("Sayfa \(index + 1) yüklenemedi")
                     Button("Yeniden Dene") { model.retry(index) }
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
                 .frame(maxWidth: .infinity, minHeight: 300)
             } else {
                 LoadingLabel(text: decodeFailed ? "Sayfa \(index + 1) gösterilemedi" : "Sayfa \(index + 1) yükleniyor…")
@@ -629,19 +804,20 @@ struct PageImage: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: fit == .screen ? .infinity : nil, alignment: alignment)
-        .task(id: path) {
+        .pageFilters(model.filters)
+        .task(id: "\(path ?? "")#\(model.cropThreshold ?? -1)") {
             guard let path else {
                 image = nil
                 await model.page(index)
                 return
             }
-            image = await ImageCache.shared.image(atPath: path)
+            image = await ImageCache.shared.image(atPath: path, cropThreshold: model.cropThreshold)
             decodeFailed = image == nil
             if let image {
                 let rep = image.representations.first
                 let width = CGFloat(rep?.pixelsWide ?? 0) > 0 ? CGFloat(rep!.pixelsWide) : image.size.width
                 let height = CGFloat(rep?.pixelsHigh ?? 0) > 0 ? CGFloat(rep!.pixelsHigh) : image.size.height
-                if height > 0 { model.recordAspect(index, width / height) }
+                model.recordSize(index, CGSize(width: width, height: height))
                 AppLog.write("reader: page \(index) displayed \(Int(image.size.width))x\(Int(image.size.height))")
             } else {
                 AppLog.write("reader: page \(index) could not be decoded: \(path)")
@@ -657,7 +833,7 @@ struct LoadingLabel: View {
     var body: some View {
         VStack(spacing: 12) {
             ProgressView().controlSize(.large)
-            Text(text).foregroundStyle(.white.opacity(0.8))
+            Text(text).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

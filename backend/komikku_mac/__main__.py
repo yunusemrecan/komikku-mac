@@ -19,9 +19,12 @@ def main():
     from komikku.models import init_db
     init_db()
 
-    from komikku_mac import api  # noqa: F401  (registers RPC methods)
+    from komikku_mac import api  # registers RPC methods
     from komikku_mac import rpc
     rpc.serve()
+
+    # stdin closed: the app is quitting
+    api.clear_cache_on_exit_if_enabled()
 
 
 if __name__ == '__main__':

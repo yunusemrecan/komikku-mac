@@ -28,6 +28,28 @@ final class ImageCache {
         return loaded
     }
 
+    /// Page image, optionally with white/uniform borders cropped (threshold 0...255).
+    func image(atPath path: String, cropThreshold: Int?) async -> NSImage? {
+        guard let threshold = cropThreshold else { return await image(atPath: path) }
+        let key = "\(path)#crop\(threshold)" as NSString
+        if let cached = cache.object(forKey: key) {
+            return cached
+        }
+        let result = await Task.detached(priority: .userInitiated) { () -> (Data, CGRect?)? in
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else { return nil }
+            return (data, BordersCrop.contentRect(data: data, threshold: threshold))
+        }.value
+        guard let result, let full = NSImage(data: result.0) else { return nil }
+        let rect = result.1
+        var output = full
+        if let rect, let cg = full.cgImage(forProposedRect: nil, context: nil, hints: nil),
+           let cropped = cg.cropping(to: rect) {
+            output = NSImage(cgImage: cropped, size: NSSize(width: cropped.width, height: cropped.height))
+        }
+        cache.setObject(output, forKey: key)
+        return output
+    }
+
     func remove(path: String) {
         cache.removeObject(forKey: path as NSString)
     }

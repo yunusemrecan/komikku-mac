@@ -76,8 +76,24 @@ struct ContentView: View {
             guard let first = results.first else { AppLog.write("autotest: no results"); return }
             let manga: Manga = try await model.backend.call("manga.open", ["server_id": parts[0], "slug": first.slug, "name": first.name])
             guard let chapter = manga.chaptersInReadingOrder.first else { AppLog.write("autotest: no chapters"); return }
+            let screens = ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST_SCREENS"] != nil
+            if screens {
+                _ = await model.addToLibrary(manga)
+                await model.createCategory("Seinen")
+                if let category = model.categories.first {
+                    await model.assign([manga.id], to: category.id, true)
+                }
+            }
             AppLog.write("autotest: opening \(manga.name) / \(chapter.title)")
             openReader(ReaderTarget(mangaId: manga.id, chapterId: chapter.id))
+            if screens {
+                try? await Task.sleep(for: .seconds(50))
+                AppLog.write("autotest: library")
+                select(.library)
+                try? await Task.sleep(for: .seconds(22))
+                AppLog.write("autotest: history")
+                select(.history)
+            }
         } catch {
             AppLog.write("autotest: failed: \(error)")
         }

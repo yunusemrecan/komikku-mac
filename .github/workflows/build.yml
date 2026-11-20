@@ -66,10 +66,13 @@ jobs:
         run: |
           # Open the app, let it open a MangaDex chapter by itself, screenshot it
           set +e
-          KOMIKKU_AUTOTEST="mangadex:berserk" KOMIKKU_AUTOTEST_DOUBLE=1 dist/Komikku.app/Contents/MacOS/Komikku &
+          KOMIKKU_AUTOTEST="mangadex:berserk" KOMIKKU_AUTOTEST_DOUBLE=1 KOMIKKU_AUTOTEST_SCREENS=1 \
+            dist/Komikku.app/Contents/MacOS/Komikku &
           PID=$!
-          sleep 75
-          screencapture -x reader.png || true
+          mkdir -p screenshots
+          sleep 45; screencapture -x screenshots/1-reader.png
+          sleep 20; screencapture -x screenshots/2-library.png
+          sleep 17; screencapture -x screenshots/3-history.png
           RUNNING=0
           if kill -0 $PID 2>/dev/null; then RUNNING=1; kill $PID; wait $PID 2>/dev/null; fi
           echo "----- app.log"; cat ~/Library/Logs/Komikku/app.log
@@ -80,8 +83,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: reader-screenshot
-          path: reader.png
+          name: screenshots
+          path: screenshots/
           if-no-files-found: ignore
 
       - uses: actions/upload-artifact@v4
