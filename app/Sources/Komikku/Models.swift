@@ -4,6 +4,8 @@ import Foundation
 
 struct ServerInfo: Codable, Identifiable, Hashable {
     let id: String
+    let mainId: String
+    let hasFilters: Bool
     let name: String
     let lang: String
     let description: String?
@@ -86,6 +88,9 @@ struct Manga: Codable, Identifiable, Hashable {
     let path: String?
     let nbUnreadChapters: Int
     let nbRecentChapters: Int
+    var nbDownloadedChapters: Int?
+    var categories: [Int]?
+    let lastUpdate: String?
     var chapters: [Chapter]?
 
     /// Synopsis comes as Pango markup from upstream; strip tags for display.
@@ -114,6 +119,32 @@ struct Manga: Codable, Identifiable, Hashable {
         }
         return ordered.first(where: { !$0.read }) ?? ordered.last
     }
+}
+
+struct DownloadItem: Codable, Identifiable, Hashable {
+    let id: Int
+    let chapterId: Int
+    var status: String
+    var percent: Double
+    var errors: Int?
+    let chapterTitle: String?
+    let mangaId: Int?
+    let mangaName: String?
+    let serverId: String?
+
+    var statusLabel: String {
+        switch status {
+        case "pending": return "Bekliyor"
+        case "downloading": return "İndiriliyor"
+        case "error": return "Hata"
+        default: return status
+        }
+    }
+}
+
+struct DownloadsList: Codable {
+    let running: Bool
+    let items: [DownloadItem]
 }
 
 struct ChapterLoad: Codable {
@@ -154,8 +185,47 @@ struct ReaderTarget: Codable, Hashable {
     let chapterId: Int
 }
 
+struct MangaCategory: Codable, Identifiable, Hashable {
+    let id: Int
+    var label: String
+    let count: Int?
+}
+
+struct HistoryEntry: Codable, Identifiable, Hashable {
+    let date: String
+    let lastRead: String?
+    let chapterId: Int
+    let chapterTitle: String
+    let chapterRead: Bool
+    let lastPageReadIndex: Int?
+    let mangaId: Int
+    let mangaName: String
+    let serverName: String?
+    let coverPath: String?
+
+    var id: String { "\(mangaId)-\(date)" }
+}
+
+enum LibrarySortOrder: String, CaseIterable, Identifiable {
+    case alphanumAsc = "alphanum-asc"
+    case latestReadDesc = "latest-read-desc"
+    case latestUpdatedDesc = "latest-updated-desc"
+
+    var id: String { rawValue }
+    var label: String {
+        switch self {
+        case .alphanumAsc: return "Ada göre (A–Z)"
+        case .latestReadDesc: return "Son okunana göre"
+        case .latestUpdatedDesc: return "Son güncellenene göre"
+        }
+    }
+}
+
 enum SidebarItem: Hashable {
     case library
+    case category(Int)   // category id; -1 = uncategorized
+    case history
+    case downloads
     case globalSearch
     case allServers
     case server(String)

@@ -116,6 +116,20 @@ struct MangaDetailView: View {
                 .disabled(refreshing)
                 .help("Sunucudan yeni bölümleri al")
 
+                if manga.inLibrary && !model.categories.isEmpty {
+                    Menu {
+                        ForEach(model.categories) { category in
+                            Toggle(category.label, isOn: Binding(
+                                get: { manga.categories?.contains(category.id) == true },
+                                set: { on in Task { @MainActor in await model.assign([manga.id], to: category.id, on) } }
+                            ))
+                        }
+                    } label: {
+                        Label("Kategoriler", systemImage: "tag")
+                    }
+                    .help("Kategoriler")
+                }
+
                 if manga.inLibrary {
                     Button {
                         Task { @MainActor in await model.removeFromLibrary(manga) }
@@ -155,7 +169,7 @@ struct MangaDetailView: View {
 
             Section {
                 ForEach(chapters) { chapter in
-                    ChapterRow(chapter: chapter, progress: model.downloadProgress[chapter.id])
+                    ChapterRow(chapter: chapter, download: model.download(forChapter: chapter.id))
                         .tag(chapter.id)
                 }
             } header: {
@@ -283,6 +297,11 @@ struct MangaDetailView: View {
             Button("İndir") {
                 Task { @MainActor in await model.download(ids, mangaID: manga.id) }
             }
+            if ids.contains(where: { model.download(forChapter: $0) != nil }) {
+                Button("İndirmeyi İptal Et") {
+                    Task { @MainActor in await model.cancelDownloads(ids) }
+                }
+            }
             Button("İndirilenleri Sil") {
                 Task { @MainActor in await model.clearDownloads(ids, mangaID: manga.id) }
             }
@@ -312,7 +331,7 @@ struct MangaDetailView: View {
 @MainActor
 struct ChapterRow: View {
     let chapter: Chapter
-    let progress: Double?
+    let download: DownloadItem?
 
     var body: some View {
         HStack(spacing: 10) {
@@ -333,8 +352,19 @@ struct ChapterRow: View {
                 .foregroundStyle(.secondary)
             }
             Spacer()
-            if let progress {
-                ProgressView(value: progress).frame(width: 60)
+            if let download {
+                switch download.status {
+                case "downloading":
+                    ProgressView(value: download.percent, total: 100).frame(width: 60)
+                case "error":
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                        .help("İndirme hatası")
+                default:
+                    Image(systemName: "clock")
+                        .foregroundStyle(.secondary)
+                        .help("İndirme kuyruğunda")
+                }
             } else if chapter.downloaded {
                 Image(systemName: "arrow.down.circle.fill")
                     .foregroundStyle(.secondary)

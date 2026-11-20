@@ -3,6 +3,7 @@
 import AppKit
 import Foundation
 import Observation
+import UserNotifications
 
 @MainActor
 @Observable
@@ -27,8 +28,14 @@ final class AppModel {
 
     var isUpdatingLibrary = false
     var updateStatus: String?
-    var downloadProgress: [Int: Double] = [:]   // chapter id -> 0...1
     var errorMessage: String?
+    var toast: String?
+    private var toastTask: Task<Void, Never>?
+    private var updateNewChapters = 0
+
+    var downloads: [DownloadItem] = []
+    var downloaderRunning = false
+    var categories: [MangaCategory] = []
 
     /// Bumped whenever a manga's data changes, so open views can reload.
     var mangaRevision: [Int: Int] = [:]
@@ -59,7 +66,11 @@ final class AppModel {
             await reloadSettings()
             await reloadServers()
             await reloadLibrary()
+            await reloadCategories()
             state = .ready
+            requestNotificationPermission()
+            _ = try? await backend.callRaw("downloads.resume_if_needed")
+            await reloadDownloads()
             if settings["update-at-startup"] as? Bool == true {
                 Task { await updateLibrary() }
             }
@@ -76,24 +87,134 @@ final class AppModel {
 
     private func handleNotification(_ method: String, _ params: [String: Any]) {
         switch method {
-        case "library.update_progress":
-            let index = (params["index"] as? Int ?? 0) + 1
-            let count = params["count"] as? Int ?? 0
-            let name = params["name"] as? String ?? ""
-            updateStatus = "Güncelleniyor (\(index)/\(count)): \(name)"
-        case "library.manga_updated":
+        case "updater.begin":
+            isUpdatingLibrary = true
+            updateStatus = "Güncelleniyor: \(params["name"] as? String ?? "")"
+        case "updater.end":
             if let id = params["manga_id"] as? Int {
                 mangaRevision[id, default: 0] += 1
             }
-        case "chapter.download_progress":
-            if let id = params["chapter_id"] as? Int,
-               let index = params["index"] as? Int,
-               let count = params["count"] as? Int, count > 0 {
-                downloadProgress[id] = Double(index) / Double(count)
+            updateNewChapters += params["nb_recent_chapters"] as? Int ?? 0
+        case "updater.finished":
+            isUpdatingLibrary = false
+            updateStatus = updateNewChapters > 0 ? "\(updateNewChapters) yeni bölüm" : "Güncelleme bitti"
+            updateNewChapters = 0
+            Task { await reloadLibrary() }
+
+        case "downloads.changed":
+            guard let id = params["id"] as? Int else { return }
+            if let index = downloads.firstIndex(where: { $0.id == id }) {
+                downloads[index].status = params["status"] as? String ?? downloads[index].status
+                downloads[index].percent = (params["percent"] as? NSNumber)?.doubleValue ?? downloads[index].percent
+                downloads[index].errors = params["errors"] as? Int
+            } else {
+                Task { await reloadDownloads() }
             }
+        case "downloads.removed":
+            if let chapterID = params["chapter_id"] as? Int {
+                downloads.removeAll { $0.chapterId == chapterID }
+            }
+            if let mangaID = params["manga_id"] as? Int {
+                mangaRevision[mangaID, default: 0] += 1
+            }
+        case "downloads.state":
+            downloaderRunning = params["running"] as? Bool ?? false
+            if !downloaderRunning { Task { await reloadDownloads() } }
+
+        case "app.notification":
+            let title = params["title"] as? String ?? "Komikku"
+            let body = params["body"] as? String
+            if settings["desktop-notifications"] as? Bool == true {
+                postNotification(id: params["id"] as? String ?? UUID().uuidString, title: title, body: body)
+            } else {
+                showToast(body.map { "\(title): \($0)" } ?? title)
+            }
+        case "app.toast":
+            showToast(params["message"] as? String ?? "")
         default:
             break
         }
+    }
+
+    // MARK: - Toasts & desktop notifications
+
+    func showToast(_ message: String) {
+        toast = message
+        toastTask?.cancel()
+        toastTask = Task {
+            try? await Task.sleep(for: .seconds(5))
+            if !Task.isCancelled { toast = nil }
+        }
+    }
+
+    private var notificationsAvailable: Bool {
+        // UNUserNotificationCenter requires a real app bundle (not `swift run`)
+        Bundle.main.bundleIdentifier != nil && Bundle.main.bundleURL.pathExtension == "app"
+    }
+
+    private func requestNotificationPermission() {
+        guard notificationsAvailable, settings["desktop-notifications"] as? Bool == true else { return }
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
+    }
+
+    private func postNotification(id: String, title: String, body: String?) {
+        guard notificationsAvailable else {
+            showToast(title)
+            return
+        }
+        let content = UNMutableNotificationContent()
+        content.title = title
+        if let body { content.body = body }
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    func setDesktopNotifications(_ enabled: Bool) async {
+        await setSetting("desktop-notifications", enabled)
+        if enabled { requestNotificationPermission() }
+    }
+
+    // MARK: - Downloads
+
+    func reloadDownloads() async {
+        do {
+            let list: DownloadsList = try await backend.call("downloads.list")
+            downloads = list.items
+            downloaderRunning = list.running
+        } catch {
+            report(error)
+        }
+    }
+
+    func download(_ chapterIDs: [Int], mangaID: Int) async {
+        do {
+            _ = try await backend.callRaw("downloads.add", ["chapter_ids": chapterIDs])
+            await reloadDownloads()
+        } catch {
+            report(error)
+        }
+    }
+
+    func cancelDownloads(_ chapterIDs: [Int]) async {
+        do {
+            _ = try await backend.callRaw("downloads.cancel", ["chapter_ids": chapterIDs])
+            await reloadDownloads()
+        } catch {
+            report(error)
+        }
+    }
+
+    func startDownloader() async {
+        _ = try? await backend.callRaw("downloads.start")
+        await reloadDownloads()
+    }
+
+    func stopDownloader() async {
+        _ = try? await backend.callRaw("downloads.stop")
+    }
+
+    func download(forChapter chapterID: Int) -> DownloadItem? {
+        downloads.first { $0.chapterId == chapterID }
     }
 
     // MARK: - Settings
@@ -160,22 +281,125 @@ final class AppModel {
         }
     }
 
-    func updateLibrary() async {
-        guard !isUpdatingLibrary else { return }
-        isUpdatingLibrary = true
-        updateStatus = "Güncelleniyor…"
-        defer {
-            isUpdatingLibrary = false
-        }
+    func updateLibrary(mangaIDs: [Int]? = nil) async {
         do {
-            let result = try await backend.callRaw("library.update") as? [String: Any]
-            let count = result?["nb_new_chapters"] as? Int ?? 0
-            updateStatus = count > 0 ? "\(count) yeni bölüm" : "Yeni bölüm yok"
-            await reloadLibrary()
+            var params: [String: Any] = [:]
+            if let mangaIDs { params["manga_ids"] = mangaIDs }
+            let result = try await backend.callRaw("library.update", params) as? [String: Any]
+            if result?["started"] as? Bool == true {
+                isUpdatingLibrary = true
+                updateNewChapters = 0
+                updateStatus = "Güncelleniyor…"
+            } else if result?["running"] as? Bool == true {
+                showToast("Güncelleme zaten sürüyor")
+            } else {
+                updateStatus = "Güncellenecek manga yok"
+            }
         } catch {
             updateStatus = nil
             report(error)
         }
+    }
+
+    // MARK: - Library options (stored in upstream settings)
+
+    var librarySortOrder: LibrarySortOrder {
+        LibrarySortOrder(rawValue: settings["library-sort-order"] as? String ?? "") ?? .latestReadDesc
+    }
+
+    var libraryFilters: Set<String> {
+        Set(settings["library-selected-filters"] as? [String] ?? [])
+    }
+
+    func toggleLibraryFilter(_ key: String) async {
+        var filters = libraryFilters
+        if filters.contains(key) { filters.remove(key) } else { filters.insert(key) }
+        await setSetting("library-selected-filters", Array(filters).sorted())
+    }
+
+    /// Library mangas for a category (nil = all, -1 = uncategorized), filtered and sorted.
+    func libraryMangas(category: Int?, search: String) -> [Manga] {
+        let filters = libraryFilters
+        let term = search.trimmingCharacters(in: .whitespaces).lowercased()
+        let filtered = library.filter { manga in
+            if let category {
+                let ids = manga.categories ?? []
+                if category == -1 ? !ids.isEmpty : !ids.contains(category) { return false }
+            }
+            if !term.isEmpty {
+                let inName = manga.name.lowercased().contains(term)
+                let inServer = (manga.serverName ?? "").lowercased().contains(term)
+                let inGenres = (manga.genres ?? []).contains { $0.lowercased() == term }
+                if !(inName || inServer || inGenres) { return false }
+            }
+            if filters.contains("unread") && manga.nbUnreadChapters == 0 { return false }
+            if filters.contains("downloaded") && (manga.nbDownloadedChapters ?? 0) == 0 { return false }
+            if filters.contains("recents") && manga.nbRecentChapters == 0 { return false }
+            return true
+        }
+        switch librarySortOrder {
+        case .alphanumAsc:
+            return filtered.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        case .latestReadDesc:
+            return filtered.sorted { ($0.lastRead ?? "") > ($1.lastRead ?? "") }
+        case .latestUpdatedDesc:
+            return filtered.sorted { ($0.lastUpdate ?? "") > ($1.lastUpdate ?? "") }
+        }
+    }
+
+    // MARK: - Categories
+
+    func reloadCategories() async {
+        do {
+            categories = try await backend.call("categories.list")
+        } catch {
+            report(error)
+        }
+    }
+
+    func createCategory(_ label: String) async {
+        do {
+            _ = try await backend.callRaw("categories.create", ["label": label])
+            await reloadCategories()
+        } catch {
+            report(error)
+        }
+    }
+
+    func renameCategory(_ id: Int, _ label: String) async {
+        do {
+            _ = try await backend.callRaw("categories.rename", ["category_id": id, "label": label])
+            await reloadCategories()
+        } catch {
+            report(error)
+        }
+    }
+
+    func deleteCategory(_ id: Int) async {
+        _ = try? await backend.callRaw("categories.delete", ["category_id": id])
+        await reloadCategories()
+        await reloadLibrary()
+    }
+
+    func assign(_ mangaIDs: [Int], to categoryID: Int, _ active: Bool) async {
+        _ = try? await backend.callRaw("categories.assign", ["manga_ids": mangaIDs, "category_id": categoryID, "active": active])
+        await reloadLibrary()
+        await reloadCategories()
+        for id in mangaIDs { mangaRevision[id, default: 0] += 1 }
+    }
+
+    // MARK: - Bulk library actions
+
+    func setAllRead(_ mangaIDs: [Int], read: Bool) async {
+        _ = try? await backend.callRaw("manga.set_all_read", ["manga_ids": mangaIDs, "read": read])
+        for id in mangaIDs { mangaRevision[id, default: 0] += 1 }
+        await reloadLibrary()
+    }
+
+    func removeFromLibrary(_ mangaIDs: [Int]) async {
+        _ = try? await backend.callRaw("manga.delete_many", ["manga_ids": mangaIDs])
+        await reloadLibrary()
+        await reloadCategories()
     }
 
     func addToLibrary(_ manga: Manga) async -> Manga? {
@@ -207,19 +431,6 @@ final class AppModel {
             await reloadLibrary()
         } catch {
             report(error)
-        }
-    }
-
-    func download(_ chapterIDs: [Int], mangaID: Int) async {
-        for id in chapterIDs {
-            downloadProgress[id] = 0
-            do {
-                _ = try await backend.callRaw("chapter.download", ["chapter_id": id])
-            } catch {
-                report(error)
-            }
-            downloadProgress[id] = nil
-            mangaRevision[mangaID, default: 0] += 1
         }
     }
 

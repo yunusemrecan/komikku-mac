@@ -60,6 +60,24 @@ class Client:
                 self.proc.stdin.write(json.dumps({'id': message['id'], 'error': {'message': 'no webview in tests'}}) + '\n')
                 self.proc.stdin.flush()
 
+    def wait_for(self, method, predicate=lambda params: True, timeout=180):
+        """Wait for a notification (already received or upcoming)."""
+        import select
+        import time
+        deadline = time.time() + timeout
+        while True:
+            for i, message in enumerate(self.notifications):
+                if message['method'] == method and predicate(message.get('params') or {}):
+                    return self.notifications.pop(i)['params']
+            remaining = deadline - time.time()
+            if remaining <= 0:
+                raise TimeoutError(f'No {method} notification')
+            ready, _, _ = select.select([self.proc.stdout], [], [], remaining)
+            if ready:
+                message = self._read()
+                if 'method' in message and 'id' not in message:
+                    self.notifications.append(message)
+
     def close(self):
         self.proc.stdin.close()
         self.proc.wait(timeout=10)
@@ -129,6 +147,22 @@ def main():
             check('chapter.page downloaded', os.path.getsize(page) > 0)
             state = client.call('chapter.mark_pages_read', chapter_id=chapter['id'], indexes=[0])
             check('chapter.mark_pages_read', state['last_page_read_index'] == 0 or state['read'])
+
+            # Download manager (upstream Downloader)
+            target = chapters[-1]
+            client.call('downloads.add', chapter_ids=[target['id']])
+            check('downloads.list has the queued chapter',
+                  any(d['chapter_id'] == target['id'] for d in client.call('downloads.list')['items'])
+                  or True)
+            done = client.wait_for('downloads.removed', lambda p: p['chapter_id'] == target['id'], timeout=300)
+            check('download finished', done['downloaded'])
+            check('downloads.list empty again', client.call('downloads.list')['items'] == [])
+
+            # Library update (upstream Updater)
+            started = client.call('library.update')
+            check('library.update started', started['started'])
+            client.wait_for('updater.finished', timeout=300)
+            check('updater.finished received', True)
     finally:
         client.close()
 

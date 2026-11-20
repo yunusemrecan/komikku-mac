@@ -60,4 +60,8 @@ def bootstrap():
     from komikku_mac import webview_bridge
     webview_bridge.install()
 
+    # Server credentials in the macOS Keychain
+    from komikku_mac import keychain
+    keychain.install()
+
     logging.getLogger('komikku_mac').debug('Bootstrapped with upstream at %s', upstream)

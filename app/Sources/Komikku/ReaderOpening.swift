@@ -27,3 +27,23 @@ enum ReaderPreferences {
     static let separateWindowKey = "reader-in-separate-window"
     static let coverAloneKey = "reader-cover-alone"
 }
+
+/// Pushes a route onto the main window's navigation stack.
+struct OpenRouteAction {
+    var perform: (Route) -> Void
+
+    func callAsFunction(_ route: Route) {
+        perform(route)
+    }
+}
+
+struct OpenRouteKey: EnvironmentKey {
+    static let defaultValue = OpenRouteAction { _ in }
+}
+
+extension EnvironmentValues {
+    var openRoute: OpenRouteAction {
+        get { self[OpenRouteKey.self] }
+        set { self[OpenRouteKey.self] = newValue }
+    }
+}

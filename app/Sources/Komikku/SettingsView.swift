@@ -11,10 +11,12 @@ struct SettingsView: View {
                 .tabItem { Label("Genel", systemImage: "gearshape") }
             LanguageSettings()
                 .tabItem { Label("Diller", systemImage: "character.bubble") }
+            ServersSettings()
+                .tabItem { Label("Sunucular", systemImage: "server.rack") }
             AboutSettings()
                 .tabItem { Label("Hakkında", systemImage: "info.circle") }
         }
-        .frame(width: 520, height: 420)
+        .frame(width: 600, height: 560)
     }
 }
 
@@ -53,6 +55,11 @@ struct GeneralSettings: View {
 
             Section("Kütüphane") {
                 Toggle("Açılışta kütüphaneyi güncelle", isOn: boolBinding("update-at-startup"))
+                Toggle("Yeni bölümleri otomatik indir", isOn: boolBinding("new-chapters-auto-download"))
+                Toggle("Masaüstü bildirimleri", isOn: Binding(
+                    get: { model.settings["desktop-notifications"] as? Bool ?? false },
+                    set: { value in Task { @MainActor in await model.setDesktopNotifications(value) } }
+                ))
             }
 
             Section("İçerik") {

@@ -121,6 +121,12 @@ struct ServerBrowseView: View {
     @State private var loading = false
     @State private var error: String?
     @State private var loadToken = 0
+    @State private var filterDefs: [ServerFilter] = []
+    @State private var filterValues: [String: JSONValue] = [:]
+    @State private var filterDefaults: [String: JSONValue] = [:]
+    @State private var showFilters = false
+
+    private var filtersChanged: Bool { !filterDefs.isEmpty && filterValues != filterDefaults }
 
     private let columns = [GridItem(.adaptive(minimum: 140, maximum: 190), spacing: 18)]
 
@@ -154,6 +160,24 @@ struct ServerBrowseView: View {
                     .fixedSize()
                 }
                 ToolbarItem {
+                    if !filterDefs.isEmpty {
+                        Button {
+                            showFilters.toggle()
+                        } label: {
+                            Label("Filtreler", systemImage: filtersChanged
+                                  ? "line.3.horizontal.decrease.circle.fill"
+                                  : "line.3.horizontal.decrease.circle")
+                        }
+                        .help("Arama filtreleri")
+                        .popover(isPresented: $showFilters, arrowEdge: .bottom) {
+                            ServerFiltersPopover(filters: filterDefs, values: $filterValues, defaults: filterDefaults) {
+                                showFilters = false
+                                reload()
+                            }
+                        }
+                    }
+                }
+                ToolbarItem {
                     if let server {
                         Button {
                             Task { await model.setPinned(server, !server.pinned) }
@@ -168,6 +192,12 @@ struct ServerBrowseView: View {
             .task {
                 if !availableModes.contains(mode) {
                     mode = availableModes.first ?? .search
+                }
+                if server?.hasFilters == true,
+                   let info: ServerFiltersInfo = try? await model.backend.call("server.filters", ["server_id": serverID]) {
+                    filterDefs = info.filters
+                    filterDefaults = info.values
+                    filterValues = info.values
                 }
                 reload()
             }
@@ -238,6 +268,9 @@ struct ServerBrowseView: View {
             do {
                 let method: String
                 var params: [String: Any] = ["server_id": serverID]
+                if !filterValues.isEmpty {
+                    params["filters"] = filterValues.mapValues(\.any)
+                }
                 switch currentMode {
                 case .popular: method = "explorer.popular"
                 case .latest: method = "explorer.latest"

@@ -92,6 +92,8 @@ def _manga_dict(manga, with_chapters=False):
     data['path'] = manga.path
     data['nb_unread_chapters'] = manga.nb_unread_chapters
     data['nb_recent_chapters'] = manga.nb_recent_chapters
+    data['nb_downloaded_chapters'] = manga.nb_downloaded_chapters
+    data['categories'] = manga.categories
     if with_chapters:
         data['chapters'] = [_chapter_dict(chapter) for chapter in manga.chapters]
     return data
@@ -179,6 +181,8 @@ def servers_list(all_languages=False):
         cls = getattr(server['module'], server['class_name'], None)
         result.append({
             'id': server['id'],
+            'main_id': _main_id(server['id']),
+            'has_filters': bool(server.get('filters')),
             'name': server['name'],
             'lang': server['lang'],
             'description': server['description'],
@@ -203,6 +207,186 @@ def _overrides(cls, name):
     func = getattr(cls, name, None)
     base = getattr(Server, name, None)
     return func is not None and func is not base
+
+
+# ---------------------------------------------------------------------------
+# Server settings (enable/disable, languages, account, params) — mirrors
+# upstream's Preferences > Servers pages
+# ---------------------------------------------------------------------------
+
+def _main_id(server_id):
+    from komikku.servers.utils import get_server_main_id_by_id
+    return get_server_main_id_by_id(server_id)
+
+
+def _servers_settings():
+    from komikku.models import Settings
+    return Settings.get_default().servers_settings
+
+
+def _server_params_defaults(server):
+    """Same as upstream preferences.servers.get_server_default_params."""
+    params = {}
+    for param in (server.get('params') or []):
+        if param['type'] == 'select' and param.get('value_type') == 'multiple':
+            params[param['key']] = [o['key'] for o in param['options'] if o.get('default')]
+        else:
+            params[param['key']] = param.get('default')
+    for param in (server.get('filters') or []):
+        if not param.get('include_in_settings'):
+            continue
+        if param['type'] == 'select' and param.get('value_type') == 'multiple':
+            params[param['key']] = [o['key'] for o in param['options'] if o.get('default')]
+        else:
+            params[param['key']] = param.get('default')
+    return params
+
+
+def _forget_server_instances(main_id):
+    with _servers_lock:
+        for server_id in [i for i in _servers_cache if _main_id(i) == main_id]:
+            del _servers_cache[server_id]
+
+
+@method('servers.catalog')
+def servers_catalog():
+    """All servers grouped by main id, with enable/language state and settings metadata."""
+    from komikku.models import Settings
+    from komikku.models.keyring import KeyringHelper
+    from komikku.servers.utils import get_servers_list
+
+    settings = Settings.get_default()
+    servers_settings = settings.servers_settings
+    allowed_langs = settings.servers_languages
+    keyring = KeyringHelper()
+
+    catalog = {}
+    for server in get_servers_list():
+        main_id = _main_id(server['id'])
+        entry = catalog.get(main_id)
+        if entry is None:
+            server_settings = servers_settings.get(main_id, {})
+            credential = keyring.get(main_id) if server['has_login'] else None
+            entry = catalog[main_id] = {
+                'main_id': main_id,
+                'name': server['name'],
+                'enabled': server_settings.get('enabled', True),
+                'is_nsfw': bool(server['is_nsfw']),
+                'has_login': bool(server['has_login']),
+                'needs_address': server['base_url'] is None,
+                'username': credential.username if credential else None,
+                'address': credential.address if credential else None,
+                'params': _jsonable(server.get('params') or []),
+                'settings_filters': _jsonable([f for f in (server.get('filters') or []) if f.get('include_in_settings')]),
+                'param_values': {**_server_params_defaults(server), **server_settings.get('params', {})},
+                'languages': [],
+            }
+        if not allowed_langs or server['lang'] in allowed_langs or server['lang'] == '':
+            entry['languages'].append({
+                'lang': server['lang'],
+                'enabled': servers_settings.get(main_id, {}).get('langs', {}).get(server['lang'], True),
+            })
+
+    result = [e for e in catalog.values() if e['languages']]
+    result.sort(key=lambda e: e['name'].lower())
+    return result
+
+
+def _ensure_server_settings_entry(main_id):
+    # Upstream's toggle helpers assume 'langs'/'enabled' exist once the entry exists
+    from komikku.models import Settings
+    settings = Settings.get_default()
+    servers_settings = settings.servers_settings
+    entry = servers_settings.setdefault(main_id, {})
+    entry.setdefault('langs', {})
+    entry.setdefault('enabled', True)
+    settings.servers_settings = servers_settings
+    return settings
+
+
+@method('server.toggle')
+def server_toggle(main_id, enabled):
+    _ensure_server_settings_entry(main_id).toggle_server(main_id, bool(enabled))
+    return True
+
+
+@method('server.toggle_lang')
+def server_toggle_lang(main_id, lang, enabled):
+    _ensure_server_settings_entry(main_id).toggle_server_lang(main_id, lang, bool(enabled))
+    return True
+
+
+@method('server.set_params')
+def server_set_params(main_id, values):
+    from komikku.models import Settings
+    settings = Settings.get_default()
+    servers_settings = settings.servers_settings
+    servers_settings.setdefault(main_id, {}).setdefault('params', {}).update(values)
+    settings.servers_settings = servers_settings
+    _forget_server_instances(main_id)
+    return servers_settings[main_id]['params']
+
+
+def _server_class(main_id):
+    from komikku.servers.utils import get_servers_list
+    for server in get_servers_list(include_disabled=True):
+        if _main_id(server['id']) == main_id:
+            return getattr(server['module'], server['class_name'])
+    raise RPCError(f'Unknown server: {main_id}', 'unknown_server')
+
+
+@method('server.login')
+def server_login(main_id, username, password, address=None):
+    from komikku.models.keyring import KeyringHelper
+
+    cls = _server_class(main_id)
+    if address is not None:
+        address = address.strip().rstrip('/')
+        if not address.startswith(('http://', 'https://')):
+            raise RPCError('Adres http:// ya da https:// ile başlamalı', 'bad_address')
+
+    # Drop any saved session so the new credentials are really checked
+    try:
+        cls().clear_session(all=True)
+    except Exception:
+        pass
+    _forget_server_instances(main_id)
+
+    try:
+        server = cls(username=username, password=password, address=address) if address is not None \
+            else cls(username=username, password=password)
+    except Exception as exc:
+        raise RPCError(f'Giriş başarısız: {exc}', 'login_failed') from exc
+
+    if not server.logged_in:
+        raise RPCError('Giriş başarısız: kullanıcı adı, parola ya da adres hatalı', 'login_failed')
+
+    KeyringHelper().store(main_id, username, password, address)
+    _forget_server_instances(main_id)
+    return True
+
+
+@method('server.logout')
+def server_logout(main_id):
+    from komikku.models.keyring import KeyringHelper
+
+    try:
+        _server_class(main_id)().clear_session(all=True)
+    except Exception:
+        pass
+    KeyringHelper().delete(main_id)
+    _forget_server_instances(main_id)
+    return True
+
+
+@method('server.filters')
+def server_filters(server_id):
+    """Search filters of a server with their current default values."""
+    server = _get_server(server_id)
+    return {
+        'filters': _jsonable(server.filters or []),
+        'values': _jsonable(_filters(server, None)),
+    }
 
 
 @method('servers.set_pinned')
@@ -366,6 +550,141 @@ def manga_update(manga_id, fields):
     return _manga_dict(manga)
 
 
+@method('manga.set_all_read')
+def manga_set_all_read(manga_ids, read):
+    for manga_id in manga_ids:
+        ids = [r['id'] for r in _db().execute('SELECT id FROM chapters WHERE manga_id = ?', (manga_id,)).fetchall()]
+        chapter_set_read(ids, read)
+    return True
+
+
+@method('manga.delete_many')
+def manga_delete_many(manga_ids):
+    from komikku.models import Manga
+    for manga_id in manga_ids:
+        manga = Manga.get(manga_id)
+        if manga is not None:
+            manga.delete()
+    return True
+
+
+# ---------------------------------------------------------------------------
+# Categories
+# ---------------------------------------------------------------------------
+
+@method('categories.list')
+def categories_list():
+    rows = _db().execute('''
+        SELECT c.id, c.label, count(m.id) AS count
+        FROM categories c
+        LEFT JOIN categories_mangas_association cma ON cma.category_id = c.id
+        LEFT JOIN mangas m ON m.id = cma.manga_id AND m.in_library = 1
+        GROUP BY c.id ORDER BY lower(c.label)
+    ''').fetchall()
+    return [dict(row) for row in rows]
+
+
+@method('categories.create')
+def categories_create(label):
+    from komikku.models import Category
+    label = label.strip()
+    if not label:
+        raise RPCError('Kategori adı boş olamaz', 'bad_label')
+    category = Category.new(label)
+    if category is None:
+        raise RPCError('Bu adda bir kategori zaten var', 'duplicate')
+    return {'id': category.id, 'label': category.label}
+
+
+@method('categories.rename')
+def categories_rename(category_id, label):
+    from komikku.models import Category
+    category = Category.get(category_id)
+    if category is None:
+        raise RPCError('Kategori bulunamadı', 'not_found')
+    if not category.update({'label': label.strip()}):
+        raise RPCError('Kategori yeniden adlandırılamadı', 'duplicate')
+    return True
+
+
+@method('categories.delete')
+def categories_delete(category_id):
+    from komikku.models import Category
+    from komikku.models import Settings
+    category = Category.get(category_id)
+    if category is not None:
+        category.delete()
+    settings = Settings.get_default()
+    if settings.selected_category == category_id:
+        settings.selected_category = 0
+    return True
+
+
+@method('categories.assign')
+def categories_assign(manga_ids, category_id, active):
+    from komikku.models import Manga
+    for manga_id in manga_ids:
+        manga = Manga.get(manga_id)
+        if manga is None:
+            continue
+        has = category_id in manga.categories
+        if active and not has:
+            manga.toggle_category(category_id, True)
+        elif not active and has:
+            manga.toggle_category(category_id, False)
+    return True
+
+
+# ---------------------------------------------------------------------------
+# History
+# ---------------------------------------------------------------------------
+
+@method('history.list')
+def history_list(days=90):
+    """Same query as upstream's History page: last read chapter per manga and day."""
+    from komikku.models import Chapter
+    db_conn = _db()
+    start = (datetime.date.today() - datetime.timedelta(days=days)).strftime('%Y-%m-%d')
+    records = db_conn.execute('''
+        SELECT DISTINCT manga_id, date(last_read, 'localtime') AS last_read_date, id, max(last_read) AS last_read
+        FROM chapters WHERE date(last_read, 'localtime') >= ?
+        GROUP BY manga_id, last_read_date
+        ORDER BY last_read DESC
+    ''', (start,)).fetchall()
+
+    result = []
+    for record in records:
+        chapter = Chapter.get(record['id'], db_conn=db_conn)
+        if chapter is None:
+            continue
+        manga = chapter.manga
+        cover = manga.cover_fs_path
+        result.append({
+            'date': record['last_read_date'],
+            'last_read': _jsonable(record['last_read']),
+            'chapter_id': chapter.id,
+            'chapter_title': chapter.title,
+            'chapter_read': bool(chapter.read),
+            'last_page_read_index': chapter.last_page_read_index,
+            'manga_id': manga.id,
+            'manga_name': manga.name,
+            'server_name': manga.server.name if manga.server else manga.server_id,
+            'cover_path': cover if cover and os.path.exists(cover) else None,
+        })
+    return result
+
+
+@method('history.clear')
+def history_clear(manga_id=None):
+    db_conn = _db()
+    with db_conn:
+        if manga_id is None:
+            db_conn.execute('UPDATE chapters SET last_read = NULL')
+        else:
+            db_conn.execute('UPDATE chapters SET last_read = NULL WHERE manga_id = ?', (manga_id,))
+    return True
+
+
 @method('library.list')
 def library_list():
     from komikku.models import Manga
@@ -378,28 +697,90 @@ def library_list():
     return result
 
 
-@method('library.update')
-def library_update():
-    """Check every library manga for new chapters (sequential, like upstream's updater)."""
-    from komikku.models import Manga
-    from komikku_mac.rpc import notify
+def _services():
+    from komikku_mac import services
+    if services.window.downloader is None:
+        services.init()
+    return services.window
 
-    rows = _db().execute('SELECT id FROM mangas WHERE in_library = 1').fetchall()
-    total_new = 0
-    for index, row in enumerate(rows):
-        manga = Manga.get(row['id'])
-        if manga is None or manga.is_local:
-            continue
-        notify('library.update_progress', {'index': index, 'count': len(rows), 'name': manga.name})
-        try:
-            success, changes, _synced = manga.update_full()
-        except Exception as exc:
-            logger.warning('Update failed for %s: %s', manga.name, exc)
-            continue
-        if success and changes['recent_ids']:
-            total_new += len(changes['recent_ids'])
-            notify('library.manga_updated', {'manga_id': manga.id, 'nb_new': len(changes['recent_ids'])})
-    return {'nb_new_chapters': total_new}
+
+@method('library.update')
+def library_update(manga_ids=None):
+    """Start upstream's Updater (whole library, or given mangas). Progress via `updater.*` notifications."""
+    from komikku.models import Manga
+
+    window = _services()
+    if manga_ids:
+        mangas = [m for m in (Manga.get(i) for i in manga_ids) if m is not None]
+        window.updater.add(mangas)
+        started = window.updater.start()
+    else:
+        started = window.updater.update_library()
+    return {'started': bool(started), 'running': window.updater.running}
+
+
+# ---------------------------------------------------------------------------
+# Downloads (upstream Downloader + `downloads` table)
+# ---------------------------------------------------------------------------
+
+@method('downloads.list')
+def downloads_list():
+    rows = _db().execute('''
+        SELECT d.id, d.chapter_id, d.status, d.percent, d.errors, d.date,
+               c.title AS chapter_title, m.id AS manga_id, m.name AS manga_name, m.server_id
+        FROM downloads d
+        JOIN chapters c ON d.chapter_id = c.id
+        JOIN mangas m ON c.manga_id = m.id
+        ORDER BY m.server_id ASC, m.id ASC, d.id ASC
+    ''').fetchall()
+    return {
+        'running': _services().downloader.running,
+        'items': [_jsonable(dict(row)) for row in rows],
+    }
+
+
+@method('downloads.add')
+def downloads_add(chapter_ids, start=True):
+    window = _services()
+    window.downloader.add(chapter_ids, emit_signal=True)
+    if start:
+        window.downloader.start()
+    return True
+
+
+@method('downloads.cancel')
+def downloads_cancel(chapter_ids):
+    from komikku.models import Chapter
+    chapters = [c for c in (Chapter.get(i) for i in chapter_ids) if c is not None]
+    _services().downloader.cancel(chapters)
+    return True
+
+
+@method('downloads.start')
+def downloads_start():
+    window = _services()
+    # Errored downloads get another chance when the user starts manually
+    _db().execute("UPDATE downloads SET status = 'pending', errors = 0 WHERE status = 'error'")
+    window.downloader.start()
+    return True
+
+
+@method('downloads.stop')
+def downloads_stop():
+    _services().downloader.stop(save_state=True)
+    return True
+
+
+@method('downloads.resume_if_needed')
+def downloads_resume_if_needed():
+    """At launch: resume pending downloads unless the user had stopped the downloader."""
+    from komikku.models import Settings
+    if Settings.get_default().downloader_state:
+        count = _db().execute('SELECT count(*) FROM downloads').fetchone()[0]
+        if count:
+            _services().downloader.start()
+            return True
+    return False
 
 
 # ---------------------------------------------------------------------------

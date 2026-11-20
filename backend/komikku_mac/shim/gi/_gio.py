@@ -235,6 +235,47 @@ class Settings:
 
 
 # ---------------------------------------------------------------------------
+# Notifications (data holder; komikku_mac.services forwards them to the app)
+# ---------------------------------------------------------------------------
+
+class NotificationPriority:
+    NORMAL = 0
+    LOW = 1
+    HIGH = 2
+    URGENT = 3
+
+
+class Notification:
+    def __init__(self, title=''):
+        self.title = title
+        self.body = None
+        self.category = None
+        self.priority = NotificationPriority.NORMAL
+
+    @classmethod
+    def new(cls, title):
+        return cls(title)
+
+    def set_title(self, title):
+        self.title = title
+
+    def set_body(self, body):
+        self.body = body
+
+    def set_category(self, category):
+        self.category = category
+
+    def set_priority(self, priority):
+        self.priority = priority
+
+    def set_default_action(self, *args):
+        pass
+
+    def add_button(self, *args):
+        pass
+
+
+# ---------------------------------------------------------------------------
 # Misc helpers
 # ---------------------------------------------------------------------------
 

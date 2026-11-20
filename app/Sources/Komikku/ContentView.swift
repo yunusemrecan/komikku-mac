@@ -125,6 +125,7 @@ struct ContentView: View {
             }
         }
         .environment(\.openReader, OpenReaderAction { target in openReader(target) })
+        .environment(\.openRoute, OpenRouteAction { route in path.append(route) })
         .onChange(of: selection) { _, _ in
             path = []
         }
@@ -138,7 +139,13 @@ struct ContentView: View {
     private var rootView: some View {
         switch selection {
         case .library, .none:
-            LibraryView(searchFocusRequest: searchFocusRequest)
+            LibraryView(category: nil, searchFocusRequest: searchFocusRequest)
+        case .category(let id):
+            LibraryView(category: id, searchFocusRequest: searchFocusRequest)
+        case .history:
+            HistoryView(searchFocusRequest: searchFocusRequest)
+        case .downloads:
+            DownloadsView()
         case .globalSearch:
             GlobalSearchView(searchFocusRequest: searchFocusRequest)
         case .allServers:
@@ -155,12 +162,42 @@ struct Sidebar: View {
     @Environment(AppModel.self) private var model
     @Binding var selection: SidebarItem?
 
+    @State private var newCategoryName = ""
+    @State private var showNewCategory = false
+    @State private var renaming: MangaCategory?
+    @State private var renameText = ""
+    @State private var deleting: MangaCategory?
+
     var body: some View {
         List(selection: $selection) {
-            Section {
-                Label("Kütüphane", systemImage: "books.vertical")
+            Section("Kütüphane") {
+                Label("Tümü", systemImage: "books.vertical")
                     .badge(model.library.reduce(0) { $0 + $1.nbUnreadChapters })
                     .tag(SidebarItem.library)
+                ForEach(model.categories) { category in
+                    Label(category.label, systemImage: "tag")
+                        .badge(category.count ?? 0)
+                        .tag(SidebarItem.category(category.id))
+                        .contextMenu {
+                            Button("Yeniden Adlandır…") {
+                                renameText = category.label
+                                renaming = category
+                            }
+                            Button("Sil…", role: .destructive) { deleting = category }
+                        }
+                }
+                if !model.categories.isEmpty {
+                    Label("Kategorisiz", systemImage: "tag.slash")
+                        .tag(SidebarItem.category(-1))
+                }
+                Label("Geçmiş", systemImage: "clock")
+                    .tag(SidebarItem.history)
+                Label("İndirmeler", systemImage: "arrow.down.circle")
+                    .badge(model.downloads.count)
+                    .tag(SidebarItem.downloads)
+            }
+
+            Section("Keşfet") {
                 Label("Tüm Kaynaklarda Ara", systemImage: "magnifyingglass")
                     .tag(SidebarItem.globalSearch)
                 Label("Tüm Sunucular", systemImage: "globe")
@@ -186,19 +223,76 @@ struct Sidebar: View {
             }
         }
         .listStyle(.sidebar)
+        .contextMenu {
+            Button("Yeni Kategori…") { showNewCategory = true }
+        }
         .safeAreaInset(edge: .bottom) {
-            if let status = model.updateStatus {
+            VStack(alignment: .leading, spacing: 6) {
+                if let toast = model.toast {
+                    Text(toast)
+                        .font(.caption)
+                        .padding(8)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                        .transition(.opacity)
+                }
                 HStack(spacing: 6) {
+                    Button {
+                        newCategoryName = ""
+                        showNewCategory = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .buttonStyle(.borderless)
+                    .help("Yeni kategori")
                     if model.isUpdatingLibrary {
                         ProgressView().controlSize(.mini)
                     }
-                    Text(status)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                    if let status = model.updateStatus {
+                        Text(status)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+                    Spacer()
                 }
-                .padding(8)
             }
+            .padding(8)
+            .animation(.default, value: model.toast)
+        }
+        .alert("Yeni Kategori", isPresented: $showNewCategory) {
+            TextField("Ad", text: $newCategoryName)
+            Button("Ekle") {
+                let name = newCategoryName
+                Task { @MainActor in await model.createCategory(name) }
+            }
+            Button("Vazgeç", role: .cancel) {}
+        }
+        .alert("Kategoriyi Yeniden Adlandır", isPresented: Binding(
+            get: { renaming != nil },
+            set: { if !$0 { renaming = nil } }
+        )) {
+            TextField("Ad", text: $renameText)
+            Button("Kaydet") {
+                if let category = renaming {
+                    let name = renameText
+                    Task { @MainActor in await model.renameCategory(category.id, name) }
+                }
+            }
+            Button("Vazgeç", role: .cancel) {}
+        }
+        .confirmationDialog("“\(deleting?.label ?? "")” kategorisi silinsin mi?", isPresented: Binding(
+            get: { deleting != nil },
+            set: { if !$0 { deleting = nil } }
+        )) {
+            Button("Sil", role: .destructive) {
+                if let category = deleting {
+                    if selection == .category(category.id) { selection = .library }
+                    Task { @MainActor in await model.deleteCategory(category.id) }
+                }
+            }
+        } message: {
+            Text("Mangalar kütüphanede kalır, yalnızca kategori silinir.")
         }
     }
 }
