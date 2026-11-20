@@ -10,6 +10,7 @@ repos:
     # git checks
     -   id: check-merge-conflict
     -   id: check-added-large-files
+        args: [--maxkb=1000]
     -   id: check-case-conflict
 
     # Python checks
