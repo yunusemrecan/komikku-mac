@@ -765,6 +765,14 @@ struct PagedPager: View {
         return CGSize(width: size.width * model.zoom, height: size.height * model.zoom)
     }
 
+    private func showReadingStart(end: Bool) {
+        let rtl = model.mode == .rightToLeft
+        // Wait for the new content size to be laid out
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            model.pagedScroll.scrollToEdge(bottom: end, trailing: end ? !rtl : rtl)
+        }
+    }
+
     private func fitSize(_ container: CGSize, _ total: CGFloat) -> CGSize {
         if pages.count == 1 && total > 1 && model.landscapeZoom {
             // Wide page: fill the height and pan horizontally
@@ -810,10 +818,13 @@ struct PagedPager: View {
                 model.overflowY = size.height > container.height + 1
             }
             .onChange(of: model.index) { _, _ in
-                // New page: start at its top (or its end when paging backwards)
-                DispatchQueue.main.async {
-                    model.pagedScroll.scrollToEdge(bottom: model.navigatedBackward)
-                }
+                // New page: start where reading starts (top-right for right-to-left manga),
+                // or at the end when paging backwards
+                showReadingStart(end: model.navigatedBackward)
+            }
+            .onChange(of: model.zoom) { old, new in
+                // Entering zoom from the fitted page: begin at the reading start
+                if old == 1 && new != 1 { showReadingStart(end: false) }
             }
             .coordinateSpace(.named("pager"))
             .simultaneousGesture(

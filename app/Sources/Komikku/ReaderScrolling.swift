@@ -42,17 +42,23 @@ final class ScrollHandle {
         return true
     }
 
-    /// Jump to the top (or bottom) of the document, keeping the horizontal position.
-    func scrollToEdge(bottom: Bool, animated: Bool = false) {
+    /// Jump to the top (or bottom) of the document and, optionally, its left or right edge.
+    func scrollToEdge(bottom: Bool, trailing: Bool? = nil, animated: Bool = false) {
         guard let clip = clip else { return }
         let visible = clip.bounds
         let document = clip.documentRect
         let insets = clip.contentInsets
+        var x = visible.origin.x
+        if let trailing {
+            let minX = document.minX - insets.left
+            let maxX = max(minX, document.maxX + insets.right - visible.width)
+            x = trailing ? maxX : minX
+        }
         let low = document.minY - (clip.isFlipped ? insets.top : insets.bottom)
         let high = max(low, document.maxY + (clip.isFlipped ? insets.bottom : insets.top) - visible.height)
         let top = clip.isFlipped ? low : high
         let end = clip.isFlipped ? high : low
-        move(to: NSPoint(x: visible.origin.x, y: bottom ? end : top), animated: animated)
+        move(to: NSPoint(x: x, y: bottom ? end : top), animated: animated)
     }
 
     private func move(to point: NSPoint, animated: Bool) {
