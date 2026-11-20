@@ -24,6 +24,7 @@ final class Backend: @unchecked Sendable {
     private let lock = NSLock()
     private var readyContinuations: [CheckedContinuation<Void, Error>] = []
     private var isReady = false
+    private var stopping = false
 
     /// Called when the backend asks the frontend for something (webview work).
     var requestHandler: RequestHandler?
@@ -69,6 +70,13 @@ final class Backend: @unchecked Sendable {
     func start() throws {
         let layout = try Backend.locate()
 
+        // Fresh state (also used when restarting after a crash)
+        lock.lock()
+        buffer = Data()
+        isReady = false
+        stopping = false
+        lock.unlock()
+
         let process = Process()
         process.executableURL = layout.python
         process.arguments = ["-u", "-m", "komikku_mac"]
@@ -77,6 +85,7 @@ final class Backend: @unchecked Sendable {
         var env = ProcessInfo.processInfo.environment
         env["KOMIKKU_UPSTREAM"] = layout.upstreamDir.path
         env["PYTHONIOENCODING"] = "utf-8"
+        env["KOMIKKU_LANG"] = Locale.preferredLanguages.first ?? "en"
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         env["PYTHONPATH"] = layout.backendDir.path
         env.removeValue(forKey: "PYTHONHOME")
@@ -102,6 +111,10 @@ final class Backend: @unchecked Sendable {
         process.terminationHandler = { [weak self] proc in
             guard let self else { return }
             self.failAll(BackendError(code: "exited", message: "Arka uç kapandı (kod \(proc.terminationStatus))"))
+            self.lock.lock()
+            let expected = self.stopping
+            self.lock.unlock()
+            guard !expected else { return }
             let status = proc.terminationStatus
             Task { @MainActor in self.terminationHandler?(status) }
         }
@@ -113,6 +126,9 @@ final class Backend: @unchecked Sendable {
 
     /// Closes stdin so the backend can finish (e.g. clear cache on exit), then terminates it.
     func stop() {
+        lock.lock()
+        stopping = true
+        lock.unlock()
         try? stdinHandle?.close()
         guard let process else { return }
         let deadline = Date().addingTimeInterval(4)
@@ -120,6 +136,12 @@ final class Backend: @unchecked Sendable {
             Thread.sleep(forTimeInterval: 0.05)
         }
         if process.isRunning { process.terminate() }
+    }
+
+    func killForTesting() {
+        if let pid = process?.processIdentifier, pid > 0 {
+            kill(pid, SIGKILL)
+        }
     }
 
     func waitUntilReady() async throws {

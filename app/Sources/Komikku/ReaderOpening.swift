@@ -26,6 +26,7 @@ extension EnvironmentValues {
 enum ReaderPreferences {
     static let separateWindowKey = "reader-in-separate-window"
     static let coverAloneKey = "reader-cover-alone"
+    static let dockBadgeKey = "dock-badge"
 }
 
 /// Pushes a route onto the main window's navigation stack.

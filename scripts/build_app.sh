@@ -84,6 +84,10 @@ cp "$ROOT/upstream/data/info.febvre.Komikku.gschema.xml.in" "$RES/upstream/data/
 cp "$ROOT/upstream/LICENSE" "$RES/upstream/LICENSE"
 git -C "$ROOT/upstream" rev-parse --short HEAD > "$RES/upstream/UPSTREAM_COMMIT" 2>/dev/null || true
 
+echo "==> Compiling upstream translations"
+"$PY" -m pip install --quiet --disable-pip-version-check --target "$BUILD/tools" polib
+PYTHONPATH="$BUILD/tools" "$PY" "$ROOT/scripts/compile_translations.py" "$ROOT/upstream/po" "$RES/upstream/locale"
+
 echo "==> Precompiling Python sources"
 "$PY" -m compileall -q -j 0 "$RES/backend" "$RES/upstream/komikku" >/dev/null || true
 

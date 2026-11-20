@@ -25,6 +25,7 @@ struct SettingsView: View {
 @MainActor
 struct GeneralSettings: View {
     @Environment(AppModel.self) private var model
+    @AppStorage(ReaderPreferences.dockBadgeKey) private var dockBadge = true
 
     private func boolBinding(_ key: String, reloadServers: Bool = false) -> Binding<Bool> {
         Binding(
@@ -43,6 +44,8 @@ struct GeneralSettings: View {
             Section("Kütüphane") {
                 Toggle("Açılışta kütüphaneyi güncelle", isOn: boolBinding("update-at-startup"))
                 Toggle("Yeni bölümleri otomatik indir", isOn: boolBinding("new-chapters-auto-download"))
+                Toggle("Dock simgesinde okunmamış bölüm sayısını göster", isOn: $dockBadge)
+                    .onChange(of: dockBadge) { _, _ in model.updateDockBadge() }
                 Toggle("Masaüstü bildirimleri", isOn: Binding(
                     get: { model.settings["desktop-notifications"] as? Bool ?? false },
                     set: { value in Task { @MainActor in await model.setDesktopNotifications(value) } }

@@ -1,0 +1,78 @@
+name: Track upstream Komikku
+
+# Every week (and on demand): move the `upstream` submodule to the latest
+# Komikku commit, check that the backend still works with it, then commit and
+# start a macOS build, which publishes a new nightly.
+
+on:
+  schedule:
+    - cron: '17 4 * * 1'   # Mondays 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: upstream
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Move submodule to upstream main
+        id: bump
+        run: |
+          OLD=$(git -C upstream rev-parse HEAD)
+          git -C upstream fetch --quiet origin main
+          git -C upstream checkout --quiet origin/main
+          NEW=$(git -C upstream rev-parse HEAD)
+          echo "old=$OLD" >> "$GITHUB_OUTPUT"
+          echo "new=$NEW" >> "$GITHUB_OUTPUT"
+          if [ "$OLD" = "$NEW" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Upstream unchanged ($NEW)"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Upstream ${OLD:0:8} -> ${NEW:0:8}:"
+            git -C upstream log --oneline "$OLD..$NEW" | head -50
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.bump.outputs.changed == 'true'
+        with:
+          python-version: '3.13'
+
+      - name: Backend tests against new upstream
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          pip install --quiet -r backend/requirements-mac.txt
+          python backend/tests/smoke_test.py
+          # Network test: informative only (some sites may be down)
+          python backend/tests/smoke_test.py --live || echo "::warning::Live smoke test failed"
+
+      - name: Commit and start a macOS build
+        if: steps.bump.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OLD: ${{ steps.bump.outputs.old }}
+          NEW: ${{ steps.bump.outputs.new }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          {
+            echo "Update upstream Komikku to ${NEW:0:8}"
+            echo
+            git -C upstream log --format='- %s' "$OLD..$NEW" | head -40
+          } > /tmp/msg
+          git add upstream
+          git commit -F /tmp/msg
+          git push origin HEAD:main
+          # Pushes made with GITHUB_TOKEN do not trigger workflows; dispatch the build explicitly
+          gh workflow run build.yml --ref main

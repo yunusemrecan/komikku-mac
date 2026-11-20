@@ -20,7 +20,13 @@ final class AppModel {
     let webBridge = WebViewBridge()
 
     var state: State = .starting
-    var library: [Manga] = []
+    var library: [Manga] = [] {
+        didSet { updateDockBadge() }
+    }
+    /// Where the main window should go (set by notification clicks)
+    var pendingNavigation: Route?
+    var pendingSidebar: SidebarItem?
+    private var lastUpdatedMangaIDs: [Int] = []
     var servers: [ServerInfo] = []
     var languages: [String: String] = [:]
     var settings: [String: Any] = [:]
@@ -54,7 +60,8 @@ final class AppModel {
             self?.handleNotification(method, params)
         }
         backend.terminationHandler = { [weak self] status in
-            self?.state = .failed("Arka uç beklenmedik şekilde kapandı (kod \(status)). Ayrıntılar: \(Backend.logURL.path)")
+            guard let self else { return }
+            Task { await self.recoverFromCrash(status: status) }
         }
 
         do {
@@ -83,6 +90,46 @@ final class AppModel {
         backend.stop()
     }
 
+    // MARK: - Crash recovery
+
+    private var crashTimes: [Date] = []
+
+    /// The Python backend died unexpectedly: restart it (at most 3 times a minute)
+    /// and reload what the UI shows. Pages that failed meanwhile show a retry button.
+    private func recoverFromCrash(status: Int32) async {
+        AppLog.write("backend exited unexpectedly (status \(status))")
+        let now = Date()
+        crashTimes = crashTimes.filter { now.timeIntervalSince($0) < 60 } + [now]
+        guard crashTimes.count <= 3 else {
+            state = .failed("Arka uç art arda çöktü (kod \(status)). Ayrıntılar: \(Backend.logURL.path)")
+            return
+        }
+
+        showToast("Arka uç yeniden başlatılıyor…")
+        isUpdatingLibrary = false
+        do {
+            try await Task.sleep(for: .milliseconds(500))
+            try backend.start()
+            try await backend.waitUntilReady()
+            AppLog.write("backend restarted")
+            await reloadSettings()
+            await reloadServers()
+            await reloadLibrary()
+            await reloadCategories()
+            _ = try? await backend.callRaw("downloads.resume_if_needed")
+            await reloadDownloads()
+            for id in mangaRevision.keys { mangaRevision[id, default: 0] += 1 }
+            showToast("Arka uç yeniden başlatıldı")
+        } catch {
+            state = .failed("Arka uç yeniden başlatılamadı: \(error.localizedDescription). Ayrıntılar: \(Backend.logURL.path)")
+        }
+    }
+
+    /// For testing crash recovery (KOMIKKU_AUTOTEST): kill the Python process.
+    func simulateBackendCrash() {
+        backend.killForTesting()
+    }
+
     // MARK: - Notifications
 
     private func handleNotification(_ method: String, _ params: [String: Any]) {
@@ -93,6 +140,9 @@ final class AppModel {
         case "updater.end":
             if let id = params["manga_id"] as? Int {
                 mangaRevision[id, default: 0] += 1
+                if (params["nb_recent_chapters"] as? Int ?? 0) > 0 && !lastUpdatedMangaIDs.contains(id) {
+                    lastUpdatedMangaIDs.append(id)
+                }
             }
             updateNewChapters += params["nb_recent_chapters"] as? Int ?? 0
         case "updater.finished":
@@ -155,6 +205,33 @@ final class AppModel {
     private func requestNotificationPermission() {
         guard notificationsAvailable, settings["desktop-notifications"] as? Bool == true else { return }
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
+    }
+
+    // MARK: - Dock badge
+
+    func updateDockBadge() {
+        let enabled = UserDefaults.standard.object(forKey: ReaderPreferences.dockBadgeKey) as? Bool ?? true
+        let unread = library.reduce(0) { $0 + $1.nbUnreadChapters }
+        NSApp?.dockTile.badgeLabel = enabled && unread > 0 ? "\(unread)" : nil
+    }
+
+    // MARK: - Notification clicks
+
+    /// Notification ids come from upstream: "updater.<manga id>", "downloader.<manga id>",
+    /// and "updater.0" for the end-of-update summary.
+    func openNotification(id: String) {
+        let mangaID = id.split(separator: ".").last.flatMap { Int($0) } ?? 0
+        if mangaID > 0 {
+            pendingNavigation = .manga(mangaID)
+        } else if lastUpdatedMangaIDs.count == 1, let only = lastUpdatedMangaIDs.first {
+            pendingNavigation = .manga(only)
+        } else {
+            pendingSidebar = .library
+        }
+        NSApp.activate(ignoringOtherApps: true)
+        if let window = NSApp.windows.first(where: { $0.identifier?.rawValue.contains("main") == true && $0.canBecomeMain }) {
+            window.makeKeyAndOrderFront(nil)
+        }
     }
 
     private func postNotification(id: String, title: String, body: String?) {
@@ -289,6 +366,7 @@ final class AppModel {
             if result?["started"] as? Bool == true {
                 isUpdatingLibrary = true
                 updateNewChapters = 0
+                lastUpdatedMangaIDs = []
                 updateStatus = "Güncelleniyor…"
             } else if result?["running"] as? Bool == true {
                 showToast("Güncelleme zaten sürüyor")

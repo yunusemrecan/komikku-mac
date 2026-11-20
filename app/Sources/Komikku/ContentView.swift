@@ -93,6 +93,13 @@ struct ContentView: View {
                 try? await Task.sleep(for: .seconds(22))
                 AppLog.write("autotest: history")
                 select(.history)
+                // Crash recovery: kill the Python backend and check the app brings it back
+                try? await Task.sleep(for: .seconds(6))
+                AppLog.write("autotest: killing backend")
+                model.simulateBackendCrash()
+                try? await Task.sleep(for: .seconds(10))
+                await model.reloadLibrary()
+                AppLog.write("autotest: after restart library=\(model.library.count) state=\(model.state)")
             }
         } catch {
             AppLog.write("autotest: failed: \(error)")
@@ -144,6 +151,17 @@ struct ContentView: View {
         .environment(\.openRoute, OpenRouteAction { route in path.append(route) })
         .onChange(of: selection) { _, _ in
             path = []
+        }
+        .onChange(of: model.pendingNavigation) { _, route in
+            guard let route else { return }
+            model.pendingNavigation = nil
+            selection = .library
+            DispatchQueue.main.async { path = [route] }
+        }
+        .onChange(of: model.pendingSidebar) { _, item in
+            guard let item else { return }
+            model.pendingSidebar = nil
+            select(item)
         }
         .onChange(of: isReading) { _, reading in
             // Give the page the whole window while reading; bring the sidebar back after

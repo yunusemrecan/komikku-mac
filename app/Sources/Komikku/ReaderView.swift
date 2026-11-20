@@ -38,6 +38,11 @@ final class ReaderModel {
     var clampSize: CGFloat = 960
     var zoom: CGFloat = 1
     var pixelSizes: [Int: CGSize] = [:]
+    /// Backing scroll views, driven by the keyboard
+    let pagedScroll = ScrollHandle()
+    let webtoonScroll = ScrollHandle()
+    /// Last page turn went backwards: show the end of the new page (when it scrolls)
+    var navigatedBackward = false
     private var globals: [String: Any] = [:]
 
     var loading = false
@@ -315,6 +320,7 @@ final class ReaderModel {
     }
 
     func next() {
+        navigatedBackward = false
         let last = currentSpread.last ?? index
         if last + 1 < pageCount {
             pageShown(last + 1)
@@ -324,6 +330,7 @@ final class ReaderModel {
     }
 
     func previous() {
+        navigatedBackward = true
         let first = currentSpread.first ?? index
         if first > 0 {
             let target = first - 1
@@ -442,7 +449,7 @@ struct ReaderView: View {
         .focusable()
         .focusEffectDisabled()
         .focused($focused)
-        .onKeyPress(phases: .down) { press in handleKey(press) }
+        .onKeyPress(phases: [.down, .repeat]) { press in handleKey(press) }
         .toolbar { toolbar }
         .task(id: target) {
             AppLog.write("reader: opened for \(target) embedded=\(embedded)")
@@ -581,12 +588,10 @@ struct ReaderView: View {
     }
 
     private func handleKey(_ press: KeyPress) -> KeyPress.Result {
-        guard let model, model.mode != .webtoon || press.characters == "f" || press.key == .escape else {
-            return .ignored
-        }
-        let rtl = model.mode == .rightToLeft
+        guard let model else { return .ignored }
 
         if press.key == .escape {
+            guard press.phase == .down else { return .handled }
             if NSApp.keyWindow?.styleMask.contains(.fullScreen) == true {
                 NSApp.keyWindow?.toggleFullScreen(nil)
             } else if embedded {
@@ -597,31 +602,89 @@ struct ReaderView: View {
             return .handled
         }
 
-        switch press.key {
-        case .rightArrow:
-            rtl ? model.previous() : model.next()
-        case .leftArrow:
-            rtl ? model.next() : model.previous()
-        case .downArrow, .pageDown:
-            model.next()
-        case .upArrow, .pageUp:
-            model.previous()
-        case .space:
-            press.modifiers.contains(.shift) ? model.previous() : model.next()
-        case .home:
-            model.pageShown(0)
-        case .end:
-            model.pageShown(model.pageCount - 1)
-        default:
+        // Single-shot letter keys (no repeat)
+        if press.phase == .down {
+            if press.characters == "f" {
+                NSApp.keyWindow?.toggleFullScreen(nil)
+                return .handled
+            }
             if press.characters == "d" {
                 if model.mode == .rightToLeft || model.mode == .leftToRight {
                     model.setDoublePage(!model.doublePageSetting)
                 }
-            } else if press.characters == "f" {
-                NSApp.keyWindow?.toggleFullScreen(nil)
-            } else {
-                return .ignored
+                return .handled
             }
+        }
+
+        return model.mode == .webtoon ? webtoonKey(press, model) : pagedKey(press, model)
+    }
+
+    /// Webtoon: the keyboard scrolls the strip, like a web page.
+    private func webtoonKey(_ press: KeyPress, _ model: ReaderModel) -> KeyPress.Result {
+        let scroll = model.webtoonScroll
+        let height = max(scroll.viewport.height, 200)
+        let shift = press.modifiers.contains(.shift)
+
+        switch press.key {
+        case .downArrow:
+            scroll.scroll(dy: height * 0.15)
+        case .upArrow:
+            scroll.scroll(dy: -height * 0.15)
+        case .space:
+            scroll.scroll(dy: (shift ? -1 : 1) * height * 0.9)
+        case .pageDown:
+            scroll.scroll(dy: height * 0.9)
+        case .pageUp:
+            scroll.scroll(dy: -height * 0.9)
+        case .home:
+            scroll.scrollToEdge(bottom: false, animated: true)
+        case .end:
+            scroll.scrollToEdge(bottom: true, animated: true)
+        default:
+            return .ignored
+        }
+        return .handled
+    }
+
+    /// Paged modes: when the page is larger than the window (zoom, fit width…),
+    /// keys first move around the page and only turn it at the edge.
+    private func pagedKey(_ press: KeyPress, _ model: ReaderModel) -> KeyPress.Result {
+        let rtl = model.mode == .rightToLeft
+        let scroll = model.pagedScroll
+        let size = scroll.viewport
+        let stepX = max(size.width, 200) * 0.2
+        let stepY = max(size.height, 200) * 0.2
+        let bigY = max(size.height, 200) * 0.9
+        let repeating = press.phase == .repeat
+
+        // Turn the page only on a fresh press, so holding a key just pans
+        func turn(_ action: () -> Void) { if !repeating { action() } }
+
+        switch press.key {
+        case .rightArrow:
+            if !scroll.scroll(dx: stepX) { turn { rtl ? model.previous() : model.next() } }
+        case .leftArrow:
+            if !scroll.scroll(dx: -stepX) { turn { rtl ? model.next() : model.previous() } }
+        case .downArrow:
+            if !scroll.scroll(dy: stepY) { turn { model.next() } }
+        case .upArrow:
+            if !scroll.scroll(dy: -stepY) { turn { model.previous() } }
+        case .space:
+            if press.modifiers.contains(.shift) {
+                if !scroll.scroll(dy: -bigY) { turn { model.previous() } }
+            } else {
+                if !scroll.scroll(dy: bigY) { turn { model.next() } }
+            }
+        case .pageDown:
+            turn { model.next() }
+        case .pageUp:
+            turn { model.previous() }
+        case .home:
+            turn { model.pageShown(0) }
+        case .end:
+            turn { model.pageShown(model.pageCount - 1) }
+        default:
+            return .ignored
         }
         return .handled
     }
@@ -696,6 +759,7 @@ struct PagedPager: View {
                 }
                 .frame(width: size.width, height: size.height)
                 .frame(minWidth: container.width, minHeight: container.height)
+                .background(ScrollViewFinder(handle: model.pagedScroll))
                 .contentShape(Rectangle())
                 .onTapGesture(coordinateSpace: .named("pager")) { location in
                     // Click on the leading/trailing third turns pages, like a book
@@ -709,6 +773,12 @@ struct PagedPager: View {
                 }
             }
             .scrollDisabled(!scrolls)
+            .onChange(of: model.index) { _, _ in
+                // New page: start at its top (or its end when paging backwards)
+                DispatchQueue.main.async {
+                    model.pagedScroll.scrollToEdge(bottom: model.navigatedBackward)
+                }
+            }
             .coordinateSpace(.named("pager"))
             .simultaneousGesture(
                 MagnifyGesture()
@@ -733,6 +803,8 @@ struct WebtoonPager: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 0) {
+                    ScrollViewFinder(handle: model.webtoonScroll)
+                        .frame(height: 0)
                     ForEach(0..<model.pageCount, id: \.self) { i in
                         PageImage(model: model, index: i, fit: .width)
                             .id(i)
