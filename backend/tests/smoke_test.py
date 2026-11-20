@@ -107,6 +107,9 @@ def main():
         results = client.call('explorer.search', server_id='mangadex', term='berserk')
         check(f'explorer.search -> {len(results)} results', len(results) > 0)
 
+        quiet = client.call('explorer.search', server_id='mangadex', term='berserk', interactive=False)
+        check(f'explorer.search (global mode) -> {len(quiet)} results', len(quiet) > 0)
+
         first = results[0]
         cover = client.call('server.image', server_id='mangadex', url=first.get('cover'))
         check('server.image cached cover', cover is not None and os.path.getsize(cover) > 0)

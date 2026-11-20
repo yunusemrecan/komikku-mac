@@ -25,4 +25,5 @@ extension EnvironmentValues {
 
 enum ReaderPreferences {
     static let separateWindowKey = "reader-in-separate-window"
+    static let coverAloneKey = "reader-cover-alone"
 }

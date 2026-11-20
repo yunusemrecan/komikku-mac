@@ -18,6 +18,14 @@ final class ReaderModel {
     var failedPages: Set<Int> = []
     var index = 0
     var mode: ReadingMode = .rightToLeft
+    /// Two pages side by side (paged left/right modes only)
+    var doublePageSetting = false
+    var coverAlone = UserDefaults.standard.object(forKey: ReaderPreferences.coverAloneKey) as? Bool ?? true {
+        didSet { UserDefaults.standard.set(coverAlone, forKey: ReaderPreferences.coverAloneKey) }
+    }
+    /// width / height of pages whose image has been decoded
+    var aspects: [Int: CGFloat] = [:]
+    private var globalDoublePage = false
     var loading = false
     var error: String?
     /// Incremented when a chapter finishes loading; webtoon view scrolls on change.
@@ -51,12 +59,17 @@ final class ReaderModel {
 
     // MARK: Loading
 
-    func start(chapterID: Int, defaultMode: ReadingMode) async {
+    func start(chapterID: Int, defaultMode: ReadingMode, globalDoublePage: Bool) async {
+        self.globalDoublePage = globalDoublePage
         AppLog.write("reader: start manga=\(mangaID) chapter=\(chapterID)")
         do {
             let manga: Manga = try await backend.call("manga.get", ["manga_id": mangaID])
             self.manga = manga
             mode = ReadingMode(rawValue: manga.readingMode ?? "") ?? defaultMode
+            doublePageSetting = manga.doublePage.map { $0 == 1 } ?? globalDoublePage
+            if ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST_DOUBLE"] != nil {
+                doublePageSetting = true
+            }
             AppLog.write("reader: manga loaded, \(manga.chapters?.count ?? 0) chapters, mode=\(mode.rawValue)")
             await open(chapterID: chapterID, atEnd: false)
         } catch {
@@ -75,6 +88,7 @@ final class ReaderModel {
             chapter = orderedChapters.first { $0.id == chapterID }
             pageCount = load.nbPages ?? load.pagePaths.count
             pagePaths = [:]
+            aspects = [:]
             failedPages = []
             inFlight = []
             for (i, path) in load.pagePaths.enumerated() {
@@ -122,18 +136,62 @@ final class ReaderModel {
     func prefetch(around i: Int) {
         Task {
             await page(i)
-            for ahead in 1...3 { await page(i + ahead) }
+            for ahead in 1...4 { await page(i + ahead) }
             await page(i - 1)
         }
     }
 
     // MARK: Navigation
 
+    // MARK: Spreads
+
+    var isDoublePage: Bool {
+        doublePageSetting && (mode == .rightToLeft || mode == .leftToRight)
+    }
+
+    private func isWide(_ i: Int) -> Bool {
+        (aspects[i] ?? 0) > 1.0
+    }
+
+    /// Pages grouped as displayed: singles, or pairs in double-page mode.
+    /// The cover (optionally) and wide images stand alone; everything else pairs up in order.
+    var spreads: [[Int]] {
+        guard isDoublePage else { return (0..<pageCount).map { [$0] } }
+        var result: [[Int]] = []
+        var i = 0
+        while i < pageCount {
+            if (i == 0 && coverAlone) || isWide(i) || i + 1 >= pageCount || isWide(i + 1) {
+                result.append([i])
+                i += 1
+            } else {
+                result.append([i, i + 1])
+                i += 2
+            }
+        }
+        return result
+    }
+
+    var currentSpread: [Int] {
+        spreads.first { $0.contains(index) } ?? [index]
+    }
+
+    func recordAspect(_ i: Int, _ aspect: CGFloat) {
+        if aspects[i] != aspect { aspects[i] = aspect }
+    }
+
+    func setDoublePage(_ value: Bool) {
+        doublePageSetting = value
+        let override: Any = value == globalDoublePage ? NSNull() : (value ? 1 : 0)
+        Task {
+            _ = try? await backend.callRaw("manga.update", ["manga_id": mangaID, "fields": ["double_page": override]])
+        }
+    }
+
     func pageShown(_ i: Int) {
         guard pageCount > 0 else { return }
         index = min(max(i, 0), pageCount - 1)
         prefetch(around: index)
-        pendingRead.insert(index)
+        for page in currentSpread { pendingRead.insert(page) }
         readFlushTask?.cancel()
         readFlushTask = Task { [weak self] in
             try? await Task.sleep(for: .milliseconds(600))
@@ -159,16 +217,19 @@ final class ReaderModel {
     }
 
     func next() {
-        if index + 1 < pageCount {
-            pageShown(index + 1)
+        let last = currentSpread.last ?? index
+        if last + 1 < pageCount {
+            pageShown(last + 1)
         } else if let next = nextChapter {
             Task { await open(chapterID: next.id, atEnd: false) }
         }
     }
 
     func previous() {
-        if index > 0 {
-            pageShown(index - 1)
+        let first = currentSpread.first ?? index
+        if first > 0 {
+            let target = first - 1
+            pageShown(spreads.first { $0.contains(target) }?.first ?? target)
         } else if let previous = previousChapter {
             Task { await open(chapterID: previous.id, atEnd: true) }
         }
@@ -215,6 +276,17 @@ struct ReaderCommands: Commands {
             Button("Önceki Bölüm") { reader?.goToPreviousChapter() }
                 .keyboardShortcut("[", modifiers: .command)
                 .disabled(reader?.previousChapter == nil)
+            Divider()
+            Toggle("Çift Sayfa", isOn: Binding(
+                get: { reader?.doublePageSetting ?? false },
+                set: { reader?.setDoublePage($0) }
+            ))
+            .disabled(reader == nil || reader?.mode == .webtoon || reader?.mode == .vertical)
+            Toggle("Kapak Sayfası Tek", isOn: Binding(
+                get: { reader?.coverAlone ?? true },
+                set: { reader?.coverAlone = $0 }
+            ))
+            .disabled(reader?.isDoublePage != true)
             Divider()
             Picker("Okuma Yönü", selection: Binding(
                 get: { reader?.mode ?? .rightToLeft },
@@ -265,7 +337,15 @@ struct ReaderView: View {
             let reader = ReaderModel(mangaID: target.mangaId, backend: app.backend)
             model = reader
             focused = true
-            await reader.start(chapterID: target.chapterId, defaultMode: app.defaultReadingMode)
+            await reader.start(chapterID: target.chapterId, defaultMode: app.defaultReadingMode,
+                               globalDoublePage: app.settings["double-page"] as? Bool ?? false)
+            if ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST_DOUBLE"] != nil {
+                // CI: turn one spread so the screenshot shows a pair of pages
+                try? await Task.sleep(for: .seconds(8))
+                reader.next()
+                try? await Task.sleep(for: .seconds(4))
+                AppLog.write("reader: spread shown \(reader.currentSpread)")
+            }
         }
         .onDisappear {
             model?.flushReadPages()
@@ -302,7 +382,7 @@ struct ReaderView: View {
 
     private func pageBar(_ model: ReaderModel) -> some View {
         HStack(spacing: 12) {
-            Text("\(model.index + 1) / \(model.pageCount)")
+            Text(pageLabel(model))
                 .monospacedDigit()
             if model.pageCount > 1 {
                 Slider(
@@ -322,6 +402,14 @@ struct ReaderView: View {
         .padding(.vertical, 8)
         .background(.regularMaterial, in: Capsule())
         .padding(.bottom, 14)
+    }
+
+    private func pageLabel(_ model: ReaderModel) -> String {
+        let spread = model.currentSpread
+        if spread.count == 2 {
+            return "\(spread[0] + 1)–\(spread[1] + 1) / \(model.pageCount)"
+        }
+        return "\(model.index + 1) / \(model.pageCount)"
     }
 
     @ToolbarContentBuilder
@@ -344,6 +432,14 @@ struct ReaderView: View {
                 .disabled(model.nextChapter == nil)
                 .help("Sonraki bölüm (⌘])")
 
+                Button {
+                    model.setDoublePage(!model.doublePageSetting)
+                } label: {
+                    Label("Çift Sayfa", systemImage: model.doublePageSetting ? "book.fill" : "book")
+                }
+                .disabled(model.mode == .webtoon || model.mode == .vertical)
+                .help("Çift sayfa görünümü (D)")
+
                 Menu {
                     Picker("Okuma Yönü", selection: Binding(get: { model.mode }, set: { model.setMode($0) })) {
                         ForEach(ReadingMode.allCases) { mode in
@@ -351,6 +447,9 @@ struct ReaderView: View {
                         }
                     }
                     .pickerStyle(.inline)
+                    Divider()
+                    Toggle("Kapak sayfası tek", isOn: Binding(get: { model.coverAlone }, set: { model.coverAlone = $0 }))
+                        .disabled(!model.isDoublePage)
                 } label: {
                     Label("Okuma Yönü", systemImage: "book.pages")
                 }
@@ -392,7 +491,11 @@ struct ReaderView: View {
         case .end:
             model.pageShown(model.pageCount - 1)
         default:
-            if press.characters == "f" {
+            if press.characters == "d" {
+                if model.mode == .rightToLeft || model.mode == .leftToRight {
+                    model.setDoublePage(!model.doublePageSetting)
+                }
+            } else if press.characters == "f" {
                 NSApp.keyWindow?.toggleFullScreen(nil)
             } else {
                 return .ignored
@@ -410,7 +513,7 @@ struct PagedPager: View {
 
     var body: some View {
         GeometryReader { proxy in
-            PageImage(model: model, index: model.index, fit: .screen)
+            spreadView
                 .frame(width: proxy.size.width, height: proxy.size.height)
                 .contentShape(Rectangle())
                 .onTapGesture(coordinateSpace: .local) { location in
@@ -425,6 +528,23 @@ struct PagedPager: View {
                 }
         }
         .id(model.chapter?.id)
+    }
+
+    @ViewBuilder
+    private var spreadView: some View {
+        let spread = model.currentSpread
+        if spread.count == 2 {
+            // Right-to-left: the first page of the pair sits on the right, like a printed manga
+            let rtl = model.mode == .rightToLeft
+            let left = rtl ? spread[1] : spread[0]
+            let right = rtl ? spread[0] : spread[1]
+            HStack(spacing: 0) {
+                PageImage(model: model, index: left, fit: .screen, alignment: .trailing)
+                PageImage(model: model, index: right, fit: .screen, alignment: .leading)
+            }
+        } else {
+            PageImage(model: model, index: model.index, fit: .screen)
+        }
     }
 }
 
@@ -481,6 +601,7 @@ struct PageImage: View {
     let model: ReaderModel
     let index: Int
     let fit: Fit
+    var alignment: Alignment = .center
 
     @State private var image: NSImage?
     @State private var decodeFailed = false
@@ -507,7 +628,7 @@ struct PageImage: View {
                     .frame(maxWidth: .infinity, minHeight: fit == .width ? 600 : 0)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: fit == .screen ? .infinity : nil)
+        .frame(maxWidth: .infinity, maxHeight: fit == .screen ? .infinity : nil, alignment: alignment)
         .task(id: path) {
             guard let path else {
                 image = nil
@@ -517,6 +638,10 @@ struct PageImage: View {
             image = await ImageCache.shared.image(atPath: path)
             decodeFailed = image == nil
             if let image {
+                let rep = image.representations.first
+                let width = CGFloat(rep?.pixelsWide ?? 0) > 0 ? CGFloat(rep!.pixelsWide) : image.size.width
+                let height = CGFloat(rep?.pixelsHigh ?? 0) > 0 ? CGFloat(rep!.pixelsHigh) : image.size.height
+                if height > 0 { model.recordAspect(index, width / height) }
                 AppLog.write("reader: page \(index) displayed \(Int(image.size.width))x\(Int(image.size.height))")
             } else {
                 AppLog.write("reader: page \(index) could not be decoded: \(path)")

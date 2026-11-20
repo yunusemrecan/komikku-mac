@@ -27,7 +27,7 @@ _pending = {}
 _pending_lock = threading.Lock()
 _ids = itertools.count(1)
 _handlers = {}
-_executor = concurrent.futures.ThreadPoolExecutor(max_workers=12, thread_name_prefix='rpc')
+_executor = concurrent.futures.ThreadPoolExecutor(max_workers=32, thread_name_prefix='rpc')
 
 
 class RPCError(Exception):

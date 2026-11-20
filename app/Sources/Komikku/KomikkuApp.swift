@@ -67,6 +67,7 @@ struct NavigationActionsKey: FocusedValueKey {
 struct NavigationActions {
     var showLibrary: () -> Void
     var showServers: () -> Void
+    var showGlobalSearch: () -> Void
     var focusSearch: () -> Void
 }
 
@@ -106,6 +107,9 @@ struct KomikkuCommands: Commands {
         CommandGroup(after: .textEditing) {
             Button("Ara") { navigation?.focusSearch() }
                 .keyboardShortcut("f", modifiers: .command)
+                .disabled(navigation == nil)
+            Button("Tüm Kaynaklarda Ara") { navigation?.showGlobalSearch() }
+                .keyboardShortcut("f", modifiers: [.command, .shift])
                 .disabled(navigation == nil)
         }
 

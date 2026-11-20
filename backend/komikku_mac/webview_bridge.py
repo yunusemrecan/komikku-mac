@@ -7,7 +7,9 @@ Servers protected by Cloudflare & co. call `CompleteChallenge`, `get_page_html`,
 ask the Swift frontend, which drives a WKWebView, to do the browser work.
 """
 
+import functools
 import logging
+import threading
 from urllib.parse import urlsplit
 
 import requests
@@ -20,7 +22,26 @@ except Exception:
     crequests = None
 
 
+_context = threading.local()
+
+
+class ChallengeRequired(Exception):
+    """Raised instead of showing a browser window when interaction is not allowed (global search)."""
+
+
+class no_interaction:
+    """Context manager: within it, challenges fail fast instead of opening a window."""
+
+    def __enter__(self):
+        _context.no_interaction = True
+
+    def __exit__(self, *exc):
+        _context.no_interaction = False
+
+
 def _frontend(method, params, timeout=None):
+    if method == 'webview.challenge' and getattr(_context, 'no_interaction', False):
+        raise ChallengeRequired()
     from komikku_mac import rpc
     return rpc.call_frontend(method, params, timeout=timeout)
 
@@ -56,6 +77,7 @@ class CompleteChallenge:
         assert func.__name__ in self.ALLOWED_METHODS, \
             f'@{self.__class__.__name__} decorator is not allowed on method `{func.__name__}`'
 
+        @functools.wraps(func)
         def wrapper(*args, **kwargs):
             from komikku.servers.exceptions import ChallengerError
             from komikku.servers.utils import get_session_cookies
@@ -83,6 +105,8 @@ class CompleteChallenge:
                     'url': url,
                     'user_agent': (server.headers or {}).get('User-Agent'),
                 })
+            except ChallengeRequired:
+                raise
             except Exception as exc:
                 logger.info('%s: challenge failed: %s', server.id, exc)
                 raise ChallengerError() from exc
@@ -112,8 +136,6 @@ class CompleteChallenge:
             server.save_session()
             return func(*args, **kwargs)
 
-        wrapper.__name__ = func.__name__
-        wrapper.__doc__ = func.__doc__
         return wrapper
 
 

@@ -80,6 +80,8 @@ struct Manga: Codable, Identifiable, Hashable {
     var inLibrary: Bool
     let lastRead: String?
     var readingMode: String?
+    /// Per-manga override of the global "double-page" setting (nil = use global)
+    var doublePage: Int?
     let coverPath: String?
     let path: String?
     let nbUnreadChapters: Int
@@ -154,6 +156,7 @@ struct ReaderTarget: Codable, Hashable {
 
 enum SidebarItem: Hashable {
     case library
+    case globalSearch
     case allServers
     case server(String)
 }

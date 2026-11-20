@@ -22,6 +22,7 @@ struct SettingsView: View {
 struct GeneralSettings: View {
     @Environment(AppModel.self) private var model
     @AppStorage(ReaderPreferences.separateWindowKey) private var readerInSeparateWindow = false
+    @AppStorage(ReaderPreferences.coverAloneKey) private var coverAlone = true
 
     private func boolBinding(_ key: String, reloadServers: Bool = false) -> Binding<Bool> {
         Binding(
@@ -46,6 +47,8 @@ struct GeneralSettings: View {
                 }
                 Toggle("Webtoon'ları otomatik algıla", isOn: boolBinding("long-strip-detection"))
                 Toggle("Okuyucuyu ayrı pencerede aç", isOn: $readerInSeparateWindow)
+                Toggle("Çift sayfa görünümü (varsayılan)", isOn: boolBinding("double-page"))
+                Toggle("Çift sayfada kapak sayfasını tek göster", isOn: $coverAlone)
             }
 
             Section("Kütüphane") {

@@ -73,7 +73,7 @@ def _jsonable(value):
 
 _MANGA_FIELDS = (
     'id', 'slug', 'url', 'server_id', 'name', 'authors', 'scanlators', 'genres', 'synopsis', 'status',
-    'in_library', 'last_read', 'last_update', 'reading_mode', 'scaling', 'sort_order',
+    'in_library', 'last_read', 'last_update', 'reading_mode', 'scaling', 'sort_order', 'double_page',
 )
 _CHAPTER_FIELDS = (
     'id', 'manga_id', 'slug', 'url', 'title', 'scanlators', 'date', 'num', 'num_volume', 'rank',
@@ -222,27 +222,53 @@ def _search_results(results):
     return [_jsonable(item) for item in results]
 
 
+def _filters(server, filters):
+    """Server's default filters (as upstream's Explorer uses them), overridden by `filters`."""
+    try:
+        from komikku.explorer.common import get_server_default_search_filters
+        defaults = get_server_default_search_filters(server)
+    except Exception as exc:
+        logger.warning('%s: cannot compute default filters: %s', server.id, exc)
+        defaults = {}
+    defaults.update(filters or {})
+    return defaults
+
+
 def _call_with_supported_kwargs(func, **kwargs):
     params = inspect.signature(func).parameters
+    if any(p.kind == p.VAR_KEYWORD for p in params.values()):
+        return func(**kwargs)
     return func(**{k: v for k, v in kwargs.items() if k in params})
 
 
 @method('explorer.search')
-def explorer_search(server_id, term, filters=None):
+def explorer_search(server_id, term, filters=None, interactive=True):
+    from komikku_mac.webview_bridge import ChallengeRequired
+    from komikku_mac.webview_bridge import no_interaction
+
     server = _get_server(server_id)
-    return _search_results(_call_with_supported_kwargs(server.search, term=term, **(filters or {})))
+    kwargs = _filters(server, filters)
+    if interactive:
+        return _search_results(_call_with_supported_kwargs(server.search, term=term, **kwargs))
+
+    # Global search: never pop up a browser window
+    try:
+        with no_interaction():
+            return _search_results(_call_with_supported_kwargs(server.search, term=term, **kwargs))
+    except ChallengeRequired as exc:
+        raise RPCError('Tarayıcı doğrulaması gerekiyor — sunucuyu tek başına açın', 'challenge_required') from exc
 
 
 @method('explorer.latest')
 def explorer_latest(server_id, filters=None):
     server = _get_server(server_id)
-    return _search_results(_call_with_supported_kwargs(server.get_latest_updates, **(filters or {})))
+    return _search_results(_call_with_supported_kwargs(server.get_latest_updates, **_filters(server, filters)))
 
 
 @method('explorer.popular')
 def explorer_popular(server_id, filters=None):
     server = _get_server(server_id)
-    return _search_results(_call_with_supported_kwargs(server.get_most_populars, **(filters or {})))
+    return _search_results(_call_with_supported_kwargs(server.get_most_populars, **_filters(server, filters)))
 
 
 @method('server.image')
@@ -334,7 +360,7 @@ def manga_delete(manga_id):
 
 @method('manga.update')
 def manga_update(manga_id, fields):
-    allowed = {'reading_mode', 'scaling', 'sort_order'}
+    allowed = {'reading_mode', 'scaling', 'sort_order', 'double_page'}
     manga = _get_manga(manga_id)
     manga.update({k: v for k, v in fields.items() if k in allowed})
     return _manga_dict(manga)

@@ -57,6 +57,10 @@ struct ContentView: View {
         .focusedSceneValue(\.navigationActions, NavigationActions(
             showLibrary: { select(.library) },
             showServers: { select(.allServers) },
+            showGlobalSearch: {
+                select(.globalSearch)
+                searchFocusRequest += 1
+            },
             focusSearch: { searchFocusRequest += 1 }
         ))
     }
@@ -135,6 +139,8 @@ struct ContentView: View {
         switch selection {
         case .library, .none:
             LibraryView(searchFocusRequest: searchFocusRequest)
+        case .globalSearch:
+            GlobalSearchView(searchFocusRequest: searchFocusRequest)
         case .allServers:
             ServersView(searchFocusRequest: searchFocusRequest)
         case .server(let id):
@@ -155,6 +161,8 @@ struct Sidebar: View {
                 Label("Kütüphane", systemImage: "books.vertical")
                     .badge(model.library.reduce(0) { $0 + $1.nbUnreadChapters })
                     .tag(SidebarItem.library)
+                Label("Tüm Kaynaklarda Ara", systemImage: "magnifyingglass")
+                    .tag(SidebarItem.globalSearch)
                 Label("Tüm Sunucular", systemImage: "globe")
                     .tag(SidebarItem.allServers)
             }
