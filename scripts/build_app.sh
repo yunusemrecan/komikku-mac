@@ -120,5 +120,15 @@ echo "==> Zipping"
 rm -f "$DIST/Komikku-macos-$ARCH.zip"
 ditto -c -k --sequesterRsrc --keepParent "$APP" "$DIST/Komikku-macos-$ARCH.zip"
 
-du -sh "$APP" "$DIST/Komikku-macos-$ARCH.zip"
+echo "==> Disk image (drag to Applications)"
+rm -f "$DIST/Komikku-macos-$ARCH.dmg"
+PYTHONPATH="$BUILD/tools" "$PY" -c '
+import sys, dmgbuild
+app, root, out = sys.argv[1:4]
+dmgbuild.build_dmg(out, "Komikku", settings_file=f"{root}/scripts/dmg_settings.py",
+                   defines={"app": app, "root": root})
+' "$APP" "$ROOT" "$DIST/Komikku-macos-$ARCH.dmg"
+hdiutil verify "$DIST/Komikku-macos-$ARCH.dmg"
+
+du -sh "$APP" "$DIST/Komikku-macos-$ARCH.zip" "$DIST/Komikku-macos-$ARCH.dmg"
 echo "Done: $APP"

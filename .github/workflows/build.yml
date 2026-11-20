@@ -90,6 +90,21 @@ jobs:
           grep -q "after restart library=1" ~/Library/Logs/Komikku/app.log || { echo "Library not reloaded after restart"; exit 1; }
           [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }
 
+      - name: DMG check (mount, contents, screenshot)
+        run: |
+          set +e
+          hdiutil attach dist/Komikku-macos-arm64.dmg -nobrowse -noautoopen -mountpoint /Volumes/Komikku >/dev/null
+          ls -la /Volumes/Komikku
+          test -x /Volumes/Komikku/Komikku.app/Contents/MacOS/Komikku || { echo "App missing from DMG"; exit 1; }
+          codesign --verify /Volumes/Komikku/Komikku.app || { echo "Signature broken in DMG"; exit 1; }
+          open /Volumes/Komikku
+          sleep 5
+          mkdir -p screenshots
+          screencapture -x screenshots/4-dmg.png
+          osascript -e 'tell application "Finder" to close every window' >/dev/null 2>&1
+          hdiutil detach /Volumes/Komikku -force >/dev/null
+          exit 0
+
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
@@ -100,23 +115,29 @@ jobs:
       - name: Checksum
         id: sha
         run: |
-          SHA=$(shasum -a 256 dist/Komikku-macos-arm64.zip | cut -d' ' -f1)
+          cd dist
+          SHA=$(shasum -a 256 Komikku-macos-arm64.zip | cut -d' ' -f1)
+          DMG_SHA=$(shasum -a 256 Komikku-macos-arm64.dmg | cut -d' ' -f1)
           echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
-          echo "$SHA  Komikku-macos-arm64.zip" > dist/Komikku-macos-arm64.zip.sha256
-          echo "SHA256: $SHA"
+          echo "dmg_sha256=$DMG_SHA" >> "$GITHUB_OUTPUT"
+          shasum -a 256 Komikku-macos-arm64.dmg Komikku-macos-arm64.zip > SHA256SUMS
+          cat SHA256SUMS
 
       - name: Build provenance attestation
         if: github.event_name != 'pull_request'
         uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
         with:
-          subject-path: dist/Komikku-macos-arm64.zip
+          subject-path: |
+            dist/Komikku-macos-arm64.dmg
+            dist/Komikku-macos-arm64.zip
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: Komikku-macos-arm64
           path: |
+            dist/Komikku-macos-arm64.dmg
             dist/Komikku-macos-arm64.zip
-            dist/Komikku-macos-arm64.zip.sha256
+            dist/SHA256SUMS
 
       - name: Publish rolling "nightly" pre-release
         if: github.ref == 'refs/heads/main'
@@ -127,17 +148,23 @@ jobs:
           cat > /tmp/notes.md <<NOTES
           Son \`main\` derlemesi ($(git rev-parse --short HEAD)) — latest \`main\` build.
 
-          **SHA256:** \`${{ steps.sha.outputs.sha256 }}\`
+          **Kurulum / install:** \`Komikku-macos-arm64.dmg\` dosyasını aç, Komikku'yu Uygulamalar klasörüne sürükle.
+          Uygulama imzasız olduğu için ilk açılışta macOS engeller / unsigned app, first launch is blocked:
+          - Sistem Ayarları → Gizlilik ve Güvenlik → **Yine de Aç** (System Settings → Privacy & Security → Open Anyway), ya da / or
+          - \`xattr -dr com.apple.quarantine /Applications/Komikku.app\`
 
-          İndirdiğin dosyanın bu CI'dan çıktığını doğrulamak için / verify this file was built by this repository's CI:
-          \`\`\`
-          shasum -a 256 Komikku-macos-arm64.zip
-          gh attestation verify Komikku-macos-arm64.zip -R ${{ github.repository }}
-          \`\`\`
+          | Dosya | SHA256 |
+          |---|---|
+          | Komikku-macos-arm64.dmg | \`${{ steps.sha.outputs.dmg_sha256 }}\` |
+          | Komikku-macos-arm64.zip | \`${{ steps.sha.outputs.sha256 }}\` |
 
-          İmzasız uygulama / unsigned app: ilk açılışta \`xattr -dr com.apple.quarantine /Applications/Komikku.app\`
+          Doğrulama / verify:
+          \`\`\`
+          shasum -a 256 Komikku-macos-arm64.dmg
+          gh attestation verify Komikku-macos-arm64.dmg -R ${{ github.repository }}
+          \`\`\`
           NOTES
-          gh release create nightly dist/Komikku-macos-arm64.zip dist/Komikku-macos-arm64.zip.sha256 \
+          gh release create nightly dist/Komikku-macos-arm64.dmg dist/Komikku-macos-arm64.zip dist/SHA256SUMS \
             --prerelease --target "$GITHUB_SHA" \
             --title "Nightly ($(git rev-parse --short HEAD))" \
             --notes-file /tmp/notes.md
@@ -147,6 +174,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/Komikku-macos-arm64.zip dist/Komikku-macos-arm64.zip.sha256 \
+          gh release create "$GITHUB_REF_NAME" dist/Komikku-macos-arm64.dmg dist/Komikku-macos-arm64.zip dist/SHA256SUMS \
             --generate-notes \
-            --notes "SHA256: \`${{ steps.sha.outputs.sha256 }}\` — verify: \`gh attestation verify Komikku-macos-arm64.zip -R ${{ github.repository }}\`"
+            --notes "DMG SHA256: \`${{ steps.sha.outputs.dmg_sha256 }}\` — verify: \`gh attestation verify Komikku-macos-arm64.dmg -R ${{ github.repository }}\`"
