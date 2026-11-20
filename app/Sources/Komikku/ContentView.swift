@@ -12,6 +12,7 @@ enum Route: Hashable {
 @MainActor
 struct ContentView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.openWindow) private var openWindow
     @State private var selection: SidebarItem? = .library
     @State private var path = NavigationPath()
     @State private var searchFocusRequest = 0
@@ -47,11 +48,32 @@ struct ContentView: View {
         } message: {
             Text(model.errorMessage ?? "")
         }
+        .task(id: model.state) {
+            if model.state == .ready { await runAutotestIfRequested() }
+        }
         .focusedSceneValue(\.navigationActions, NavigationActions(
             showLibrary: { select(.library) },
             showServers: { select(.allServers) },
             focusSearch: { searchFocusRequest += 1 }
         ))
+    }
+
+    /// CI hook: KOMIKKU_AUTOTEST="server_id:search term" opens the first chapter of the first result.
+    private func runAutotestIfRequested() async {
+        guard let spec = ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST"] else { return }
+        let parts = spec.split(separator: ":", maxSplits: 1).map(String.init)
+        guard parts.count == 2 else { return }
+        AppLog.write("autotest: \(spec)")
+        do {
+            let results: [SearchResult] = try await model.backend.call("explorer.search", ["server_id": parts[0], "term": parts[1]])
+            guard let first = results.first else { AppLog.write("autotest: no results"); return }
+            let manga: Manga = try await model.backend.call("manga.open", ["server_id": parts[0], "slug": first.slug, "name": first.name])
+            guard let chapter = manga.chaptersInReadingOrder.first else { AppLog.write("autotest: no chapters"); return }
+            AppLog.write("autotest: opening \(manga.name) / \(chapter.title)")
+            openWindow(id: "reader", value: ReaderTarget(mangaId: manga.id, chapterId: chapter.id))
+        } catch {
+            AppLog.write("autotest: failed: \(error)")
+        }
     }
 
     private func select(_ item: SidebarItem) {

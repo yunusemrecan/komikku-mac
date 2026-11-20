@@ -52,12 +52,15 @@ final class ReaderModel {
     // MARK: Loading
 
     func start(chapterID: Int, defaultMode: ReadingMode) async {
+        AppLog.write("reader: start manga=\(mangaID) chapter=\(chapterID)")
         do {
             let manga: Manga = try await backend.call("manga.get", ["manga_id": mangaID])
             self.manga = manga
             mode = ReadingMode(rawValue: manga.readingMode ?? "") ?? defaultMode
+            AppLog.write("reader: manga loaded, \(manga.chapters?.count ?? 0) chapters, mode=\(mode.rawValue)")
             await open(chapterID: chapterID, atEnd: false)
         } catch {
+            AppLog.write("reader: manga.get failed: \(error)")
             self.error = error.localizedDescription
         }
     }
@@ -85,8 +88,10 @@ final class ReaderModel {
                 index = 0
             }
             chapterToken += 1
+            AppLog.write("reader: chapter \(chapterID) loaded, pages=\(pageCount) cached=\(pagePaths.count) start=\(index)")
             pageShown(index)
         } catch {
+            AppLog.write("reader: chapter.load \(chapterID) failed: \(error)")
             self.error = error.localizedDescription
         }
     }
@@ -98,9 +103,11 @@ final class ReaderModel {
         defer { inFlight.remove(i) }
         do {
             let path: String = try await backend.call("chapter.page", ["chapter_id": chapterID, "index": i])
+            AppLog.write("reader: page \(i) -> \(path)")
             guard chapter?.id == chapterID else { return }
             pagePaths[i] = path
         } catch {
+            AppLog.write("reader: page \(i) failed: \(error)")
             guard chapter?.id == chapterID else { return }
             failedPages.insert(i)
         }
@@ -241,9 +248,10 @@ struct ReaderView: View {
                 content(model)
                     .focusedSceneValue(\.reader, model)
             } else {
-                ProgressView().tint(.white)
+                LoadingLabel(text: "Açılıyor…")
             }
         }
+        .environment(\.colorScheme, .dark)
         .navigationTitle(model?.title ?? "Okuyucu")
         .focusable()
         .focusEffectDisabled()
@@ -251,6 +259,7 @@ struct ReaderView: View {
         .onKeyPress(phases: .down) { press in handleKey(press) }
         .toolbar { toolbar }
         .task {
+            AppLog.write("reader: window opened for \(target)")
             let reader = ReaderModel(mangaID: target.mangaId, backend: app.backend)
             model = reader
             focused = true
@@ -275,7 +284,7 @@ struct ReaderView: View {
             }
             .foregroundStyle(.white)
         } else if model.pageCount == 0 {
-            ProgressView().tint(.white)
+            LoadingLabel(text: model.loading ? "Bölüm yükleniyor…" : "Bu bölümde sayfa bulunamadı")
         } else if model.mode == .webtoon {
             WebtoonPager(model: model)
         } else {
@@ -461,6 +470,7 @@ struct PageImage: View {
     let fit: Fit
 
     @State private var image: NSImage?
+    @State private var decodeFailed = false
 
     private var path: String? { model.pagePaths[index] }
 
@@ -480,8 +490,7 @@ struct PageImage: View {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, minHeight: 300)
             } else {
-                ProgressView()
-                    .tint(.white)
+                LoadingLabel(text: decodeFailed ? "Sayfa \(index + 1) gösterilemedi" : "Sayfa \(index + 1) yükleniyor…")
                     .frame(maxWidth: .infinity, minHeight: fit == .width ? 600 : 0)
             }
         }
@@ -493,6 +502,25 @@ struct PageImage: View {
                 return
             }
             image = await ImageCache.shared.image(atPath: path)
+            decodeFailed = image == nil
+            if let image {
+                AppLog.write("reader: page \(index) displayed \(Int(image.size.width))x\(Int(image.size.height))")
+            } else {
+                AppLog.write("reader: page \(index) could not be decoded: \(path)")
+            }
         }
+    }
+}
+
+@MainActor
+struct LoadingLabel: View {
+    let text: String
+
+    var body: some View {
+        VStack(spacing: 12) {
+            ProgressView().controlSize(.large)
+            Text(text).foregroundStyle(.white.opacity(0.8))
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

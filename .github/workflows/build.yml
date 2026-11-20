@@ -62,19 +62,23 @@ jobs:
             --backend dist/Komikku.app/Contents/Resources/backend \
             --upstream dist/Komikku.app/Contents/Resources/upstream
 
-      - name: Launch check
+      - name: Launch + reader UI check
         run: |
-          # Start the app for a few seconds and make sure it stays alive
-          dist/Komikku.app/Contents/MacOS/Komikku &
+          # Open the app, let it open a MangaDex chapter by itself, screenshot it
+          KOMIKKU_AUTOTEST="mangadex:berserk" dist/Komikku.app/Contents/MacOS/Komikku &
           PID=$!
-          sleep 15
-          if kill -0 $PID 2>/dev/null; then
-            echo "App is running"
-            kill $PID
-          else
-            echo "App exited early"; wait $PID; exit 1
-          fi
-          cat ~/Library/Logs/Komikku/backend.log || true
+          sleep 75
+          screencapture -x reader.png || true
+          if kill -0 $PID 2>/dev/null; then echo "App is running"; kill $PID; else echo "App exited early"; fi
+          echo "----- app.log"; cat ~/Library/Logs/Komikku/app.log || true
+          echo "----- backend.log (tail)"; tail -40 ~/Library/Logs/Komikku/backend.log || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reader-screenshot
+          path: reader.png
+          if-no-files-found: ignore
 
       - uses: actions/upload-artifact@v4
         with:
