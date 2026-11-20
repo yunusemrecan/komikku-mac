@@ -6,7 +6,7 @@ import SwiftUI
 @MainActor
 struct LibraryView: View {
     @Environment(AppModel.self) private var model
-    @Environment(\.openWindow) private var openWindow
+    @Environment(\.openReader) private var openReader
     var searchFocusRequest: Int
 
     @State private var filter = ""
@@ -80,7 +80,7 @@ struct LibraryView: View {
             Task {
                 if let full: Manga = try? await model.backend.call("manga.get", ["manga_id": manga.id]),
                    let chapter = full.resumeChapter {
-                    openWindow(id: "reader", value: ReaderTarget(mangaId: manga.id, chapterId: chapter.id))
+                    openReader(ReaderTarget(mangaId: manga.id, chapterId: chapter.id))
                 }
             }
         }

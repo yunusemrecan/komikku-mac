@@ -89,6 +89,7 @@ def _manga_dict(manga, with_chapters=False):
         data['server_name'] = manga.server.name
     except Exception:
         data['server_name'] = manga.server_id
+    data['path'] = manga.path
     data['nb_unread_chapters'] = manga.nb_unread_chapters
     data['nb_recent_chapters'] = manga.nb_recent_chapters
     if with_chapters:

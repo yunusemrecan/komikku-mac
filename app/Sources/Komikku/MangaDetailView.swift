@@ -11,7 +11,7 @@ struct MangaDetailView: View {
     }
 
     @Environment(AppModel.self) private var model
-    @Environment(\.openWindow) private var openWindow
+    @Environment(\.openReader) private var openReaderAction
     let source: Source
 
     @State private var manga: Manga?
@@ -101,6 +101,13 @@ struct MangaDetailView: View {
     private var toolbar: some ToolbarContent {
         ToolbarItemGroup {
             if let manga {
+                Button {
+                    revealInFinder(manga)
+                } label: {
+                    Label("Finder'da Göster", systemImage: "folder")
+                }
+                .help("İndirilen bölümlerin klasörünü Finder'da göster")
+
                 Button {
                     Task { @MainActor in await refresh() }
                 } label: {
@@ -282,8 +289,23 @@ struct MangaDetailView: View {
         }
     }
 
+    private func revealInFinder(_ manga: Manga) {
+        guard let path = manga.path else { return }
+        let url = URL(fileURLWithPath: path)
+        if FileManager.default.fileExists(atPath: path) {
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        } else {
+            // Nothing downloaded yet: show the nearest existing parent folder
+            var parent = url.deletingLastPathComponent()
+            while !FileManager.default.fileExists(atPath: parent.path) && parent.path != "/" {
+                parent = parent.deletingLastPathComponent()
+            }
+            NSWorkspace.shared.open(parent)
+        }
+    }
+
     private func openReader(manga: Manga, chapterID: Int) {
-        openWindow(id: "reader", value: ReaderTarget(mangaId: manga.id, chapterId: chapterID))
+        openReaderAction(ReaderTarget(mangaId: manga.id, chapterId: chapterID))
     }
 }
 

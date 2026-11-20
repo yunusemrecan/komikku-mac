@@ -234,7 +234,9 @@ struct ReaderCommands: Commands {
 @MainActor
 struct ReaderView: View {
     @Environment(AppModel.self) private var app
+    @Environment(\.dismiss) private var dismiss
     let target: ReaderTarget
+    var embedded = false
 
     @State private var model: ReaderModel?
     @State private var showControls = true
@@ -258,8 +260,8 @@ struct ReaderView: View {
         .focused($focused)
         .onKeyPress(phases: .down) { press in handleKey(press) }
         .toolbar { toolbar }
-        .task {
-            AppLog.write("reader: window opened for \(target)")
+        .task(id: target) {
+            AppLog.write("reader: opened for \(target) embedded=\(embedded)")
             let reader = ReaderModel(mangaID: target.mangaId, backend: app.backend)
             model = reader
             focused = true
@@ -358,10 +360,21 @@ struct ReaderView: View {
     }
 
     private func handleKey(_ press: KeyPress) -> KeyPress.Result {
-        guard let model, model.mode != .webtoon || press.characters == "f" else {
+        guard let model, model.mode != .webtoon || press.characters == "f" || press.key == .escape else {
             return .ignored
         }
         let rtl = model.mode == .rightToLeft
+
+        if press.key == .escape {
+            if NSApp.keyWindow?.styleMask.contains(.fullScreen) == true {
+                NSApp.keyWindow?.toggleFullScreen(nil)
+            } else if embedded {
+                dismiss()
+            } else {
+                return .ignored
+            }
+            return .handled
+        }
 
         switch press.key {
         case .rightArrow:

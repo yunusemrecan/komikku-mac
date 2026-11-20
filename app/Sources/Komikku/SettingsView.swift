@@ -21,6 +21,7 @@ struct SettingsView: View {
 @MainActor
 struct GeneralSettings: View {
     @Environment(AppModel.self) private var model
+    @AppStorage(ReaderPreferences.separateWindowKey) private var readerInSeparateWindow = false
 
     private func boolBinding(_ key: String, reloadServers: Bool = false) -> Binding<Bool> {
         Binding(
@@ -44,6 +45,7 @@ struct GeneralSettings: View {
                     ForEach(ReadingMode.allCases) { Text($0.label).tag($0) }
                 }
                 Toggle("Webtoon'ları otomatik algıla", isOn: boolBinding("long-strip-detection"))
+                Toggle("Okuyucuyu ayrı pencerede aç", isOn: $readerInSeparateWindow)
             }
 
             Section("Kütüphane") {

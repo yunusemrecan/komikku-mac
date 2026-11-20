@@ -81,6 +81,7 @@ struct Manga: Codable, Identifiable, Hashable {
     let lastRead: String?
     var readingMode: String?
     let coverPath: String?
+    let path: String?
     let nbUnreadChapters: Int
     let nbRecentChapters: Int
     var chapters: [Chapter]?

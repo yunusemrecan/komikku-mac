@@ -5,6 +5,7 @@ import SwiftUI
 
 enum Route: Hashable {
     case manga(Int)
+    case reader(ReaderTarget)
     case searchResult(serverID: String, result: SearchResult)
     case server(String)
 }
@@ -14,7 +15,9 @@ struct ContentView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.openWindow) private var openWindow
     @State private var selection: SidebarItem? = .library
-    @State private var path = NavigationPath()
+    @State private var path: [Route] = []
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    @AppStorage(ReaderPreferences.separateWindowKey) private var readerInSeparateWindow = false
     @State private var searchFocusRequest = 0
 
     var body: some View {
@@ -70,19 +73,34 @@ struct ContentView: View {
             let manga: Manga = try await model.backend.call("manga.open", ["server_id": parts[0], "slug": first.slug, "name": first.name])
             guard let chapter = manga.chaptersInReadingOrder.first else { AppLog.write("autotest: no chapters"); return }
             AppLog.write("autotest: opening \(manga.name) / \(chapter.title)")
-            openWindow(id: "reader", value: ReaderTarget(mangaId: manga.id, chapterId: chapter.id))
+            openReader(ReaderTarget(mangaId: manga.id, chapterId: chapter.id))
         } catch {
             AppLog.write("autotest: failed: \(error)")
         }
     }
 
+    private var isReading: Bool {
+        if case .reader = path.last { return true }
+        return false
+    }
+
+    private func openReader(_ target: ReaderTarget) {
+        if readerInSeparateWindow {
+            openWindow(id: "reader", value: target)
+        } else if case .reader = path.last {
+            path[path.count - 1] = .reader(target)
+        } else {
+            path.append(.reader(target))
+        }
+    }
+
     private func select(_ item: SidebarItem) {
         selection = item
-        path = NavigationPath()
+        path = []
     }
 
     private var splitView: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             Sidebar(selection: $selection)
                 .navigationSplitViewColumnWidth(min: 180, ideal: 220)
         } detail: {
@@ -96,12 +114,19 @@ struct ContentView: View {
                             MangaDetailView(source: .search(serverID: serverID, result: result))
                         case .server(let id):
                             ServerBrowseView(serverID: id, searchFocusRequest: searchFocusRequest)
+                        case .reader(let target):
+                            ReaderView(target: target, embedded: true)
                         }
                     }
             }
         }
+        .environment(\.openReader, OpenReaderAction { target in openReader(target) })
         .onChange(of: selection) { _, _ in
-            path = NavigationPath()
+            path = []
+        }
+        .onChange(of: isReading) { _, reading in
+            // Give the page the whole window while reading; bring the sidebar back after
+            withAnimation { columnVisibility = reading ? .detailOnly : .all }
         }
     }
 
