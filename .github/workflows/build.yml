@@ -96,6 +96,7 @@ jobs:
           hdiutil attach dist/Komikku-macos-arm64.dmg -nobrowse -noautoopen -mountpoint /Volumes/Komikku >/dev/null
           ls -la /Volumes/Komikku
           test -x /Volumes/Komikku/Komikku.app/Contents/MacOS/Komikku || { echo "App missing from DMG"; exit 1; }
+          codesign --verify --deep -vvv /Volumes/Komikku/Komikku.app 2>&1 | tail -5
           codesign --verify /Volumes/Komikku/Komikku.app || { echo "Signature broken in DMG"; exit 1; }
           open /Volumes/Komikku
           sleep 5

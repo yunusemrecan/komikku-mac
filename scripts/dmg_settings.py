@@ -9,7 +9,7 @@ root = defines['root']  # noqa: F821
 appname = os.path.basename(application)
 
 format = 'UDZO'
-filesystem = 'HFS+'
+filesystem = 'APFS'   # HFS+ rewrites some file names and breaks the app's code signature
 compression_level = 9
 
 files = [application]
