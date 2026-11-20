@@ -65,13 +65,17 @@ jobs:
       - name: Launch + reader UI check
         run: |
           # Open the app, let it open a MangaDex chapter by itself, screenshot it
+          set +e
           KOMIKKU_AUTOTEST="mangadex:berserk" dist/Komikku.app/Contents/MacOS/Komikku &
           PID=$!
           sleep 75
           screencapture -x reader.png || true
-          if kill -0 $PID 2>/dev/null; then echo "App is running"; kill $PID; else echo "App exited early"; fi
-          echo "----- app.log"; cat ~/Library/Logs/Komikku/app.log || true
-          echo "----- backend.log (tail)"; tail -40 ~/Library/Logs/Komikku/backend.log || true
+          RUNNING=0
+          if kill -0 $PID 2>/dev/null; then RUNNING=1; kill $PID; wait $PID 2>/dev/null; fi
+          echo "----- app.log"; cat ~/Library/Logs/Komikku/app.log
+          echo "----- backend.log (tail)"; tail -40 ~/Library/Logs/Komikku/backend.log
+          grep -q "page 0 displayed" ~/Library/Logs/Komikku/app.log || { echo "Reader did not display a page"; exit 1; }
+          [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }
 
       - uses: actions/upload-artifact@v4
         if: always()
