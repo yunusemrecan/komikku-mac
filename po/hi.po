@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.41.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-06 14:36+0100\n"
-"PO-Revision-Date: 2026-11-20 19:42+0000\n"
+"PO-Revision-Date: 2026-11-21 20:49+0000\n"
 "Last-Translator: Karthik Yadav <mail@karthikyadav.com>\n"
 "Language-Team: Hindi <https://hosted.weblate.org/projects/komikku/main/hi/>\n"
 "Language: hi\n"
@@ -143,7 +143,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:44
 msgid "offline"
-msgstr ""
+msgstr "ऑफ़लाइन"
 
 #: ../data/info.febvre.Komikku.metainfo.xml.in.in:64
 msgid "The Library page"
