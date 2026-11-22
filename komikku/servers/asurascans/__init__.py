@@ -6,9 +6,14 @@ from gettext import gettext as _
 import json
 
 from bs4 import BeautifulSoup
-import requests
+try:
+    # This server requires JA3/TLS and HTTP2 fingerprints impersonation
+    from curl_cffi import requests
+except Exception:
+    # Server will be disabled
+    requests = None
 
-from komikku.consts import USER_AGENT
+from komikku.consts import REQUESTS_TIMEOUT
 from komikku.servers import Server
 from komikku.servers.multi.madara import Madara
 from komikku.servers.utils import convert_date_string
@@ -19,6 +24,9 @@ class Asurascans(Server):
     id = 'asurascans'
     name = 'Asura Scans'
     lang = 'en'
+    status = 'enabled' if requests is not None else 'disabled'
+
+    http_client = 'curl_cffi'
 
     base_url = 'https://asurascans.com'
     logo_url = base_url + '/images/logo.webp'
@@ -49,11 +57,12 @@ class Asurascans(Server):
     ]
 
     def __init__(self):
-        if self.session is None:
-            self.session = requests.Session()
-            self.session.headers.update({
-                'User-Agent': USER_AGENT,
-            })
+        if self.session is None and requests is not None:
+            self.session = requests.Session(
+                allow_redirects=True,
+                impersonate='chrome',
+                timeout=(REQUESTS_TIMEOUT, REQUESTS_TIMEOUT * 2),
+            )
 
     def check_slug(self, initial_data):
         # A random number is always appended to slug and it changes regularly
@@ -99,8 +108,10 @@ class Asurascans(Server):
         })
 
         # Name & cover
-        data['name'] = soup.select_one('h1').text.strip()
-        data['cover'] = soup.select_one('#mobile-cover-img').get('src')
+        if name_element := soup.select_one('h1'):
+            data['name'] = name_element.text.strip()
+        if cover_element := soup.select_one('#mobile-cover-img'):
+            data['cover'] = cover_element.get('src')
 
         # Details
         for element in soup.select('a.inline-flex.text-xs.font-medium'):
@@ -111,7 +122,7 @@ class Asurascans(Server):
 
         if element := soup.select_one('div:-soup-contains("Status") ~ div span:last-child'):
             status = element.text.strip().lower()
-            if status in 'ongoing':
+            if status == 'ongoing':
                 data['status'] = 'ongoing'
             elif status == 'completed':
                 data['status'] = 'complete'
@@ -141,7 +152,7 @@ class Asurascans(Server):
         chapters = []
 
         for a_element in reversed(soup.select('div.divide-y > a.group')):
-            slug = a_element.get('href').split('/')[-1]
+            slug = a_element.get('href').strip('/').split('/')[-1]
             if date_element := a_element.select_one('span.text-sm'):
                 date = convert_date_string(date_element.text.strip())
             else:
@@ -241,7 +252,7 @@ class Asurascans(Server):
             cover_element = a_element.select_one('img[loading="lazy"]')
 
             results.append({
-                'slug': a_element.get('href').split('/')[-1],
+                'slug': a_element.get('href').strip('/').split('/')[-1],
                 'name': cover_element.get('alt').strip(),
                 'cover': cover_element.get('src') if cover_element else None,
             })
