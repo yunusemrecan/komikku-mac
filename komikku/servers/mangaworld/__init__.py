@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2019-2025 Valéry Febvre
+# SPDX-FileCopyrightText: 2019-2026 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -23,7 +23,7 @@ def get_mwcookie(func):
 
         found = False
         for name, _value in server.session.cookies.items():
-            if name == 'MWCookie':
+            if name == 'mw_csrf':
                 found = True
                 break
 
@@ -31,7 +31,7 @@ def get_mwcookie(func):
             _html, cookies = get_page_html(server.base_url, headers={'User-Agent': USER_AGENT}, with_cookies=True)
 
             for cookie in cookies:
-                if cookie.name == 'MWCookie':
+                if cookie.name == 'mw_csrf':
                     server.session.cookies.set_cookie(cookie)
                     break
 
@@ -46,7 +46,7 @@ class Mangaworld(Server):
     lang = 'it'
     is_nsfw = True
 
-    base_url = 'https://www.mangaworld.mx'
+    base_url = 'https://www.mangaworld.me'
     logo_url = base_url + '/public/assets/seo/favicon-32x32.png'
     search_url = base_url + '/archive'
     manga_url = base_url + '/manga/{0}'
@@ -107,32 +107,32 @@ class Mangaworld(Server):
         soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
-        data.update(dict(
-            authors=[],
-            scanlators=[],
-            genres=[],
-            status=None,
-            synopsis=None,
-            chapters=[],
-            server_id=self.id,
-            cover=None,
-        ))
-
-        info_element = soup.find(class_='comic-info')
+        data.update({
+            'authors': [],
+            'scanlators': [],  # not available
+            'genres': [],
+            'status': None,
+            'synopsis': None,
+            'chapters': [],
+            'server_id': self.id,
+            'cover': None,
+        })
 
         # Name & cover
-        data['name'] = info_element.find('h1', class_='name').text.strip()
-        data['cover'] = info_element.find(class_='thumb').img.get('src')
+        data['name'] = soup.select_one('h1.manga-title').text.strip()
+        data['cover'] = soup.select_one('.manga-cover img').get('src')
 
         # Details
-        details_element = info_element.find(class_='meta-data')
-        for element in details_element.find_all('div'):
-            label = element.span.text.strip()
+        for element in soup.select('ul.hero-chips li a'):
+            data['genres'].append(element.text.strip())
+
+        for element in soup.select('.manga-facts > div'):
+            label = element.dt.text.strip()
             if label.startswith('Generi'):
-                for a_element in element.find_all('a'):
+                for a_element in element.select('a'):
                     data['genres'].append(a_element.text.strip())
             elif label.startswith(('Autore', 'Artista', 'Autori', 'Artisti')):
-                for a_element in element.find_all('a'):
+                for a_element in element.select('a'):
                     author = a_element.text.strip()
                     if author not in data['authors']:
                         data['authors'].append(author)
@@ -148,19 +148,19 @@ class Mangaworld(Server):
                     data['status'] = 'hiatus'
 
         # Synopsis
-        data['synopsis'] = soup.select_one('.comic-description div:nth-child(2)').text.strip()
+        data['synopsis'] = soup.select_one('.manga-plot').text.strip()
 
         # Chapters
-        for element in reversed(soup.select('.chapters-wrapper .chapter')):
-            title = element.span.text.strip()
+        for element in reversed(soup.select('a.ch')):
+            title = element.select_one('.ch-name').text.strip()
             num = title.split(' ')[-1]  # Capitolo XXX[.X]
 
-            data['chapters'].append(dict(
-                slug=element.a.get('href').split('/')[-1],
-                title=title,
-                num=num if is_number(num) else None,
-                date=convert_date_string(element.i.text.strip()),
-            ))
+            data['chapters'].append({
+                'slug': element.get('href').split('/')[-1],
+                'title': title,
+                'num': num if is_number(num) else None,
+                'date': convert_date_string(element.select_one('.ch-date').text.strip(), languages=[self.lang], format='%d %B %Y'),
+            })
 
         return data
 
@@ -177,14 +177,14 @@ class Mangaworld(Server):
 
         soup = BeautifulSoup(r.text, 'lxml')
 
-        data = dict(
-            pages=[],
-        )
-        for img_element in soup.find_all('img', class_='page-image'):
-            data['pages'].append(dict(
-                slug=None,
-                image=img_element.get('src'),
-            ))
+        data = {
+            'pages': [],
+        }
+        for img_element in soup.select('img.reader-page'):
+            data['pages'].append({
+                'slug': None,
+                'image': img_element.get('src'),
+            })
 
         return data
 
@@ -201,11 +201,11 @@ class Mangaworld(Server):
         if not mime_type.startswith('image'):
             return None
 
-        return dict(
-            buffer=buffer,
-            mime_type=mime_type,
-            name=page['image'].split('/')[-1],
-        )
+        return {
+            'buffer': buffer,
+            'mime_type': mime_type,
+            'name': page['image'].split('/')[-1],
+        }
 
     def get_manga_url(self, slug, url):
         """
@@ -241,11 +241,11 @@ class Mangaworld(Server):
         soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
-        for a_element in soup.select('.comics-grid .entry > a'):
-            results.append(dict(
-                name=a_element.get('title').strip(),
-                slug='/'.join(a_element.get('href').split('/')[-2:]),
-                cover=a_element.img.get('src'),
-            ))
+        for a_element in soup.select('article.card a.card-cover'):
+            results.append({
+                'name': a_element.get('title').strip(),
+                'slug': '/'.join(a_element.get('href').split('/')[-2:]),
+                'cover': a_element.img.get('src'),
+            })
 
         return results
