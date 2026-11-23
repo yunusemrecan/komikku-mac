@@ -67,22 +67,25 @@ struct CoverImage: View {
     @State private var failed = false
 
     var body: some View {
-        ZStack {
-            Rectangle().fill(.quaternary)
-            if let image {
-                Image(nsImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } else if failed {
-                Image(systemName: "photo")
-                    .font(.largeTitle)
-                    .foregroundStyle(.tertiary)
-            } else {
-                ProgressView().controlSize(.small)
+        // The fixed-ratio box decides the size; the image only fills (and is clipped to) it,
+        // so a wide cover can never push the layout wider than its slot
+        Rectangle()
+            .fill(.quaternary)
+            .aspectRatio(180.0 / 256.0, contentMode: .fit)
+            .overlay {
+                if let image {
+                    Image(nsImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } else if failed {
+                    Image(systemName: "photo")
+                        .font(.largeTitle)
+                        .foregroundStyle(.tertiary)
+                } else {
+                    ProgressView().controlSize(.small)
+                }
             }
-        }
-        .aspectRatio(180.0 / 256.0, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
         .task(id: (localPath ?? "") + (remoteURL ?? "")) {
             await load()
         }

@@ -50,12 +50,12 @@ struct KomikkuApp: App {
     @State private var model = AppModel.shared
 
     var body: some Scene {
-        WindowGroup("Komikku", id: "main") {
+        // A single main window: links and Spotlight results always land in it
+        Window("Komikku", id: "main") {
             ContentView()
                 .environment(model)
                 .frame(minWidth: 820, minHeight: 520)
         }
-        // Links and Spotlight results go to the main window, never open new windows
         .handlesExternalEvents(matching: ["*"])
         .commands {
             KomikkuCommands(model: model)
