@@ -37,6 +37,7 @@ enum URLAction: Equatable {
         }
     }
 
+    @MainActor
     static func copyLink(forManga id: Int) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString("komikku://manga/\(id)", forType: .string)
