@@ -234,6 +234,7 @@ enum SidebarItem: Hashable {
         case .library: return "library"
         case .category(let id): return "category:\(id)"
         case .history: return "history"
+        case .stats: return "stats"
         case .downloads: return "downloads"
         case .globalSearch: return "globalSearch"
         case .allServers: return "allServers"
@@ -247,6 +248,7 @@ enum SidebarItem: Hashable {
         case "library": self = .library
         case "category": guard let id = parts.last.flatMap(Int.init) else { return nil }; self = .category(id)
         case "history": self = .history
+        case "stats": self = .stats
         case "downloads": self = .downloads
         case "globalSearch": self = .globalSearch
         case "allServers": self = .allServers
@@ -258,6 +260,7 @@ enum SidebarItem: Hashable {
     case library
     case category(Int)   // category id; -1 = uncategorized
     case history
+    case stats
     case downloads
     case globalSearch
     case allServers

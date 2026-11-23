@@ -227,6 +227,7 @@ struct LibraryView: View {
         let ids = targets(for: manga)
         if ids.count == 1 {
             Button("Aç") { openRoute(.manga(manga.id)) }
+            Button("Kısayol Bağlantısını Kopyala") { URLAction.copyLink(forManga: manga.id) }
             Button("Okumaya Devam Et") {
                 Task { @MainActor in
                     if let full: Manga = try? await model.backend.call("manga.get", ["manga_id": manga.id]),

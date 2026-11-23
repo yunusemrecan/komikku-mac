@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import AppKit
+import CoreSpotlight
 import SwiftUI
 
 enum Route: Hashable {
@@ -54,7 +55,10 @@ struct ContentView: View {
             Text(model.errorMessage ?? "")
         }
         .task(id: model.state) {
-            if model.state == .ready { await runAutotestIfRequested() }
+            if model.state == .ready {
+                await performPendingURLAction()
+                await runAutotestIfRequested()
+            }
         }
         .focusedSceneValue(\.navigationActions, NavigationActions(
             showLibrary: { select(.library) },
@@ -156,6 +160,37 @@ struct ContentView: View {
         }
     }
 
+    /// Runs a komikku:// action once the app is ready (links can arrive while launching).
+    private func performPendingURLAction() async {
+        guard model.state == .ready, let action = model.pendingURLAction else { return }
+        model.pendingURLAction = nil
+        switch action {
+        case .update:
+            await model.updateLibrary()
+        case .continueReading:
+            // Most recently read library manga, at its resume chapter
+            guard let last = model.library.filter({ $0.lastRead != nil })
+                    .max(by: { ($0.lastRead ?? "") < ($1.lastRead ?? "") }) else {
+                model.showToast("Henüz okunan bir manga yok")
+                return
+            }
+            if let full: Manga = try? await model.backend.call("manga.get", ["manga_id": last.id]),
+               let chapter = full.resumeChapter {
+                select(.library)
+                openReader(ReaderTarget(mangaId: last.id, chapterId: chapter.id))
+            }
+        case .search(let term):
+            model.pendingGlobalSearch = term
+            select(.globalSearch)
+        case .manga(let id):
+            select(.library)
+            DispatchQueue.main.async { path = [.manga(id)] }
+        case .show(let item):
+            select(item)
+        }
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
     private func select(_ item: SidebarItem) {
         selection = item
         path = []
@@ -197,6 +232,23 @@ struct ContentView: View {
                 selection = .library
             }
         }
+        .onOpenURL { url in
+            guard let action = URLAction(url: url) else {
+                AppLog.write("url: ignored \(url.absoluteString)")
+                return
+            }
+            AppLog.write("url: \(url.absoluteString)")
+            model.pendingURLAction = action
+            Task { @MainActor in await performPendingURLAction() }
+        }
+        .handlesExternalEvents(preferring: ["*"], allowing: ["*"])
+        .onContinueUserActivity(CSSearchableItemActionType) { activity in
+            if let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String,
+               let id = SpotlightIndex.mangaID(from: identifier) {
+                AppLog.write("spotlight: open manga \(id)")
+                model.pendingNavigation = .manga(id)
+            }
+        }
         .onChange(of: model.pendingNavigation) { _, route in
             guard let route else { return }
             model.pendingNavigation = nil
@@ -223,6 +275,8 @@ struct ContentView: View {
             LibraryView(category: id, searchFocusRequest: searchFocusRequest)
         case .history:
             HistoryView(searchFocusRequest: searchFocusRequest)
+        case .stats:
+            StatsView()
         case .downloads:
             DownloadsView()
         case .globalSearch:
@@ -271,6 +325,8 @@ struct Sidebar: View {
                 }
                 Label("Geçmiş", systemImage: "clock")
                     .tag(SidebarItem.history)
+                Label("İstatistikler", systemImage: "chart.bar")
+                    .tag(SidebarItem.stats)
                 Label("İndirmeler", systemImage: "arrow.down.circle")
                     .badge(model.downloads.count)
                     .tag(SidebarItem.downloads)

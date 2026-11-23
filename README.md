@@ -83,6 +83,21 @@ shasum -a 256 Komikku-macos-arm64.dmg        # compare with the release notes / 
 gh attestation verify Komikku-macos-arm64.dmg -R yunusemrecan/komikku-mac
 ```
 
+## Shortcuts, Spotlight, links
+
+Komikku answers `komikku://` links, so the **Shortcuts** app ("Open URLs" action), Terminal, Raycast or
+Alfred can drive it:
+
+| Link | Action |
+|---|---|
+| `komikku://continue` | Continue the most recently read manga where you left off |
+| `komikku://update` | Check the library for new chapters |
+| `komikku://search?q=one%20piece` | Search all sources |
+| `komikku://manga/<id>` | Open a manga (right-click it → *Copy Shortcut Link*) |
+| `komikku://library` · `history` · `downloads` · `stats` | Open that view |
+
+Library mangas are also indexed in **Spotlight** (⌘Space, type a title); this can be turned off in Settings.
+
 ## Supply chain
 
 | What goes into the app | How it is controlled |

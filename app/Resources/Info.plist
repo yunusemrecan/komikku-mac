@@ -24,6 +24,17 @@
     <string>@BUILD@</string>
     <key>KomikkuCommit</key>
     <string>@COMMIT@</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>io.github.yunusemrecan.komikku-mac</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>komikku</string>
+            </array>
+        </dict>
+    </array>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.books</string>
     <key>LSMinimumSystemVersion</key>

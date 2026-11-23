@@ -15,6 +15,8 @@ struct SettingsView: View {
                 .tabItem { Label("Diller", systemImage: "character.bubble") }
             ServersSettings()
                 .tabItem { Label("Sunucular", systemImage: "server.rack") }
+            ShortcutsSettings()
+                .tabItem { Label("Kısayollar", systemImage: "link") }
             AboutSettings()
                 .tabItem { Label("Hakkında", systemImage: "info.circle") }
         }
@@ -27,6 +29,7 @@ struct GeneralSettings: View {
     @Environment(AppModel.self) private var model
     @AppStorage(ReaderPreferences.dockBadgeKey) private var dockBadge = true
     @AppStorage(UpdateChecker.enabledKey) private var checkUpdates = true
+    @AppStorage(SpotlightIndex.enabledKey) private var spotlight = true
 
     private func boolBinding(_ key: String, reloadServers: Bool = false) -> Binding<Bool> {
         Binding(
@@ -47,6 +50,8 @@ struct GeneralSettings: View {
                 Toggle("Yeni bölümleri otomatik indir", isOn: boolBinding("new-chapters-auto-download"))
                 Toggle("Dock simgesinde okunmamış bölüm sayısını göster", isOn: $dockBadge)
                     .onChange(of: dockBadge) { _, _ in model.updateDockBadge() }
+                Toggle("Kütüphaneyi Spotlight'ta göster", isOn: $spotlight)
+                    .onChange(of: spotlight) { _, _ in SpotlightIndex.update(with: model.library) }
                 Toggle("Yeni Komikku sürümlerini denetle", isOn: $checkUpdates)
                 Toggle("Masaüstü bildirimleri", isOn: Binding(
                     get: { model.settings["desktop-notifications"] as? Bool ?? false },
@@ -169,5 +174,38 @@ struct StorageSection: View {
         _ = try? await model.backend.callRaw("cache.clear")
         await refresh()
         model.showToast("Önbellek temizlendi")
+    }
+}
+
+@MainActor
+struct ShortcutsSettings: View {
+    var body: some View {
+        Form {
+            Section {
+                ForEach(URLAction.examples, id: \.url) { example in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(example.url).font(.body.monospaced()).textSelection(.enabled)
+                            Text(example.label).font(.caption).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button {
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(example.url, forType: .string)
+                        } label: {
+                            Image(systemName: "doc.on.doc")
+                        }
+                        .buttonStyle(.borderless)
+                        .help("Kopyala")
+                    }
+                }
+            } header: {
+                Text("komikku:// bağlantıları")
+            } footer: {
+                Text("Kısayollar uygulamasında yeni bir kısayol oluştur, \"URL'leri Aç\" eylemini ekle ve bu bağlantılardan birini yapıştır. Kısayola bir tuş kombinasyonu atayabilir, Siri'ye söyleyebilir ya da menü çubuğundan çalıştırabilirsin. Terminal'den de çalışır: open \"komikku://continue\"")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .formStyle(.grouped)
     }
 }

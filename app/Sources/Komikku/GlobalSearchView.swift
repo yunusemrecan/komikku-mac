@@ -106,6 +106,8 @@ struct GlobalSearchView: View {
                 }
             }
             .onDisappear { cancel() }
+            .task { takePendingSearch() }
+            .onChange(of: model.pendingGlobalSearch) { _, _ in takePendingSearch() }
     }
 
     private var subtitle: String {
@@ -174,6 +176,14 @@ struct GlobalSearchView: View {
     }
 
     // MARK: - Searching
+
+    /// A komikku://search link: fill the field and start right away
+    private func takePendingSearch() {
+        guard let term = model.pendingGlobalSearch else { return }
+        model.pendingGlobalSearch = nil
+        self.term = term
+        start()
+    }
 
     private func cancel() {
         searchTask?.cancel()

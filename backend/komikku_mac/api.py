@@ -678,6 +678,76 @@ def history_list(days=90):
     return result
 
 
+@method('stats.reading')
+def stats_reading(days=30):
+    """
+    Reading statistics from upstream's chapters table. A chapter counts as "read on a day"
+    when it is read and its last_read falls on that day (local time). Chapters only
+    marked read in bulk have no last_read and only count in the total.
+    """
+    db = _db()
+    today = datetime.date.today()
+    start = today - datetime.timedelta(days=days - 1)
+
+    total_read = db.execute('SELECT count(*) FROM chapters WHERE read = 1').fetchone()[0]
+
+    rows = db.execute('''
+        SELECT date(last_read, 'localtime') AS day, count(*) AS n
+        FROM chapters
+        WHERE read = 1 AND last_read IS NOT NULL AND date(last_read, 'localtime') >= ?
+        GROUP BY day
+    ''', (start.isoformat(),)).fetchall()
+    per_day = {row['day']: row['n'] for row in rows}
+    daily = [
+        {'date': (start + datetime.timedelta(days=i)).isoformat(),
+         'chapters': per_day.get((start + datetime.timedelta(days=i)).isoformat(), 0)}
+        for i in range(days)
+    ]
+
+    # Current streak: consecutive days up to today (or yesterday) with at least one chapter read
+    all_days = {row[0] for row in db.execute('''
+        SELECT DISTINCT date(last_read, 'localtime') FROM chapters WHERE read = 1 AND last_read IS NOT NULL
+    ''').fetchall()}
+    streak = 0
+    day = today if today.isoformat() in all_days else today - datetime.timedelta(days=1)
+    while day.isoformat() in all_days:
+        streak += 1
+        day -= datetime.timedelta(days=1)
+
+    top_rows = db.execute('''
+        SELECT m.id, m.name, m.server_id, count(c.id) AS n, max(c.last_read) AS last
+        FROM chapters c JOIN mangas m ON m.id = c.manga_id
+        WHERE c.read = 1 AND c.last_read IS NOT NULL AND date(c.last_read, 'localtime') >= ?
+        GROUP BY m.id ORDER BY n DESC, last DESC LIMIT 10
+    ''', (start.isoformat(),)).fetchall()
+    from komikku.models import Manga
+    top = []
+    for row in top_rows:
+        manga = Manga.get(row['id'], db_conn=db)
+        cover = manga.cover_fs_path if manga is not None else None
+        top.append({
+            'manga_id': row['id'],
+            'name': row['name'],
+            'server_name': manga.server.name if manga is not None and manga.server else row['server_id'],
+            'chapters': row['n'],
+            'cover_path': cover if cover and os.path.exists(cover) else None,
+        })
+
+    def window(n):
+        since = (today - datetime.timedelta(days=n - 1)).isoformat()
+        return sum(d['chapters'] for d in daily if d['date'] >= since)
+
+    return {
+        'total_read': total_read,
+        'last_7_days': window(7),
+        'last_30_days': window(min(30, days)),
+        'streak_days': streak,
+        'library_count': db.execute('SELECT count(*) FROM mangas WHERE in_library = 1').fetchone()[0],
+        'daily': daily,
+        'top': top,
+    }
+
+
 @method('history.clear')
 def history_clear(manga_id=None):
     db_conn = _db()

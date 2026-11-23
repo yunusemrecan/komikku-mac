@@ -55,6 +55,8 @@ struct KomikkuApp: App {
                 .environment(model)
                 .frame(minWidth: 820, minHeight: 520)
         }
+        // Links and Spotlight results go to the main window, never open new windows
+        .handlesExternalEvents(matching: ["*"])
         .commands {
             KomikkuCommands(model: model)
         }
@@ -66,6 +68,7 @@ struct KomikkuApp: App {
             }
         }
         .defaultSize(width: 900, height: 1000)
+        .handlesExternalEvents(matching: ["komikku-reader-window"])
         .commands {
             ReaderCommands()
         }

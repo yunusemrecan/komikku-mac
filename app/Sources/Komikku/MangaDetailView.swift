@@ -102,6 +102,13 @@ struct MangaDetailView: View {
         ToolbarItemGroup {
             if let manga {
                 Button {
+                    URLAction.copyLink(forManga: manga.id)
+                } label: {
+                    Label("Kısayol Bağlantısını Kopyala", systemImage: "link")
+                }
+                .help("Bu mangayı açan komikku:// bağlantısını kopyala (Kısayollar uygulaması için)")
+
+                Button {
                     revealInFinder(manga)
                 } label: {
                     Label("Finder'da Göster", systemImage: "folder")

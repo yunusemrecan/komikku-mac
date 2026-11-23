@@ -21,10 +21,28 @@ final class AppModel {
 
     var state: State = .starting
     var library: [Manga] = [] {
-        didSet { updateDockBadge() }
+        didSet {
+            updateDockBadge()
+            scheduleSpotlightUpdate()
+        }
     }
-    /// Where the main window should go (set by notification clicks)
+    private var spotlightTask: Task<Void, Never>?
+
+    /// Re-index Spotlight shortly after the library settles
+    func scheduleSpotlightUpdate() {
+        spotlightTask?.cancel()
+        spotlightTask = Task {
+            try? await Task.sleep(for: .seconds(3))
+            guard !Task.isCancelled, state == .ready else { return }
+            SpotlightIndex.update(with: library)
+        }
+    }
+    /// Where the main window should go (set by notification clicks, links, Spotlight)
     var pendingNavigation: Route?
+    /// A komikku:// link received before the app was ready
+    var pendingURLAction: URLAction?
+    /// Search to start in the global search view (from a komikku://search link)
+    var pendingGlobalSearch: String?
     var pendingSidebar: SidebarItem?
     private var lastUpdatedMangaIDs: [Int] = []
     var servers: [ServerInfo] = []

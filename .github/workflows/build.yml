@@ -100,6 +100,26 @@ jobs:
           grep -q "after restart library=1" ~/Library/Logs/Komikku/app.log || { echo "Library not reloaded after restart"; exit 1; }
           [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }
 
+      - name: Links, Spotlight and statistics check
+        run: |
+          set +e
+          : > ~/Library/Logs/Komikku/app.log
+          # Register the app with Launch Services so komikku:// links reach it
+          /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$PWD/dist/Komikku.app"
+          open "komikku://stats"
+          sleep 20
+          mkdir -p screenshots; screencapture -x screenshots/6-stats.png
+          open "komikku://search?q=berserk"
+          sleep 15
+          screencapture -x screenshots/7-link-search.png
+          osascript -e 'tell application "Komikku" to quit' >/dev/null 2>&1 || pkill -x Komikku
+          sleep 3
+          echo "----- log"; grep -E "url:|stats:|spotlight:|global search" ~/Library/Logs/Komikku/app.log
+          grep -q "url: komikku://stats" ~/Library/Logs/Komikku/app.log || { echo "komikku:// link not received"; exit 1; }
+          grep -q "stats: total=" ~/Library/Logs/Komikku/app.log || { echo "Statistics did not load"; exit 1; }
+          grep -q "url: komikku://search?q=berserk" ~/Library/Logs/Komikku/app.log || { echo "Search link not received"; exit 1; }
+          exit 0
+
       - name: Cloudflare challenge check (informative)
         continue-on-error: true
         run: |
