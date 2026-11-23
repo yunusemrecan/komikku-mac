@@ -99,6 +99,19 @@ jobs:
           grep -q "after restart library=1" ~/Library/Logs/Komikku/app.log || { echo "Library not reloaded after restart"; exit 1; }
           [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }
 
+      - name: Cloudflare challenge check (informative)
+        continue-on-error: true
+        run: |
+          set +e
+          : > ~/Library/Logs/Komikku/app.log
+          KOMIKKU_AUTOTEST_CHALLENGE="mangafire:one piece" dist/Komikku.app/Contents/MacOS/Komikku &
+          PID=$!
+          sleep 30; mkdir -p screenshots; screencapture -x screenshots/5-challenge.png
+          for i in $(seq 1 30); do grep -q "challengetest: [0-9f]" ~/Library/Logs/Komikku/app.log && break; sleep 5; done
+          kill $PID 2>/dev/null; wait $PID 2>/dev/null
+          echo "----- challenge log"; grep -E "webview:|challengetest:" ~/Library/Logs/Komikku/app.log
+          grep -q "challengetest: [1-9][0-9]* results" ~/Library/Logs/Komikku/app.log
+
       - name: DMG check (mount, contents, screenshot)
         run: |
           set +e

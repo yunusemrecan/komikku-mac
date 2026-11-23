@@ -69,6 +69,10 @@ struct ContentView: View {
 
     /// CI hook: KOMIKKU_AUTOTEST="server_id:search term" opens the first chapter of the first result.
     private func runAutotestIfRequested() async {
+        if let spec = ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST_CHALLENGE"] {
+            await runChallengeTest(spec)
+            return
+        }
         guard let spec = ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST"] else { return }
         let parts = spec.split(separator: ":", maxSplits: 1).map(String.init)
         guard parts.count == 2 else { return }
@@ -130,6 +134,22 @@ struct ContentView: View {
             path[path.count - 1] = .reader(target)
         } else {
             path.append(.reader(target))
+        }
+    }
+
+    /// CI: search a Cloudflare-protected server through the real WKWebView bridge.
+    private func runChallengeTest(_ spec: String) async {
+        let parts = spec.split(separator: ":", maxSplits: 1).map(String.init)
+        guard parts.count == 2 else { return }
+        select(.server(parts[0]))
+        AppLog.write("challengetest: searching \(parts[0]) for '\(parts[1])'")
+        do {
+            let results: [SearchResult] = try await model.backend.call(
+                "explorer.search", ["server_id": parts[0], "term": parts[1]]
+            )
+            AppLog.write("challengetest: \(results.count) results, first: \(results.first?.name ?? "-")")
+        } catch {
+            AppLog.write("challengetest: failed: \(error.localizedDescription)")
         }
     }
 

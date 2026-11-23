@@ -84,24 +84,30 @@ final class WebViewBridge {
         }
 
         var captchaReloads = 0
+        AppLog.write("webview: challenge start \(serverName) \(url.absoluteString)")
         session.load(URLRequest(url: url))
 
         let finalTitle: String = try await session.waitForTitle(timeout: 300) { title in
+            AppLog.write("webview: title '\(title)'")
             if title == "error" || title == "ready" { return true }
             if title.hasSuffix("_captcha") {
                 if title == "cf_captcha" { captchaReloads += 1 }
                 if captchaReloads > 3 { return true }
+                AppLog.write("webview: captcha needs a human, showing window")
                 session.showWindow(title: "Lütfen doğrulamayı tamamlayın — \(serverName)")
             }
             return false
         }
 
+        AppLog.write("webview: challenge finished with '\(finalTitle)'")
         if finalTitle != "ready" {
             throw BackendError(code: "challenge_failed", message: "Doğrulama tamamlanamadı (\(serverName))")
         }
 
         let cookies = await session.cookies(for: url)
         let userAgent = try await session.evaluate("navigator.userAgent") as? String ?? ""
+        let names = cookies.compactMap { $0["name"] as? String }.joined(separator: ",")
+        AppLog.write("webview: challenge ok, \(cookies.count) cookies [\(names)]")
         return ["cookies": cookies, "user_agent": userAgent]
     }
 
