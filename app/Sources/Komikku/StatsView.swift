@@ -96,6 +96,7 @@ struct StatsView: View {
                     }
                 }
                 .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.background.secondary, in: RoundedRectangle(cornerRadius: 10))
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -109,6 +110,7 @@ struct StatsView: View {
                     }
                 }
                 .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.background.secondary, in: RoundedRectangle(cornerRadius: 10))
 
                 Text("Bir bölüm, okunduğu gün sayılır. Toplu \"okundu\" işaretlenen bölümler yalnızca toplamda yer alır.")

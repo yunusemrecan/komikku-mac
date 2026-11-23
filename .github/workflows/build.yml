@@ -106,6 +106,9 @@ jobs:
           : > ~/Library/Logs/Komikku/app.log
           # Register the app with Launch Services so komikku:// links reach it
           /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$PWD/dist/Komikku.app"
+          # Seed a few days of reading so the chart and the top list have data
+          DB="$HOME/Library/Application Support/komikku/komikku.db"
+          sqlite3 "$DB" "UPDATE chapters SET read = 1, last_read = datetime('now', '-' || (id % 9) || ' days') WHERE manga_id IN (SELECT id FROM mangas WHERE in_library = 1);" || true
           open "komikku://stats"
           sleep 20
           mkdir -p screenshots; screencapture -x screenshots/6-stats.png
