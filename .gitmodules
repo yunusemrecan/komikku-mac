@@ -1,3 +1,7 @@
 [submodule "upstream"]
 	path = upstream
-	url = https://codeberg.org/valos/Komikku.git
+	# Mirror of https://codeberg.org/valos/Komikku (main), kept in this repository's
+	# upstream-mirror branch by the "Track upstream Komikku" workflow, so builds do not
+	# depend on Codeberg being reachable.
+	url = https://github.com/yunusemrecan/komikku-mac.git
+	branch = upstream-mirror

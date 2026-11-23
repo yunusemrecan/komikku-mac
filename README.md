@@ -135,11 +135,16 @@ python backend/tests/smoke_test.py --live
 
 ## Updating upstream
 
-Automatic: the weekly *Track upstream Komikku* workflow opens a PR (submodule + refreshed locks, tested).
+Automatic: the weekly *Track upstream Komikku* workflow mirrors Codeberg's `main` into this repository's
+`upstream-mirror` branch, then opens a PR (submodule + refreshed locks, tested). The submodule points at that
+mirror, so building never depends on Codeberg being up.
+
 Manual:
 
 ```sh
-git -C upstream pull origin main && git add upstream && git commit -m "Update upstream Komikku"
+git -C upstream fetch https://codeberg.org/valos/Komikku.git main
+git -C upstream checkout FETCH_HEAD
+git add upstream && git commit -m "Update upstream Komikku"
 ```
 
 ## Not yet ported
