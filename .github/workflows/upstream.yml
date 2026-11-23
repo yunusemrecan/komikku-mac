@@ -1,6 +1,9 @@
 name: Track upstream Komikku
 
 # Every week (and on demand):
+#   - mirror Komikku's Codeberg history into this repository's `upstream-mirror`
+#     branch (builds fetch the submodule from there, so a Codeberg outage
+#     cannot break them)
 #   - move the `upstream` submodule to the latest Komikku commit
 #   - refresh the hash-pinned Python dependency lock
 #   - test the backend, and propose the result as a pull request.
@@ -40,12 +43,19 @@ jobs:
       - name: Tools (hash-pinned)
         run: pip install --quiet --require-hashes -r scripts/build-tools.lock
 
+      - name: Mirror Codeberg → upstream-mirror branch
+        run: |
+          # Full history of Komikku's main, fetched into this repository and pushed as a branch
+          git fetch --quiet --no-tags https://codeberg.org/valos/Komikku.git +main:refs/remotes/codeberg/main
+          git push --force origin refs/remotes/codeberg/main:refs/heads/upstream-mirror
+          echo "Mirrored Codeberg main at $(git rev-parse --short refs/remotes/codeberg/main)"
+
       - name: Move submodule to upstream main
         id: bump
         run: |
           OLD=$(git -C upstream rev-parse HEAD)
-          git -C upstream fetch --quiet origin main
-          git -C upstream checkout --quiet origin/main
+          git -C upstream fetch --quiet "$GITHUB_WORKSPACE" refs/remotes/codeberg/main
+          git -C upstream checkout --quiet FETCH_HEAD
           NEW=$(git -C upstream rev-parse HEAD)
           echo "old=$OLD" >> "$GITHUB_OUTPUT"
           echo "new=$NEW" >> "$GITHUB_OUTPUT"
