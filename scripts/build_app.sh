@@ -85,19 +85,34 @@ echo "==> Compiling upstream translations"
     --require-hashes -r "$ROOT/scripts/build-tools.lock"
 PYTHONPATH="$BUILD/tools" "$PY" "$ROOT/scripts/compile_translations.py" "$ROOT/upstream/po" "$RES/upstream/locale"
 
-echo "==> Precompiling Python sources (stdlib, packages, backend, upstream)"
-# Everything is compiled before signing: Python must never need to write a .pyc
-# inside the bundle afterwards (that would break the code signature)
-"$PY" -m compileall -q -j 0 "$RES/python/lib" "$RES/backend" "$RES/upstream/komikku" >/dev/null || true
-
-echo "==> Trimming bundled Python"
-rm -rf "$RES/python/lib/python$PY_VERSION/test" \
-       "$RES/python/lib/python$PY_VERSION/idlelib" \
-       "$RES/python/lib/python$PY_VERSION/tkinter" \
-       "$RES/python/lib/python$PY_VERSION/turtledemo" \
-       "$RES/python/share" \
-       "$RES/python/include"
+echo "==> Trimming bundled Python (nothing the app uses at runtime)"
+LIB="$RES/python/lib/python$PY_VERSION"
+SITE="$LIB/site-packages"
+# Stdlib parts for tests, GUI (Tk), docs, package installation
+rm -rf "$LIB/test" "$LIB/idlelib" "$LIB/tkinter" "$LIB/turtledemo" "$LIB/turtle.py" \
+       "$LIB/ensurepip" "$LIB/pydoc_data" \
+       "$LIB/lib-dynload/"_tkinter* \
+       "$RES/python/lib/"tcl* "$RES/python/lib/"tk* "$RES/python/lib/"libtcl* "$RES/python/lib/"libtk* \
+       "$RES/python/lib/"itcl* "$RES/python/lib/"thread* \
+       "$RES/python/share" "$RES/python/include" \
+       "$RES/python/bin/"pip* "$RES/python/bin/"idle* "$RES/python/bin/"pydoc*
 find "$RES/python" -name '*.a' -delete
+# pip itself and build-time-only files of packages
+rm -rf "$SITE"/pip "$SITE"/pip-*.dist-info "$SITE/lxml/includes"
+find "$SITE" \( -name '*.pyx' -o -name '*.pxd' -o -name '*.pyi' -o -name '*.h' -o -name '*.c' \) -type f -delete
+find "$SITE" -type d \( -name tests -o -name test \) -prune -exec rm -rf {} +
+
+echo "==> Precompiling Python (stdlib/packages bytecode-only; backend/upstream keep sources)"
+# Everything is compiled before signing: Python must never need to write a .pyc
+# inside the bundle afterwards (that would break the code signature).
+# Stdlib and third-party packages ship as legacy .pyc next to where the .py was
+# (sourceless); os.py stays as the stdlib landmark Python looks for at startup.
+"$PY" -m compileall -q -j 0 -b "$LIB" >/dev/null || true
+find "$LIB" -name '*.py' ! -path "$LIB/os.py" -type f -delete
+find "$LIB" -name '__pycache__' -type d -prune -exec rm -rf {} +
+"$PY" -m compileall -q -j 0 "$LIB/os.py" >/dev/null || true
+# Our code and upstream Komikku keep their sources (readable tracebacks in the log)
+"$PY" -m compileall -q -j 0 "$RES/backend" "$RES/upstream/komikku" >/dev/null || true
 
 echo "==> Info.plist and icon"
 BUILD_NUMBER="${GITHUB_RUN_NUMBER:-1}"
@@ -139,5 +154,5 @@ hdiutil verify "$DIST/Komikku-macos-$ARCH.dmg"
 echo "==> Signature still intact after packaging?"
 codesign --verify --deep "$APP"
 
-du -sh "$APP" "$DIST/Komikku-macos-$ARCH.zip" "$DIST/Komikku-macos-$ARCH.dmg"
+du -sh "$APP" "$RES/python" "$SITE" "$RES/upstream" "$DIST/Komikku-macos-$ARCH.zip" "$DIST/Komikku-macos-$ARCH.dmg"
 echo "Done: $APP"

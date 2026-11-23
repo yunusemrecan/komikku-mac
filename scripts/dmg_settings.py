@@ -8,7 +8,7 @@ application = defines['app']  # noqa: F821  (injected by dmgbuild)
 root = defines['root']  # noqa: F821
 appname = os.path.basename(application)
 
-format = 'UDZO'
+format = 'ULMO'   # LZMA: smallest download (macOS 10.15+)
 filesystem = 'APFS'   # HFS+ rewrites some file names and breaks the app's code signature
 compression_level = 9
 
