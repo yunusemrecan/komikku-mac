@@ -86,7 +86,8 @@ jobs:
           grep -q "page 0 displayed" ~/Library/Logs/Komikku/app.log || { echo "Reader did not display a page"; exit 1; }
           grep -q "keytest: left fits=true turned=true" ~/Library/Logs/Komikku/app.log || { echo "Arrow key did not turn a page that fits"; exit 1; }
           grep -q "keytest: left fits=false turned=false" ~/Library/Logs/Komikku/app.log || { echo "Arrow key turned a zoomed page instead of panning"; exit 1; }
-          grep -E "update: (.* available|up to date)" ~/Library/Logs/Komikku/app.log || { echo "Update check did not run"; exit 1; }
+          # The check must run; its answer may fail on shared CI IPs (GitHub API rate limit)
+          grep -E "update: (.* available|up to date|check failed)" ~/Library/Logs/Komikku/app.log || { echo "Update check did not run"; exit 1; }
           # Second launch: the library must appear from the UI cache before Python is ready
           dist/Komikku.app/Contents/MacOS/Komikku &
           PID2=$!
