@@ -81,7 +81,7 @@ struct StatsView: View {
                 HStack(spacing: 14) {
                     StatTile(value: stats.last7Days, label: "Son 7 günde bölüm")
                     StatTile(value: stats.last30Days, label: "Son 30 günde bölüm")
-                    StatTile(value: stats.streakDays, label: stats.streakDays == 1 ? "Günlük seri (gün)" : "Ardışık okuma günü")
+                    StatTile(value: stats.streakDays, label: "Ardışık okuma günü")
                     StatTile(value: stats.totalRead, label: "Toplam okunan bölüm")
                 }
 
@@ -149,6 +149,8 @@ struct StatsView: View {
             }
         }
         .chartXSelection(value: $selectedDay)
+        // One extra day on each side: room for the first/last date labels
+        .chartXScale(domain: (days.first?.day ?? .now).addingTimeInterval(-86_400)...(days.last?.day ?? .now).addingTimeInterval(2 * 86_400))
         .chartYAxis {
             AxisMarks(position: .leading, values: .automatic(desiredCount: 4)) { _ in
                 AxisGridLine().foregroundStyle(.quaternary)
