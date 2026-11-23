@@ -103,7 +103,10 @@ struct ContentView: View {
                 NotificationCenter.default.post(name: key, object: "left")
                 try? await Task.sleep(for: .seconds(2))
                 NotificationCenter.default.post(name: key, object: "unzoom")
-                try? await Task.sleep(for: .seconds(21))
+                try? await Task.sleep(for: .seconds(4))
+                // Chapter-end screen (captured by the reader screenshot)
+                NotificationCenter.default.post(name: key, object: "end")
+                try? await Task.sleep(for: .seconds(17))
                 AppLog.write("autotest: library")
                 select(.library)
                 try? await Task.sleep(for: .seconds(22))
@@ -185,6 +188,13 @@ struct ContentView: View {
             path = []
             if let item {
                 UserDefaults.standard.set(item.storageKey, forKey: "sidebar-selection")
+            }
+        }
+        .onChange(of: model.categories, initial: true) { _, categories in
+            // A remembered category that no longer exists falls back to the whole library
+            if case .category(let id) = selection,
+               id == -1 ? categories.isEmpty : !categories.contains(where: { $0.id == id }) {
+                selection = .library
             }
         }
         .onChange(of: model.pendingNavigation) { _, route in

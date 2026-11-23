@@ -628,6 +628,10 @@ struct ReaderView: View {
             AppLog.write("keytest: zoomed to 2.5")
         case "unzoom":
             model.resetZoom()
+        case "end":
+            model.pageShown(model.pageCount - 1)
+            model.next()
+            AppLog.write("keytest: chapter end screen shown=\(model.atChapterEnd)")
         default:
             let before = model.index
             let key: KeyEquivalent = command == "left" ? .leftArrow : .rightArrow

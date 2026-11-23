@@ -95,6 +95,7 @@ jobs:
           kill $PID2; wait $PID2 2>/dev/null
           grep "ui: library shown from cache" ~/Library/Logs/Komikku/app.log | tail -1
           grep -q "ui: library shown from cache ([1-9]" ~/Library/Logs/Komikku/app.log || { echo "Library not restored from cache"; exit 1; }
+          grep -q "keytest: chapter end screen shown=true" ~/Library/Logs/Komikku/app.log || { echo "Chapter end screen not shown"; exit 1; }
           grep -q "backend restarted" ~/Library/Logs/Komikku/app.log || { echo "Backend was not restarted after a crash"; exit 1; }
           grep -q "after restart library=1" ~/Library/Logs/Komikku/app.log || { echo "Library not reloaded after restart"; exit 1; }
           [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }
