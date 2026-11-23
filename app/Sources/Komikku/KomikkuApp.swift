@@ -106,6 +106,12 @@ struct KomikkuCommands: Commands {
     var body: some Commands {
         CommandGroup(replacing: .newItem) {}
 
+        CommandGroup(after: .appInfo) {
+            Button("Güncellemeleri Denetle…") {
+                Task { await model.checkForUpdates(manual: true) }
+            }
+        }
+
         CommandMenu("Kütüphane") {
             Button("Kütüphaneyi Güncelle") {
                 Task { await model.updateLibrary() }

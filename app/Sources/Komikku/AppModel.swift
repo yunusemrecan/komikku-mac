@@ -64,6 +64,9 @@ final class AppModel {
             Task { await self.recoverFromCrash(status: status) }
         }
 
+        // Show the last known library immediately; Python starts meanwhile
+        restoreUICache()
+
         do {
             try backend.start()
             try await backend.waitUntilReady()
@@ -75,6 +78,11 @@ final class AppModel {
             await reloadLibrary()
             await reloadCategories()
             state = .ready
+            saveUICache()
+            _ = try? await backend.callRaw("library.fetch_missing_covers")
+            if UpdateChecker.isDue {
+                Task { await checkForUpdates(manual: false) }
+            }
             requestNotificationPermission()
             _ = try? await backend.callRaw("downloads.resume_if_needed")
             await reloadDownloads()
@@ -87,7 +95,48 @@ final class AppModel {
     }
 
     func shutdown() {
+        saveUICache()
         backend.stop()
+    }
+
+    // MARK: - Instant start (UI cache)
+
+    private func restoreUICache() {
+        guard let cachedLibrary = UICache.load([Manga].self, from: "library") else { return }
+        library = cachedLibrary
+        categories = UICache.load([MangaCategory].self, from: "categories") ?? []
+        servers = UICache.load([ServerInfo].self, from: "servers") ?? []
+        languages = UICache.load([String: String].self, from: "languages") ?? [:]
+        settings = UICache.loadDictionary(from: "settings") ?? [:]
+        state = .ready
+        AppLog.write("ui: library shown from cache (\(cachedLibrary.count) mangas)")
+    }
+
+    func saveUICache() {
+        UICache.save(library, as: "library")
+        UICache.save(categories, as: "categories")
+        UICache.save(servers, as: "servers")
+        UICache.save(languages, as: "languages")
+        UICache.saveDictionary(settings, as: "settings")
+    }
+
+    // MARK: - App updates
+
+    var availableUpdate: AvailableUpdate?
+
+    func checkForUpdates(manual: Bool) async {
+        switch await UpdateChecker.check() {
+        case .available(let update):
+            availableUpdate = update
+            AppLog.write("update: \(update.title) available")
+        case .upToDate:
+            availableUpdate = nil
+            AppLog.write("update: up to date")
+            if manual { showToast("Komikku güncel") }
+        case .unknown(let reason):
+            AppLog.write("update: check failed: \(reason)")
+            if manual { showToast("Güncelleme denetlenemedi: \(reason)") }
+        }
     }
 
     // MARK: - Crash recovery
@@ -178,6 +227,12 @@ final class AppModel {
                 postNotification(id: params["id"] as? String ?? UUID().uuidString, title: title, body: body)
             } else {
                 showToast(body.map { "\(title): \($0)" } ?? title)
+            }
+        case "manga.cover_updated":
+            if let id = params["manga_id"] as? Int, let path = params["cover_path"] as? String,
+               let index = library.firstIndex(where: { $0.id == id }) {
+                library[index].coverPath = path
+                mangaRevision[id, default: 0] += 1
             }
         case "app.toast":
             showToast(params["message"] as? String ?? "")
@@ -353,6 +408,7 @@ final class AppModel {
     func reloadLibrary() async {
         do {
             library = try await backend.call("library.list")
+            saveUICache()
         } catch {
             report(error)
         }

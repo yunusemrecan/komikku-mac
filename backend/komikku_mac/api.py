@@ -689,6 +689,55 @@ def history_clear(manga_id=None):
     return True
 
 
+_covers_lock = threading.Lock()
+
+
+@method('library.fetch_missing_covers')
+def library_fetch_missing_covers():
+    """In the background, re-fetch the cover of library mangas that have none (failed download).
+    Each fixed cover is announced with a `manga.cover_updated` notification."""
+    from komikku.models import Manga
+    from komikku_mac.rpc import notify
+
+    rows = _db().execute('SELECT id FROM mangas WHERE in_library = 1').fetchall()
+    missing = []
+    for row in rows:
+        manga = Manga.get(row['id'])
+        if manga is not None and not manga.is_local and manga.cover_fs_path is None:
+            missing.append(manga.id)
+    if not missing:
+        return {'missing': 0}
+
+    def work():
+        if not _covers_lock.acquire(blocking=False):
+            return
+        try:
+            for manga_id in missing:
+                manga = Manga.get(manga_id)
+                if manga is None:
+                    continue
+                try:
+                    data = manga.server.get_manga_data({'slug': manga.slug, 'url': manga.url, 'name': manga.name})
+                    cover = (data or {}).get('cover')
+                    if cover:
+                        os.makedirs(manga.path, exist_ok=True)
+                        # A stale ETag makes the server answer 304 and nothing gets written
+                        etag = os.path.join(manga.path, 'cover.etag')
+                        if os.path.exists(etag):
+                            os.remove(etag)
+                        manga._save_cover(cover)
+                except Exception as exc:
+                    logger.info('Cover fetch failed for %s: %s', manga.name, exc)
+                    continue
+                if manga.cover_fs_path:
+                    notify('manga.cover_updated', {'manga_id': manga.id, 'cover_path': manga.cover_fs_path})
+        finally:
+            _covers_lock.release()
+
+    threading.Thread(target=work, daemon=True, name='covers').start()
+    return {'missing': len(missing)}
+
+
 @method('library.list')
 def library_list():
     from komikku.models import Manga

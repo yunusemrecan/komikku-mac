@@ -86,6 +86,14 @@ jobs:
           grep -q "page 0 displayed" ~/Library/Logs/Komikku/app.log || { echo "Reader did not display a page"; exit 1; }
           grep -q "keytest: left fits=true turned=true" ~/Library/Logs/Komikku/app.log || { echo "Arrow key did not turn a page that fits"; exit 1; }
           grep -q "keytest: left fits=false turned=false" ~/Library/Logs/Komikku/app.log || { echo "Arrow key turned a zoomed page instead of panning"; exit 1; }
+          grep -E "update: (.* available|up to date)" ~/Library/Logs/Komikku/app.log || { echo "Update check did not run"; exit 1; }
+          # Second launch: the library must appear from the UI cache before Python is ready
+          dist/Komikku.app/Contents/MacOS/Komikku &
+          PID2=$!
+          sleep 6
+          kill $PID2; wait $PID2 2>/dev/null
+          grep "ui: library shown from cache" ~/Library/Logs/Komikku/app.log | tail -1
+          grep -q "ui: library shown from cache ([1-9]" ~/Library/Logs/Komikku/app.log || { echo "Library not restored from cache"; exit 1; }
           grep -q "backend restarted" ~/Library/Logs/Komikku/app.log || { echo "Backend was not restarted after a crash"; exit 1; }
           grep -q "after restart library=1" ~/Library/Logs/Komikku/app.log || { echo "Library not reloaded after restart"; exit 1; }
           [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }

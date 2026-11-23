@@ -14,7 +14,9 @@ enum Route: Hashable {
 struct ContentView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.openWindow) private var openWindow
-    @State private var selection: SidebarItem? = .library
+    @State private var selection: SidebarItem? = SidebarItem(
+        storageKey: UserDefaults.standard.string(forKey: "sidebar-selection") ?? "library"
+    ) ?? .library
     @State private var path: [Route] = []
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @AppStorage(ReaderPreferences.separateWindowKey) private var readerInSeparateWindow = false
@@ -159,8 +161,11 @@ struct ContentView: View {
         }
         .environment(\.openReader, OpenReaderAction { target in openReader(target) })
         .environment(\.openRoute, OpenRouteAction { route in path.append(route) })
-        .onChange(of: selection) { _, _ in
+        .onChange(of: selection) { _, item in
             path = []
+            if let item {
+                UserDefaults.standard.set(item.storageKey, forKey: "sidebar-selection")
+            }
         }
         .onChange(of: model.pendingNavigation) { _, route in
             guard let route else { return }
@@ -272,6 +277,20 @@ struct Sidebar: View {
         }
         .safeAreaInset(edge: .bottom) {
             VStack(alignment: .leading, spacing: 6) {
+                if let update = model.availableUpdate {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.down.app.fill").foregroundStyle(.tint)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("Yeni sürüm var").font(.caption.bold())
+                            Text(update.title).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
+                        }
+                        Spacer()
+                        Button("İndir") { NSWorkspace.shared.open(update.pageURL) }
+                            .controlSize(.small)
+                    }
+                    .padding(8)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                }
                 if let toast = model.toast {
                     Text(toast)
                         .font(.caption)

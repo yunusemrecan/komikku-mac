@@ -43,6 +43,8 @@ final class ReaderModel {
     let webtoonScroll = ScrollHandle()
     /// Last page turn went backwards: show the end of the new page (when it scrolls)
     var navigatedBackward = false
+    /// Paged modes: the "chapter finished" screen shown after the last page
+    var atChapterEnd = false
     /// Whether the displayed page/spread is larger than the window (set by PagedPager
     /// from its own size computation; drives arrow keys: pan vs. turn the page)
     @ObservationIgnored var overflowX = false
@@ -128,6 +130,7 @@ final class ReaderModel {
             } else {
                 index = 0
             }
+            atChapterEnd = false
             chapterToken += 1
             AppLog.write("reader: chapter \(chapterID) loaded, pages=\(pageCount) cached=\(pagePaths.count) start=\(index)")
             pageShown(index)
@@ -294,6 +297,7 @@ final class ReaderModel {
 
     func pageShown(_ i: Int) {
         guard pageCount > 0 else { return }
+        atChapterEnd = false
         let newIndex = min(max(i, 0), pageCount - 1)
         if newIndex != index && mode != .webtoon { zoom = 1 }
         index = newIndex
@@ -325,16 +329,27 @@ final class ReaderModel {
 
     func next() {
         navigatedBackward = false
+        if atChapterEnd {
+            // Second "next" on the end screen: go on to the next chapter
+            if let next = nextChapter {
+                Task { await open(chapterID: next.id, atEnd: false) }
+            }
+            return
+        }
         let last = currentSpread.last ?? index
         if last + 1 < pageCount {
             pageShown(last + 1)
-        } else if let next = nextChapter {
-            Task { await open(chapterID: next.id, atEnd: false) }
+        } else {
+            atChapterEnd = true
         }
     }
 
     func previous() {
         navigatedBackward = true
+        if atChapterEnd {
+            atChapterEnd = false
+            return
+        }
         let first = currentSpread.first ?? index
         if first > 0 {
             let target = first - 1
@@ -449,6 +464,10 @@ struct ReaderView: View {
             }
         }
         .environment(\.colorScheme, background.contentScheme(systemScheme))
+        .background {
+            // Separate reader windows remember their size and place
+            if !embedded { WindowAutosave(name: "KomikkuReaderWindow") }
+        }
         .navigationTitle(model?.title ?? "Okuyucu")
         .focusable()
         .focusEffectDisabled()
@@ -497,8 +516,14 @@ struct ReaderView: View {
             WebtoonPager(model: model)
         } else {
             PagedPager(model: model)
+                .overlay {
+                    if model.atChapterEnd {
+                        ChapterEndView(model: model)
+                            .background(background.color(systemScheme))
+                    }
+                }
                 .overlay(alignment: .bottom) {
-                    if showControls && model.pageNumbering { pageBar(model) }
+                    if showControls && model.pageNumbering && !model.atChapterEnd { pageBar(model) }
                 }
                 .onHover { inside in
                     withAnimation(.easeInOut(duration: 0.2)) { showControls = inside }
@@ -858,20 +883,8 @@ struct WebtoonPager: View {
                             .onAppear { model.pageShown(i) }
                     }
 
-                    if let next = model.nextChapter {
-                        Button {
-                            Task { @MainActor in await model.open(chapterID: next.id, atEnd: false) }
-                        } label: {
-                            Label("Sonraki bölüm: \(next.title)", systemImage: "arrow.down.circle")
-                                .padding()
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .padding(40)
-                    } else {
-                        Text("Son bölüm")
-                            .foregroundStyle(.secondary)
-                            .padding(40)
-                    }
+                    ChapterEndView(model: model)
+                        .frame(height: 360)
                 }
                 .frame(maxWidth: model.clampSize)
                 .frame(maxWidth: .infinity)
@@ -909,6 +922,7 @@ struct PageImage: View {
                     .resizable()
                     .interpolation(.high)
                     .aspectRatio(contentMode: .fit)
+                    .modifier(PageActions(model: model, index: index, image: image))
             } else if model.failedPages.contains(index) {
                 VStack(spacing: 10) {
                     Image(systemName: "exclamationmark.triangle")
@@ -960,4 +974,60 @@ struct LoadingLabel: View {
 
 extension Notification.Name {
     static let komikkuAutotestKey = Notification.Name("komikku.autotest.key")
+}
+
+// MARK: - End of chapter
+
+@MainActor
+struct ChapterEndView: View {
+    let model: ReaderModel
+
+    var body: some View {
+        VStack(spacing: 14) {
+            Image(systemName: "checkmark.circle")
+                .font(.system(size: 40))
+                .foregroundStyle(.secondary)
+            Text("Bölüm bitti")
+                .font(.title2.bold())
+            if let chapter = model.chapter {
+                Text(chapter.title)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+            }
+
+            if let next = model.nextChapter {
+                Divider().frame(width: 220).padding(.vertical, 4)
+                Text("Sıradaki").font(.caption).foregroundStyle(.secondary)
+                Text(next.title)
+                    .font(.headline)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                Button {
+                    model.goToNextChapter()
+                } label: {
+                    Label("Sonraki Bölümü Oku", systemImage: "arrow.forward.circle")
+                        .padding(.horizontal, 6)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                if model.mode != .webtoon {
+                    Text(nextKeyHint)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            } else {
+                Text("Bu, şimdilik son bölüm.")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(30)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var nextKeyHint: String {
+        model.mode == .rightToLeft
+            ? "← ya da Boşluk: sonraki bölüm  ·  →: son sayfaya dön"
+            : "→ ya da Boşluk: sonraki bölüm  ·  ←: son sayfaya dön"
+    }
 }

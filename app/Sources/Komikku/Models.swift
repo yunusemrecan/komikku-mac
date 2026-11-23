@@ -90,7 +90,7 @@ struct Manga: Codable, Identifiable, Hashable {
     var bordersCropThreshold: Int?
     var landscapeZoom: Int?
     var pageNumbering: Int?
-    let coverPath: String?
+    var coverPath: String?
     let path: String?
     let nbUnreadChapters: Int
     let nbRecentChapters: Int
@@ -207,7 +207,7 @@ struct HistoryEntry: Codable, Identifiable, Hashable {
     let mangaId: Int
     let mangaName: String
     let serverName: String?
-    let coverPath: String?
+    var coverPath: String?
 
     var id: String { "\(mangaId)-\(date)" }
 }
@@ -228,6 +228,33 @@ enum LibrarySortOrder: String, CaseIterable, Identifiable {
 }
 
 enum SidebarItem: Hashable {
+    /// Stable string form, to remember the last view between launches
+    var storageKey: String {
+        switch self {
+        case .library: return "library"
+        case .category(let id): return "category:\(id)"
+        case .history: return "history"
+        case .downloads: return "downloads"
+        case .globalSearch: return "globalSearch"
+        case .allServers: return "allServers"
+        case .server(let id): return "server:\(id)"
+        }
+    }
+
+    init?(storageKey: String) {
+        let parts = storageKey.split(separator: ":", maxSplits: 1).map(String.init)
+        switch parts.first {
+        case "library": self = .library
+        case "category": guard let id = parts.last.flatMap(Int.init) else { return nil }; self = .category(id)
+        case "history": self = .history
+        case "downloads": self = .downloads
+        case "globalSearch": self = .globalSearch
+        case "allServers": self = .allServers
+        case "server": guard parts.count == 2 else { return nil }; self = .server(parts[1])
+        default: return nil
+        }
+    }
+
     case library
     case category(Int)   // category id; -1 = uncategorized
     case history

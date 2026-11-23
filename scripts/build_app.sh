@@ -101,7 +101,8 @@ find "$RES/python" -name '*.a' -delete
 
 echo "==> Info.plist and icon"
 BUILD_NUMBER="${GITHUB_RUN_NUMBER:-1}"
-sed -e "s/@VERSION@/$VERSION/" -e "s/@BUILD@/$BUILD_NUMBER/" \
+COMMIT="$(git -C "$ROOT" rev-parse HEAD 2>/dev/null || echo unknown)"
+sed -e "s/@VERSION@/$VERSION/" -e "s/@BUILD@/$BUILD_NUMBER/" -e "s/@COMMIT@/$COMMIT/" \
     "$ROOT/app/Resources/Info.plist" > "$APP/Contents/Info.plist"
 iconutil -c icns "$ROOT/app/Resources/AppIcon.iconset" -o "$RES/AppIcon.icns"
 printf 'APPL????' > "$APP/Contents/PkgInfo"
