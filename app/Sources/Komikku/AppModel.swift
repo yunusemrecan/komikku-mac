@@ -168,7 +168,7 @@ final class AppModel {
         case .upToDate:
             availableUpdate = nil
             AppLog.write("update: up to date")
-            if manual { showToast(String(localized: "Komikku güncel")) }
+            if manual { showToast(String(localized: "Mekurimac güncel")) }
         case .unknown(let reason):
             AppLog.write("update: check failed: \(reason)")
             if manual { showToast(String(localized: "Güncelleme denetlenemedi: \(reason)")) }
@@ -316,7 +316,7 @@ final class AppModel {
             if !downloaderRunning { Task { await reloadDownloads() } }
 
         case "app.notification":
-            let title = params["title"] as? String ?? "Komikku"
+            let title = params["title"] as? String ?? "Mekurimac"
             let body = params["body"] as? String
             if settings["desktop-notifications"] as? Bool == true {
                 postNotification(id: params["id"] as? String ?? UUID().uuidString, title: title, body: body)

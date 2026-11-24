@@ -81,8 +81,8 @@ def main():
     copyleft = set()
 
     out.append(
-        "Komikku for macOS — third-party notices\n\n"
-        "Komikku for macOS (https://github.com/yunusemrecan/komikku-mac) is free software\n"
+        "Mekurimac (macOS interface for Komikku) — third-party notices\n\n"
+        "Mekurimac (https://github.com/yunusemrecan/mekurimac) is free software\n"
         "under the GNU General Public License v3.0 or later (see LICENSE in this folder).\n"
         "It bundles the unmodified Komikku application by Valéry Febvre and contributors\n"
         "(https://codeberg.org/valos/Komikku, GPL-3.0-or-later), a standalone CPython\n"

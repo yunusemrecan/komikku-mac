@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # dmgbuild settings: drag-to-Applications window.
-#   dmgbuild -s scripts/dmg_settings.py -D app=dist/Komikku.app -D root=. "Komikku" dist/Komikku.dmg
+#   dmgbuild -s scripts/dmg_settings.py -D app=dist/Mekurimac.app -D root=. "Mekurimac" dist/Mekurimac.dmg
 
 import os.path
 

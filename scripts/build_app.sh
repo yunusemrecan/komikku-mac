@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-# Build Komikku.app (macOS, Apple Silicon by default).
+# Build Mekurimac.app (macOS, Apple Silicon by default).
 #
 #   scripts/build_app.sh [--arch arm64|x86_64] [--python-version 3.13]
 #
 # Steps: build the SwiftUI executable, download a relocatable CPython
 # (astral-sh/python-build-standalone), install backend dependencies into it,
 # copy backend + upstream Komikku sources, assemble and ad-hoc sign the bundle.
-# Output: dist/Komikku.app and dist/Komikku-macos-<arch>.zip
+# Output: dist/Mekurimac.app, dist/Mekurimac-macos-<arch>.zip and .dmg
 
 set -euo pipefail
 
@@ -33,7 +33,7 @@ esac
 
 BUILD="$ROOT/build"
 DIST="$ROOT/dist"
-APP="$DIST/Komikku.app"
+APP="$DIST/Mekurimac.app"
 RES="$APP/Contents/Resources"
 
 rm -rf "$APP"
@@ -170,21 +170,21 @@ codesign --force --sign - --timestamp=none "$APP"
 codesign --verify --verbose=1 "$APP"
 
 echo "==> Zipping"
-rm -f "$DIST/Komikku-macos-$ARCH.zip"
-ditto -c -k --sequesterRsrc --keepParent "$APP" "$DIST/Komikku-macos-$ARCH.zip"
+rm -f "$DIST/Mekurimac-macos-$ARCH.zip"
+ditto -c -k --sequesterRsrc --keepParent "$APP" "$DIST/Mekurimac-macos-$ARCH.zip"
 
 echo "==> Disk image (drag to Applications)"
-rm -f "$DIST/Komikku-macos-$ARCH.dmg"
+rm -f "$DIST/Mekurimac-macos-$ARCH.dmg"
 PYTHONPATH="$BUILD/tools" "$PY" -B -c '
 import sys, dmgbuild
 app, root, out = sys.argv[1:4]
-dmgbuild.build_dmg(out, "Komikku", settings_file=f"{root}/scripts/dmg_settings.py",
+dmgbuild.build_dmg(out, "Mekurimac", settings_file=f"{root}/scripts/dmg_settings.py",
                    defines={"app": app, "root": root})
-' "$APP" "$ROOT" "$DIST/Komikku-macos-$ARCH.dmg"
-hdiutil verify "$DIST/Komikku-macos-$ARCH.dmg"
+' "$APP" "$ROOT" "$DIST/Mekurimac-macos-$ARCH.dmg"
+hdiutil verify "$DIST/Mekurimac-macos-$ARCH.dmg"
 
 echo "==> Signature still intact after packaging?"
 codesign --verify --deep "$APP"
 
-du -sh "$APP" "$RES/python" "$SITE" "$RES/upstream" "$DIST/Komikku-macos-$ARCH.zip" "$DIST/Komikku-macos-$ARCH.dmg"
+du -sh "$APP" "$RES/python" "$SITE" "$RES/upstream" "$DIST/Mekurimac-macos-$ARCH.zip" "$DIST/Mekurimac-macos-$ARCH.dmg"
 echo "Done: $APP"

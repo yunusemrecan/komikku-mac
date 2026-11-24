@@ -62,7 +62,7 @@ struct MenuBarContent: View {
         Button("Kütüphaneyi Güncelle") { Task { await model.updateLibrary() } }
             .keyboardShortcut("r")
             .disabled(model.isUpdatingLibrary || model.state != .ready)
-        Button("Komikku'yu Aç") {
+        Button("Mekurimac'ı Aç") {
             openWindow(id: "main")
             NSApp.activate(ignoringOtherApps: true)
         }
@@ -70,7 +70,7 @@ struct MenuBarContent: View {
         Divider()
         SettingsLink { Text("Ayarlar…") }
             .keyboardShortcut(",")
-        Button("Komikku'dan Çık") { NSApp.terminate(nil) }
+        Button("Mekurimac'tan Çık") { NSApp.terminate(nil) }
             .keyboardShortcut("q")
     }
 }
@@ -85,7 +85,7 @@ struct MenuBarLabel: View {
             Image(systemName: model.isUpdatingLibrary ? "arrow.triangle.2.circlepath" : "books.vertical")
             if unread > 0 { Text("\(unread)").monospacedDigit() }
         }
-        .accessibilityLabel(Text("Komikku: \(unread) okunmamış bölüm"))
+        .accessibilityLabel(Text("Mekurimac: \(unread) okunmamış bölüm"))
     }
 }
 

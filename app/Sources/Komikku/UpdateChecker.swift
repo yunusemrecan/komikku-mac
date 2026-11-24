@@ -15,7 +15,7 @@ struct AvailableUpdate: Equatable {
 }
 
 enum UpdateChecker {
-    static let releaseAPI = URL(string: "https://api.github.com/repos/yunusemrecan/komikku-mac/releases/tags/nightly")!
+    static let releaseAPI = URL(string: "https://api.github.com/repos/yunusemrecan/mekurimac/releases/tags/nightly")!
     static let lastCheckKey = "update-last-check"
     static let enabledKey = "check-updates"
 
@@ -64,7 +64,8 @@ enum UpdateChecker {
             }
             return .available(AvailableUpdate(
                 title: json["name"] as? String ?? String(localized: "Yeni sürüm"), pageURL: page, commit: target,
-                zipURL: asset("Komikku-macos-arm64.zip"), checksumsURL: asset("SHA256SUMS")
+                // releases before the rename are named Komikku-…
+                zipURL: asset("Mekurimac-macos-arm64.zip") ?? asset("Komikku-macos-arm64.zip"), checksumsURL: asset("SHA256SUMS")
             ))
         } catch {
             return .unknown(error.localizedDescription)

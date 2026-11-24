@@ -1,4 +1,6 @@
-# Komikku for macOS
+# Mekurimac
+
+*A macOS interface for [Komikku](https://codeberg.org/valos/Komikku). Formerly “Komikku for macOS” (`komikku-mac`).*
 
 > [!WARNING]
 > **🤖 This app was written by an AI, not by a human programmer.**
@@ -28,7 +30,7 @@
 
 ---
 
-Native macOS (SwiftUI) front end for [Komikku](https://codeberg.org/valos/Komikku), the manga reader by Valéry Febvre.
+**Mekurimac** (from *mekuri*, Japanese for turning a page) is a native macOS (SwiftUI) front end for [Komikku](https://codeberg.org/valos/Komikku), the manga reader by Valéry Febvre.
 
 The GTK user interface is rewritten in SwiftUI; everything else — the 380+ server
 plugins, the SQLite database, downloads and page caching — is upstream Komikku's own
@@ -58,17 +60,17 @@ calls back into the app, which drives a `WKWebView` and shows a window when a ca
 
 ## Install
 
-Download **`Komikku-macos-arm64.dmg`** from **Releases → nightly** (or a tagged release), open it and drag
-Komikku to Applications. Requires macOS 14+ and Apple Silicon.
+Download **`Mekurimac-macos-arm64.dmg`** from **Releases → nightly** (or a tagged release), open it and drag
+Mekurimac to Applications. Requires macOS 14+ and Apple Silicon.
 
 The app is ad-hoc signed, not notarized by Apple, so macOS blocks the first launch. Either:
 
-- open **System Settings → Privacy & Security** and click **Open Anyway** next to the Komikku message
+- open **System Settings → Privacy & Security** and click **Open Anyway** next to the Mekurimac message
   (on macOS 15 and later, right-click → Open no longer does this), or
 - run once in Terminal:
 
   ```sh
-  xattr -dr com.apple.quarantine /Applications/Komikku.app
+  xattr -dr com.apple.quarantine /Applications/Mekurimac.app
   ```
 
 A `.zip` of the same app is published too.
@@ -79,13 +81,13 @@ Every build publishes its SHA256 and a GitHub [build provenance attestation](htt
 so you can check that a zip was built by this repository's CI from this source:
 
 ```sh
-shasum -a 256 Komikku-macos-arm64.dmg        # compare with the release notes / SHA256SUMS
-gh attestation verify Komikku-macos-arm64.dmg -R yunusemrecan/komikku-mac
+shasum -a 256 Mekurimac-macos-arm64.dmg        # compare with the release notes / SHA256SUMS
+gh attestation verify Mekurimac-macos-arm64.dmg -R yunusemrecan/mekurimac
 ```
 
 ## Shortcuts, Spotlight, links
 
-Komikku answers `komikku://` links, so the **Shortcuts** app ("Open URLs" action), Terminal, Raycast or
+Mekurimac answers `komikku://` links (the scheme keeps its original name), so the **Shortcuts** app ("Open URLs" action), Terminal, Raycast or
 Alfred can drive it:
 
 | Link | Action |
@@ -141,9 +143,9 @@ Library mangas are also indexed in **Spotlight** (⌘Space, type a title); this 
 On a Mac with Xcode 15+:
 
 ```sh
-git clone --recursive https://github.com/yunusemrecan/komikku-mac
-cd komikku-mac
-scripts/build_app.sh            # -> dist/Komikku.app, .dmg and .zip
+git clone --recursive https://github.com/yunusemrecan/mekurimac
+cd mekurimac
+scripts/build_app.sh            # -> dist/Mekurimac.app, .dmg and .zip
 ```
 
 Every push to `main` is built by GitHub Actions on macOS and published as the `nightly` release.
@@ -187,7 +189,7 @@ GPL-3.0-or-later, like Komikku.
 The app bundles third-party software under its own licenses (MIT, BSD, Apache-2.0,
 PSF, MPL-2.0, GPL-2.0+, AGPL-3.0+ and others). Every license text is collected at
 build time by `scripts/third_party_notices.py` into
-`Komikku.app/Contents/Resources/Licenses/THIRD-PARTY-NOTICES.txt` (Settings › About ›
+`Mekurimac.app/Contents/Resources/Licenses/THIRD-PARTY-NOTICES.txt` (Settings › About ›
 Third-party licenses); the build fails if a package has no license text. Texts that
 are not shipped inside the Python wheels live in [`licenses/`](licenses/). Packages
 under copyleft licenses (Unidecode, EbookLib, certifi) keep their Python sources in

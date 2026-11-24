@@ -8,7 +8,7 @@ import AppKit
 
 @MainActor
 enum IssueReport {
-    static let newIssueURL = "https://github.com/yunusemrecan/komikku-mac/issues/new"
+    static let newIssueURL = "https://github.com/yunusemrecan/mekurimac/issues/new"
 
     /// Last `count` lines of a log file, with the home folder path hidden.
     static func tail(_ url: URL, lines count: Int) -> String {
@@ -44,7 +44,7 @@ enum IssueReport {
         ---
         | | |
         |---|---|
-        | Komikku for macOS | \(version) (\(build)), commit `\(commit)` |
+        | Mekurimac | \(version) (\(build)), commit `\(commit)` |
         | Upstream Komikku | `\(model.upstreamCommit ?? "?")` |
         | macOS | \(os), \(arch) |
         | Language | \(language) |

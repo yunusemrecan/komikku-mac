@@ -3,5 +3,5 @@
 	# Mirror of https://codeberg.org/valos/Komikku (main), kept in this repository's
 	# upstream-mirror branch by the "Track upstream Komikku" workflow, so builds do not
 	# depend on Codeberg being reachable.
-	url = https://github.com/yunusemrecan/komikku-mac.git
+	url = https://github.com/yunusemrecan/mekurimac.git
 	branch = upstream-mirror

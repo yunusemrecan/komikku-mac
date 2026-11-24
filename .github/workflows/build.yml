@@ -28,7 +28,7 @@ jobs:
         run: python scripts/i18n.py check
 
   build:
-    name: Build Komikku.app (Apple Silicon)
+    name: Build Mekurimac.app (Apple Silicon)
     runs-on: macos-15
     permissions:
       contents: write        # publish nightly / tagged releases
@@ -57,24 +57,24 @@ jobs:
       - name: Smoke test bundled backend
         run: |
           python3 backend/tests/smoke_test.py \
-            --python dist/Komikku.app/Contents/Resources/python/bin/python3 \
-            --backend dist/Komikku.app/Contents/Resources/backend \
-            --upstream dist/Komikku.app/Contents/Resources/upstream
+            --python dist/Mekurimac.app/Contents/Resources/python/bin/python3 \
+            --backend dist/Mekurimac.app/Contents/Resources/backend \
+            --upstream dist/Mekurimac.app/Contents/Resources/upstream
 
       - name: Live smoke test (MangaDex)
         continue-on-error: true
         run: |
           python3 backend/tests/smoke_test.py --live \
-            --python dist/Komikku.app/Contents/Resources/python/bin/python3 \
-            --backend dist/Komikku.app/Contents/Resources/backend \
-            --upstream dist/Komikku.app/Contents/Resources/upstream
+            --python dist/Mekurimac.app/Contents/Resources/python/bin/python3 \
+            --backend dist/Mekurimac.app/Contents/Resources/backend \
+            --upstream dist/Mekurimac.app/Contents/Resources/upstream
 
       - name: Launch + reader UI check
         run: |
           # Open the app, let it open a MangaDex chapter by itself, screenshot it
           set +e
           KOMIKKU_AUTOTEST="mangadex:berserk" KOMIKKU_AUTOTEST_DOUBLE=1 KOMIKKU_AUTOTEST_SCREENS=1 \
-            dist/Komikku.app/Contents/MacOS/Komikku &
+            dist/Mekurimac.app/Contents/MacOS/Komikku &
           PID=$!
           mkdir -p screenshots
           sleep 45; screencapture -x screenshots/1-reader.png
@@ -91,7 +91,7 @@ jobs:
           # The check must run; its answer may fail on shared CI IPs (GitHub API rate limit)
           grep -E "update: (.* available|up to date|check failed)" ~/Library/Logs/Komikku/app.log || { echo "Update check did not run"; exit 1; }
           # Second launch: the library must appear from the UI cache before Python is ready
-          dist/Komikku.app/Contents/MacOS/Komikku &
+          dist/Mekurimac.app/Contents/MacOS/Komikku &
           PID2=$!
           sleep 6
           kill $PID2; wait $PID2 2>/dev/null
@@ -109,7 +109,7 @@ jobs:
           set +e
           : > ~/Library/Logs/Komikku/app.log
           # Register the app with Launch Services so komikku:// links reach it
-          /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$PWD/dist/Komikku.app"
+          /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$PWD/dist/Mekurimac.app"
           # Seed a few days of reading so the chart and the top list have data
           DB="$HOME/Library/Application Support/komikku/komikku.db"
           sqlite3 "$DB" "UPDATE chapters SET read = 1, last_read = datetime('now', '-' || (id % 9) || ' days') WHERE manga_id IN (SELECT id FROM mangas WHERE in_library = 1);" || true
@@ -119,7 +119,7 @@ jobs:
           open "komikku://search?q=berserk"
           sleep 15
           screencapture -x screenshots/7-link-search.png
-          osascript -e 'tell application "Komikku" to quit' >/dev/null 2>&1 || pkill -x Komikku
+          osascript -e 'tell application "Mekurimac" to quit' >/dev/null 2>&1 || pkill -x Komikku
           sleep 3
           echo "----- log"; grep -E "url:|stats:|spotlight:|global search" ~/Library/Logs/Komikku/app.log
           grep -q "url: komikku://stats" ~/Library/Logs/Komikku/app.log || { echo "komikku:// link not received"; exit 1; }
@@ -131,14 +131,14 @@ jobs:
         run: |
           set +e
           : > ~/Library/Logs/Komikku/app.log
-          dist/Komikku.app/Contents/MacOS/Komikku -AppleLanguages '(en)' &
+          dist/Mekurimac.app/Contents/MacOS/Komikku -AppleLanguages '(en)' &
           PID=$!
           sleep 20; mkdir -p screenshots; screencapture -x screenshots/8-english.png
           kill $PID; wait $PID 2>/dev/null
           grep "ui: language" ~/Library/Logs/Komikku/app.log
           grep -q "ui: language=en sample=Library" ~/Library/Logs/Komikku/app.log || { echo "English localization not used"; exit 1; }
           # and Turkish stays Turkish
-          dist/Komikku.app/Contents/MacOS/Komikku -AppleLanguages '(tr)' &
+          dist/Mekurimac.app/Contents/MacOS/Komikku -AppleLanguages '(tr)' &
           PID=$!
           sleep 8; kill $PID; wait $PID 2>/dev/null
           grep -q "ui: language=tr sample=Kütüphane" ~/Library/Logs/Komikku/app.log || { echo "Turkish interface broken"; exit 1; }
@@ -154,19 +154,19 @@ jobs:
           NIGHTLY=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/nightly" -q .target_commitish)
           echo "nightly: $NIGHTLY  this build: $GITHUB_SHA"
           [ -n "$NIGHTLY" ] && [ "$NIGHTLY" != "$GITHUB_SHA" ] || { echo "No other nightly to update to"; exit 0; }
-          rm -rf /tmp/upd && mkdir -p /tmp/upd && ditto dist/Komikku.app /tmp/upd/Komikku.app
+          rm -rf /tmp/upd && mkdir -p /tmp/upd && ditto dist/Mekurimac.app /tmp/upd/Mekurimac.app
           : > ~/Library/Logs/Komikku/app.log
-          KOMIKKU_AUTOTEST_UPDATE=1 KOMIKKU_GITHUB_TOKEN="$GH_TOKEN" /tmp/upd/Komikku.app/Contents/MacOS/Komikku &
+          KOMIKKU_AUTOTEST_UPDATE=1 KOMIKKU_GITHUB_TOKEN="$GH_TOKEN" /tmp/upd/Mekurimac.app/Contents/MacOS/Komikku &
           for i in $(seq 1 40); do
             sleep 5
-            NOW=$(/usr/libexec/PlistBuddy -c "Print :KomikkuCommit" /tmp/upd/Komikku.app/Contents/Info.plist 2>/dev/null)
+            NOW=$(/usr/libexec/PlistBuddy -c "Print :KomikkuCommit" /tmp/upd/Mekurimac.app/Contents/Info.plist 2>/dev/null)
             [ "$NOW" = "$NIGHTLY" ] && break
           done
           sleep 10
           grep -E "updatetest|update:" ~/Library/Logs/Komikku/app.log
-          pgrep -fl "/tmp/upd/Komikku.app/Contents/MacOS/Komikku"; RELAUNCHED=$?
-          pkill -f "/tmp/upd/Komikku.app/Contents/MacOS/Komikku"
-          codesign --verify --deep /tmp/upd/Komikku.app || { echo "Updated app signature invalid"; exit 1; }
+          pgrep -fl "/tmp/upd/Mekurimac.app/Contents/MacOS/Komikku"; RELAUNCHED=$?
+          pkill -f "/tmp/upd/Mekurimac.app/Contents/MacOS/Komikku"
+          codesign --verify --deep /tmp/upd/Mekurimac.app || { echo "Updated app signature invalid"; exit 1; }
           [ "$NOW" = "$NIGHTLY" ] || { echo "App was not replaced by the nightly ($NOW)"; exit 1; }
           [ $RELAUNCHED = 0 ] || { echo "Updated app did not start"; exit 1; }
           ls /tmp/upd   # no leftovers (.old-*)
@@ -176,7 +176,7 @@ jobs:
         run: |
           set +e
           : > ~/Library/Logs/Komikku/app.log
-          KOMIKKU_AUTOTEST_CHALLENGE="mangafire:one piece" dist/Komikku.app/Contents/MacOS/Komikku &
+          KOMIKKU_AUTOTEST_CHALLENGE="mangafire:one piece" dist/Mekurimac.app/Contents/MacOS/Komikku &
           PID=$!
           sleep 30; mkdir -p screenshots; screencapture -x screenshots/5-challenge.png
           for i in $(seq 1 30); do grep -q "challengetest: [0-9f]" ~/Library/Logs/Komikku/app.log && break; sleep 5; done
@@ -187,17 +187,17 @@ jobs:
       - name: DMG check (mount, contents, screenshot)
         run: |
           set +e
-          hdiutil attach dist/Komikku-macos-arm64.dmg -nobrowse -noautoopen -mountpoint /Volumes/Komikku >/dev/null
-          ls -la /Volumes/Komikku
-          test -x /Volumes/Komikku/Komikku.app/Contents/MacOS/Komikku || { echo "App missing from DMG"; exit 1; }
-          codesign --verify --deep -vvv /Volumes/Komikku/Komikku.app 2>&1 | tail -5
-          codesign --verify /Volumes/Komikku/Komikku.app || { echo "Signature broken in DMG"; exit 1; }
-          open /Volumes/Komikku
+          hdiutil attach dist/Mekurimac-macos-arm64.dmg -nobrowse -noautoopen -mountpoint /Volumes/Mekurimac >/dev/null
+          ls -la /Volumes/Mekurimac
+          test -x /Volumes/Mekurimac/Mekurimac.app/Contents/MacOS/Komikku || { echo "App missing from DMG"; exit 1; }
+          codesign --verify --deep -vvv /Volumes/Mekurimac/Mekurimac.app 2>&1 | tail -5
+          codesign --verify /Volumes/Mekurimac/Mekurimac.app || { echo "Signature broken in DMG"; exit 1; }
+          open /Volumes/Mekurimac
           sleep 5
           mkdir -p screenshots
           screencapture -x screenshots/4-dmg.png
           osascript -e 'tell application "Finder" to close every window' >/dev/null 2>&1
-          hdiutil detach /Volumes/Komikku -force >/dev/null
+          hdiutil detach /Volumes/Mekurimac -force >/dev/null
           exit 0
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -211,11 +211,11 @@ jobs:
         id: sha
         run: |
           cd dist
-          SHA=$(shasum -a 256 Komikku-macos-arm64.zip | cut -d' ' -f1)
-          DMG_SHA=$(shasum -a 256 Komikku-macos-arm64.dmg | cut -d' ' -f1)
+          SHA=$(shasum -a 256 Mekurimac-macos-arm64.zip | cut -d' ' -f1)
+          DMG_SHA=$(shasum -a 256 Mekurimac-macos-arm64.dmg | cut -d' ' -f1)
           echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
           echo "dmg_sha256=$DMG_SHA" >> "$GITHUB_OUTPUT"
-          shasum -a 256 Komikku-macos-arm64.dmg Komikku-macos-arm64.zip > SHA256SUMS
+          shasum -a 256 Mekurimac-macos-arm64.dmg Mekurimac-macos-arm64.zip > SHA256SUMS
           cat SHA256SUMS
 
       - name: Build provenance attestation
@@ -223,15 +223,15 @@ jobs:
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4
         with:
           subject-path: |
-            dist/Komikku-macos-arm64.dmg
-            dist/Komikku-macos-arm64.zip
+            dist/Mekurimac-macos-arm64.dmg
+            dist/Mekurimac-macos-arm64.zip
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: Komikku-macos-arm64
+          name: Mekurimac-macos-arm64
           path: |
-            dist/Komikku-macos-arm64.dmg
-            dist/Komikku-macos-arm64.zip
+            dist/Mekurimac-macos-arm64.dmg
+            dist/Mekurimac-macos-arm64.zip
             dist/SHA256SUMS
 
       - name: Publish rolling "nightly" pre-release
@@ -243,25 +243,25 @@ jobs:
           cat > /tmp/notes.md <<NOTES
           Son \`main\` derlemesi ($(git rev-parse --short HEAD)) — latest \`main\` build.
 
-          **Kurulum / install:** \`Komikku-macos-arm64.dmg\` dosyasını aç, Komikku'yu Uygulamalar klasörüne sürükle.
+          **Kurulum / install:** \`Mekurimac-macos-arm64.dmg\` dosyasını aç, Mekurimac'ı Uygulamalar klasörüne sürükle.
           Uygulama imzasız olduğu için ilk açılışta macOS engeller / unsigned app, first launch is blocked:
           - Sistem Ayarları → Gizlilik ve Güvenlik → **Yine de Aç** (System Settings → Privacy & Security → Open Anyway), ya da / or
-          - \`xattr -dr com.apple.quarantine /Applications/Komikku.app\`
+          - \`xattr -dr com.apple.quarantine /Applications/Mekurimac.app\`
 
           | Dosya | SHA256 |
           |---|---|
-          | Komikku-macos-arm64.dmg | \`${{ steps.sha.outputs.dmg_sha256 }}\` |
-          | Komikku-macos-arm64.zip | \`${{ steps.sha.outputs.sha256 }}\` |
+          | Mekurimac-macos-arm64.dmg | \`${{ steps.sha.outputs.dmg_sha256 }}\` |
+          | Mekurimac-macos-arm64.zip | \`${{ steps.sha.outputs.sha256 }}\` |
 
           **Kaynak kodu / source code (GPL-3.0-or-later):** [${GITHUB_SHA::8}](${{ github.server_url }}/${{ github.repository }}/tree/${GITHUB_SHA}) — upstream Komikku: [$(git rev-parse --short HEAD:upstream)](${{ github.server_url }}/${{ github.repository }}/tree/$(git rev-parse HEAD:upstream)). Üçüncü taraf lisansları uygulamanın içinde / third-party licenses inside the app: Ayarlar › Hakkında (\`Contents/Resources/Licenses\`).
 
           Doğrulama / verify:
           \`\`\`
-          shasum -a 256 Komikku-macos-arm64.dmg
-          gh attestation verify Komikku-macos-arm64.dmg -R ${{ github.repository }}
+          shasum -a 256 Mekurimac-macos-arm64.dmg
+          gh attestation verify Mekurimac-macos-arm64.dmg -R ${{ github.repository }}
           \`\`\`
           NOTES
-          gh release create nightly dist/Komikku-macos-arm64.dmg dist/Komikku-macos-arm64.zip dist/SHA256SUMS \
+          gh release create nightly dist/Mekurimac-macos-arm64.dmg dist/Mekurimac-macos-arm64.zip dist/SHA256SUMS \
             --prerelease --target "$GITHUB_SHA" \
             --title "Nightly ($(git rev-parse --short HEAD))" \
             --notes-file /tmp/notes.md
@@ -271,6 +271,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/Komikku-macos-arm64.dmg dist/Komikku-macos-arm64.zip dist/SHA256SUMS \
+          gh release create "$GITHUB_REF_NAME" dist/Mekurimac-macos-arm64.dmg dist/Mekurimac-macos-arm64.zip dist/SHA256SUMS \
             --generate-notes \
-            --notes "Source: ${{ github.server_url }}/${{ github.repository }}/tree/${GITHUB_SHA} — DMG SHA256: \`${{ steps.sha.outputs.dmg_sha256 }}\` — verify: \`gh attestation verify Komikku-macos-arm64.dmg -R ${{ github.repository }}\`"
+            --notes "Source: ${{ github.server_url }}/${{ github.repository }}/tree/${GITHUB_SHA} — DMG SHA256: \`${{ steps.sha.outputs.dmg_sha256 }}\` — verify: \`gh attestation verify Mekurimac-macos-arm64.dmg -R ${{ github.repository }}\`"

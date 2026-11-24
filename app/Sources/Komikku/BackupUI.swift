@@ -15,7 +15,7 @@ enum BackupUI {
         panel.title = String(localized: "Kütüphaneyi Yedekle")
         panel.message = String(localized: "Kütüphane, kategoriler, okuma geçmişi ve ayarlar tek dosyaya kaydedilir. İndirilen bölümler dahil değildir.")
         let day = Date().formatted(.iso8601.year().month().day())
-        panel.nameFieldStringValue = "Komikku \(day).\(fileExtension)"
+        panel.nameFieldStringValue = "Mekurimac \(day).\(fileExtension)"
         panel.allowedContentTypes = [UTType(filenameExtension: fileExtension) ?? .zip]
         panel.canCreateDirectories = true
         guard panel.runModal() == .OK, let url = panel.url else { return }

@@ -59,7 +59,7 @@ struct GeneralSettings: View {
                     .onChange(of: dockBadge) { _, _ in model.updateDockBadge() }
                 Toggle("Kütüphaneyi Spotlight'ta göster", isOn: $spotlight)
                     .onChange(of: spotlight) { _, _ in SpotlightIndex.update(with: model.library) }
-                Toggle("Yeni Komikku sürümlerini denetle", isOn: $checkUpdates)
+                Toggle("Yeni Mekurimac sürümlerini denetle", isOn: $checkUpdates)
                 Toggle("Masaüstü bildirimleri", isOn: Binding(
                     get: { model.settings["desktop-notifications"] as? Bool ?? false },
                     set: { value in Task { @MainActor in await model.setDesktopNotifications(value) } }
@@ -123,7 +123,7 @@ struct AboutSettings: View {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
                 .frame(width: 72, height: 72)
-            Text("Komikku for macOS").font(.title2.bold())
+            Text("Mekurimac").font(.title2.bold())
             Text("Valéry Febvre'nin Komikku uygulamasının macOS arayüzü.\nSunucular ve veri katmanı upstream'den olduğu gibi kullanılır.")
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
@@ -132,12 +132,12 @@ struct AboutSettings: View {
             }
             if let commit = Self.buildCommit {
                 Link("Derleme: \(commit.prefix(8))",
-                     destination: URL(string: "https://github.com/yunusemrecan/komikku-mac/tree/\(commit)")!)
+                     destination: URL(string: "https://github.com/yunusemrecan/mekurimac/tree/\(commit)")!)
                     .font(.caption.monospaced())
             }
             Text("GPL-3.0-or-later — özgür yazılım; kaynak kodu aşağıdaki depolarda.")
                 .font(.caption).foregroundStyle(.secondary)
-            Link("github.com/yunusemrecan/komikku-mac", destination: URL(string: "https://github.com/yunusemrecan/komikku-mac")!)
+            Link("github.com/yunusemrecan/mekurimac", destination: URL(string: "https://github.com/yunusemrecan/mekurimac")!)
             Link("codeberg.org/valos/Komikku", destination: URL(string: "https://codeberg.org/valos/Komikku")!)
             HStack {
                 Button("Üçüncü Taraf Lisansları") { Self.open("THIRD-PARTY-NOTICES.txt") }

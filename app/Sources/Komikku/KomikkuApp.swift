@@ -52,7 +52,7 @@ struct KomikkuApp: App {
 
     var body: some Scene {
         // A single main window: links and Spotlight results always land in it
-        Window("Komikku", id: "main") {
+        Window("Mekurimac", id: "main") {
             ContentView()
                 .environment(model)
                 .frame(minWidth: 820, minHeight: 520)

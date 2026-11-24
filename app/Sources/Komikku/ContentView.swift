@@ -377,7 +377,7 @@ struct Sidebar: View {
                             Button(AppUpdater.canSelfUpdate ? "Güncelle" : "İndir") { model.installUpdate() }
                                 .controlSize(.small)
                                 .help(AppUpdater.canSelfUpdate
-                                      ? "İndirir, doğrular ve Komikku'yu yeni sürümle yeniden başlatır"
+                                      ? "İndirir, doğrular ve Mekurimac'ı yeni sürümle yeniden başlatır"
                                       : "Sürüm sayfasını açar")
                         }
                     }

@@ -2,7 +2,7 @@
 //
 // In-app update: downloads the release ZIP, checks it against the release's
 // SHA256SUMS, checks the new app's signature, bundle id and build commit, then
-// swaps the app bundle after Komikku quits and starts the new version.
+// swaps the app bundle after the app quits and starts the new version.
 //
 // Falls back to opening the release page when the app cannot replace itself
 // (read-only location, run from the disk image / App Translocation, dev build).
@@ -46,7 +46,7 @@ enum AppUpdater {
         }
         let expected = sums.split(separator: "\n")
             .map { $0.split(separator: " ", omittingEmptySubsequences: true) }
-            .first { $0.count == 2 && $0[1].hasSuffix("Komikku-macos-arm64.zip") }
+            .first { $0.count == 2 && $0[1].hasSuffix(zipURL.lastPathComponent) }
             .map { String($0[0]).lowercased() }
         guard let expected else {
             throw UpdateError.message(String(localized: "SHA256SUMS içinde ZIP'in sağlaması yok"))
@@ -55,7 +55,7 @@ enum AppUpdater {
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw UpdateError.message(String(localized: "Güncelleme indirilemedi"))
         }
-        let zip = work.appendingPathComponent("Komikku.zip")
+        let zip = work.appendingPathComponent("update.zip")
         try FileManager.default.moveItem(at: downloaded, to: zip)
 
         // 2. Integrity
@@ -74,7 +74,11 @@ enum AppUpdater {
 
         // 3. Unpack and check the new bundle
         try await run("/usr/bin/ditto", ["-x", "-k", zip.path, work.path])
-        let newApp = work.appendingPathComponent("Komikku.app")
+        // Mekurimac.app (or Komikku.app in releases made before the rename)
+        guard let newApp = try FileManager.default.contentsOfDirectory(at: work, includingPropertiesForKeys: nil)
+            .first(where: { $0.pathExtension == "app" }) else {
+            throw UpdateError.message(String(localized: "İndirilen uygulama tanınmadı"))
+        }
         guard let info = NSDictionary(contentsOf: newApp.appendingPathComponent("Contents/Info.plist")),
               info["CFBundleIdentifier"] as? String == Bundle.main.bundleIdentifier else {
             throw UpdateError.message(String(localized: "İndirilen uygulama tanınmadı"))

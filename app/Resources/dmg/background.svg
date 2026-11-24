@@ -13,7 +13,7 @@
   <!-- arrow from app (x=170) to Applications (x=490), icons centered at y=190 -->
   <path d="M262 190 Q330 150 398 190" fill="none" stroke="#2B3A7A" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 16"/>
   <path d="M384 172 L404 193 L377 199" fill="none" stroke="#2B3A7A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="330" y="318" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#2B3A7A">Komikku'yu Uygulamalar klasörüne sürükleyin</text>
-  <text x="330" y="342" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#5A607A">Drag Komikku to Applications</text>
+  <text x="330" y="318" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#2B3A7A">Mekurimac'ı Uygulamalar klasörüne sürükleyin</text>
+  <text x="330" y="342" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#5A607A">Drag Mekurimac to Applications</text>
   <text x="330" y="376" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#7A7F94">İlk açılış engellenirse: Sistem Ayarları → Gizlilik ve Güvenlik → Yine de Aç</text>
 </svg>
