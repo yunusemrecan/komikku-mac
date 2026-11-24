@@ -25,6 +25,8 @@ final class Backend: @unchecked Sendable {
     private var readyContinuations: [CheckedContinuation<Void, Error>] = []
     private var isReady = false
     private var stopping = false
+    /// Incremented by every start(); events of an older process are ignored
+    private var generation = 0
 
     /// Called when the backend asks the frontend for something (webview work).
     var requestHandler: RequestHandler?
@@ -54,13 +56,13 @@ final class Backend: @unchecked Sendable {
         }
 
         guard let resources = Bundle.main.resourceURL else {
-            throw BackendError(code: "layout", message: "Uygulama kaynak klasörü bulunamadı")
+            throw BackendError(code: "layout", message: String(localized: "Uygulama kaynak klasörü bulunamadı"))
         }
         let python = resources.appendingPathComponent("python/bin/python3")
         let backendDir = resources.appendingPathComponent("backend")
         let upstreamDir = resources.appendingPathComponent("upstream")
         guard fm.isExecutableFile(atPath: python.path) else {
-            throw BackendError(code: "layout", message: "Gömülü Python bulunamadı: \(python.path)")
+            throw BackendError(code: "layout", message: String(localized: "Gömülü Python bulunamadı: \(python.path)"))
         }
         return Layout(python: python, backendDir: backendDir, upstreamDir: upstreamDir)
     }
@@ -75,6 +77,8 @@ final class Backend: @unchecked Sendable {
         buffer = Data()
         isReady = false
         stopping = false
+        generation += 1
+        let gen = generation
         lock.unlock()
 
         let process = Process()
@@ -100,8 +104,11 @@ final class Backend: @unchecked Sendable {
 
         stdoutPipe.fileHandleForReading.readabilityHandler = { [weak self] handle in
             let data = handle.availableData
-            guard !data.isEmpty else { return }
-            self?.consume(data)
+            guard !data.isEmpty, let self else { return }
+            self.lock.lock()
+            let current = self.generation == gen
+            self.lock.unlock()
+            if current { self.consume(data) }
         }
         stderrPipe.fileHandleForReading.readabilityHandler = { handle in
             let data = handle.availableData
@@ -110,10 +117,13 @@ final class Backend: @unchecked Sendable {
         }
         process.terminationHandler = { [weak self] proc in
             guard let self else { return }
-            self.failAll(BackendError(code: "exited", message: "Arka uç kapandı (kod \(proc.terminationStatus))"))
             self.lock.lock()
             let expected = self.stopping
+            let current = self.generation == gen
             self.lock.unlock()
+            // A planned restart already started a new process: leave it alone
+            guard current else { return }
+            self.failAll(BackendError(code: "exited", message: String(localized: "Arka uç kapandı (kod \(proc.terminationStatus))")))
             guard !expected else { return }
             let status = proc.terminationStatus
             Task { @MainActor in self.terminationHandler?(status) }
@@ -269,7 +279,7 @@ final class Backend: @unchecked Sendable {
         if let error = message["error"] as? [String: Any] {
             continuation.resume(throwing: BackendError(
                 code: error["code"] as? String ?? "error",
-                message: error["message"] as? String ?? "Bilinmeyen hata"
+                message: error["message"] as? String ?? String(localized: "Bilinmeyen hata")
             ))
         } else {
             continuation.resume(returning: message["result"])

@@ -246,6 +246,7 @@ struct ServersSettings: View {
                     }
                     .buttonStyle(.borderless)
                     .help("Sunucu ayarları")
+                    .accessibilityLabel("Sunucu ayarları")
                 }
             }
             if entry.enabled && entry.languages.count > 1 {

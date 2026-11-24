@@ -51,6 +51,10 @@ final class ReaderModel {
     @ObservationIgnored var overflowY = false
     private var globals: [String: Any] = [:]
 
+    /// Loupe under the pointer (held ⌥ Option, or toggled with M)
+    var magnifying = false
+    var magnifierLocked = false
+
     var loading = false
     var error: String?
     /// Incremented when a chapter finishes loading; webtoon view scrolls on change.
@@ -106,6 +110,8 @@ final class ReaderModel {
     }
 
     func open(chapterID: Int, atEnd: Bool) async {
+        // The chapter we are leaving counts as finished if its last page was reached
+        let leaving = chapter.flatMap { c in (atChapterEnd || (pageCount > 0 && index >= pageCount - 1)) ? c : nil }
         flushReadPages()
         loading = true
         error = nil
@@ -134,6 +140,9 @@ final class ReaderModel {
             chapterToken += 1
             AppLog.write("reader: chapter \(chapterID) loaded, pages=\(pageCount) cached=\(pagePaths.count) start=\(index)")
             pageShown(index)
+            if let manga {
+                AppModel.shared.readerOpenedChapter(manga: manga, chapterID: chapterID, finished: leaving)
+            }
         } catch {
             AppLog.write("reader: chapter.load \(chapterID) failed: \(error)")
             self.error = error.localizedDescription
@@ -449,6 +458,7 @@ struct ReaderView: View {
     @State private var showControls = true
     @State private var showAppearance = false
     @FocusState private var focused: Bool
+    @State private var optionMonitor: Any?
 
     private var background: ReaderBackground { model?.background ?? .systemStyle }
 
@@ -460,7 +470,7 @@ struct ReaderView: View {
                 content(model)
                     .focusedSceneValue(\.reader, model)
             } else {
-                LoadingLabel(text: "Açılıyor…")
+                LoadingLabel(text: String(localized: "Açılıyor…"))
             }
         }
         .environment(\.colorScheme, background.contentScheme(systemScheme))
@@ -492,8 +502,19 @@ struct ReaderView: View {
                 AppLog.write("reader: spread shown \(reader.currentSpread)")
             }
         }
+        .onAppear {
+            // ⌥ Option held: magnifier on while held
+            optionMonitor = NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) { event in
+                if let model, !model.magnifierLocked {
+                    model.magnifying = event.modifierFlags.contains(.option)
+                }
+                return event
+            }
+        }
         .onDisappear {
             model?.flushReadPages()
+            if let optionMonitor { NSEvent.removeMonitor(optionMonitor) }
+            optionMonitor = nil
         }
     }
 
@@ -511,11 +532,24 @@ struct ReaderView: View {
             }
             .foregroundStyle(.primary)
         } else if model.pageCount == 0 {
-            LoadingLabel(text: model.loading ? "Bölüm yükleniyor…" : "Bu bölümde sayfa bulunamadı")
+            LoadingLabel(text: model.loading ? String(localized: "Bölüm yükleniyor…") : String(localized: "Bu bölümde sayfa bulunamadı"))
         } else if model.mode == .webtoon {
             WebtoonPager(model: model)
         } else {
             PagedPager(model: model)
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(Text(model.title))
+                .accessibilityValue(Text(pageLabel(model)))
+                .accessibilityAdjustableAction { direction in
+                    switch direction {
+                    case .increment: model.next()
+                    case .decrement: model.previous()
+                    @unknown default: break
+                    }
+                }
+                .accessibilityAction(named: Text("Sonraki Sayfa")) { model.next() }
+                .accessibilityAction(named: Text("Önceki Sayfa")) { model.previous() }
+                .accessibilityAction(named: Text("Sonraki Bölüm")) { model.goToNextChapter() }
                 .overlay {
                     if model.atChapterEnd {
                         ChapterEndView(model: model)
@@ -660,6 +694,11 @@ struct ReaderView: View {
         if press.phase == .down {
             if press.characters == "f" {
                 NSApp.keyWindow?.toggleFullScreen(nil)
+                return .handled
+            }
+            if press.characters == "m" {
+                model.magnifierLocked.toggle()
+                model.magnifying = model.magnifierLocked
                 return .handled
             }
             if press.characters == "d" {
@@ -926,6 +965,9 @@ struct PageImage: View {
                     .resizable()
                     .interpolation(.high)
                     .aspectRatio(contentMode: .fit)
+                    .modifier(PageMagnifier(image: image, active: model.magnifying))
+                    .accessibilityLabel(Text("Sayfa \(index + 1) / \(model.pageCount)"))
+                    .accessibilityAddTraits(.isImage)
                     .modifier(PageActions(model: model, index: index, image: image))
             } else if model.failedPages.contains(index) {
                 VStack(spacing: 10) {
@@ -936,7 +978,7 @@ struct PageImage: View {
                 .foregroundStyle(.primary)
                 .frame(maxWidth: .infinity, minHeight: 300)
             } else {
-                LoadingLabel(text: decodeFailed ? "Sayfa \(index + 1) gösterilemedi" : "Sayfa \(index + 1) yükleniyor…")
+                LoadingLabel(text: decodeFailed ? String(localized: "Sayfa \(index + 1) gösterilemedi") : String(localized: "Sayfa \(index + 1) yükleniyor…"))
                     .frame(maxWidth: .infinity, minHeight: fit == .width ? 600 : 0)
             }
         }
@@ -1031,7 +1073,51 @@ struct ChapterEndView: View {
 
     private var nextKeyHint: String {
         model.mode == .rightToLeft
-            ? "← ya da Boşluk: sonraki bölüm  ·  →: son sayfaya dön"
-            : "→ ya da Boşluk: sonraki bölüm  ·  ←: son sayfaya dön"
+            ? String(localized: "← ya da Boşluk: sonraki bölüm  ·  →: son sayfaya dön")
+            : String(localized: "→ ya da Boşluk: sonraki bölüm  ·  ←: son sayfaya dön")
+    }
+}
+
+// MARK: - Magnifier
+
+/// A round loupe that follows the pointer and shows the page enlarged.
+struct PageMagnifier: ViewModifier {
+    let image: NSImage
+    let active: Bool
+    var factor: CGFloat = 2.5
+    var diameter: CGFloat = 240
+
+    @State private var location: CGPoint?
+
+    func body(content: Content) -> some View {
+        content
+            .onContinuousHover(coordinateSpace: .local) { phase in
+                switch phase {
+                case .active(let point): location = point
+                case .ended: location = nil
+                }
+            }
+            .overlay {
+                if active, let location {
+                    GeometryReader { proxy in
+                        let size = proxy.size
+                        Image(nsImage: image)
+                            .resizable()
+                            .interpolation(.high)
+                            .frame(width: size.width * factor, height: size.height * factor)
+                            // the point under the pointer lands in the middle of the loupe
+                            .offset(x: diameter / 2 - location.x * factor,
+                                    y: diameter / 2 - location.y * factor)
+                            .frame(width: diameter, height: diameter, alignment: .topLeading)
+                            .background(Color(nsColor: .windowBackgroundColor))
+                            .clipShape(Circle())
+                            .overlay(Circle().strokeBorder(.white.opacity(0.85), lineWidth: 2))
+                            .shadow(color: .black.opacity(0.35), radius: 8)
+                            .position(location)
+                            .allowsHitTesting(false)
+                    }
+                    .accessibilityHidden(true)
+                }
+            }
     }
 }

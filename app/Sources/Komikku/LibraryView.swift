@@ -25,16 +25,16 @@ struct LibraryView: View {
     }
 
     private var title: String {
-        guard let category else { return "Kütüphane" }
-        if category == -1 { return "Kategorisiz" }
-        return model.categories.first { $0.id == category }?.label ?? "Kategori"
+        guard let category else { return String(localized: "Kütüphane") }
+        if category == -1 { return String(localized: "Kategorisiz") }
+        return model.categories.first { $0.id == category }?.label ?? String(localized: "Kategori")
     }
 
     var body: some View {
         content
             .navigationTitle(title)
-            .navigationSubtitle(selection.isEmpty ? "\(mangas.count) manga" : "\(selection.count) seçili")
-            .searchable(text: $search, isPresented: $searchPresented, placement: .toolbar, prompt: "Ad, sunucu ya da tür")
+            .navigationSubtitle(selection.isEmpty ? "\(mangas.count) manga" : String(localized: "\(selection.count) seçili"))
+            .searchable(text: $search, isPresented: $searchPresented, placement: .toolbar, prompt: String(localized: "Ad, sunucu ya da tür"))
             .onChange(of: searchFocusRequest) { _, _ in searchPresented = true }
             .toolbar { toolbar }
             .task { await model.reloadLibrary() }
@@ -148,9 +148,9 @@ struct LibraryView: View {
                 }
                 .pickerStyle(.inline)
                 Divider()
-                filterToggle("unread", "Okunmamış bölümü olanlar")
-                filterToggle("recents", "Yeni bölümü olanlar")
-                filterToggle("downloaded", "İndirilmiş bölümü olanlar")
+                filterToggle("unread", String(localized: "Okunmamış bölümü olanlar"))
+                filterToggle("recents", String(localized: "Yeni bölümü olanlar"))
+                filterToggle("downloaded", String(localized: "İndirilmiş bölümü olanlar"))
             } label: {
                 Label("Sırala ve Filtrele", systemImage: model.libraryFilters.isEmpty
                       ? "line.3.horizontal.decrease.circle"
@@ -304,5 +304,17 @@ struct LibraryItem: View {
             }
         }
         .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(manga.name))
+        .accessibilityValue(accessibilityValue)
+        .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
+    }
+
+    private var accessibilityValue: String {
+        var parts: [String] = []
+        if let server = manga.serverName { parts.append(server) }
+        if manga.nbUnreadChapters > 0 { parts.append(String(localized: "\(manga.nbUnreadChapters) okunmamış bölüm")) }
+        if manga.nbRecentChapters > 0 { parts.append(String(localized: "yeni bölüm var")) }
+        return parts.joined(separator: ", ")
     }
 }

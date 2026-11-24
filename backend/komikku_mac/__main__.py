@@ -16,6 +16,10 @@ def main():
     from komikku_mac.bootstrap import bootstrap
     bootstrap()
 
+    # A restore chosen in the app is applied before the database is opened
+    from komikku_mac.backup import apply_pending_restore
+    apply_pending_restore()
+
     from komikku.models import init_db
     init_db()
 

@@ -8,6 +8,10 @@ import Foundation
 struct AvailableUpdate: Equatable {
     let title: String
     let pageURL: URL
+    let commit: String
+    /// Assets of the release (nil when missing: then only the page can be opened)
+    let zipURL: URL?
+    let checksumsURL: URL?
 }
 
 enum UpdateChecker {
@@ -30,7 +34,7 @@ enum UpdateChecker {
 
     static func check() async -> Result {
         guard let current = bundledCommit else {
-            return .unknown("Geliştirme sürümü: sürüm bilgisi yok")
+            return .unknown(String(localized: "Geliştirme sürümü: sürüm bilgisi yok"))
         }
         var request = URLRequest(url: releaseAPI)
         request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
@@ -41,13 +45,21 @@ enum UpdateChecker {
                   let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                   let target = json["target_commitish"] as? String,
                   let page = (json["html_url"] as? String).flatMap(URL.init(string:)) else {
-                return .unknown("GitHub'dan sürüm bilgisi alınamadı")
+                return .unknown(String(localized: "GitHub'dan sürüm bilgisi alınamadı"))
             }
             UserDefaults.standard.set(Date(), forKey: lastCheckKey)
             if target.hasPrefix(current) || current.hasPrefix(target) {
                 return .upToDate
             }
-            return .available(AvailableUpdate(title: json["name"] as? String ?? "Yeni sürüm", pageURL: page))
+            let assets = json["assets"] as? [[String: Any]] ?? []
+            func asset(_ name: String) -> URL? {
+                (assets.first { $0["name"] as? String == name }?["browser_download_url"] as? String)
+                    .flatMap(URL.init(string:))
+            }
+            return .available(AvailableUpdate(
+                title: json["name"] as? String ?? String(localized: "Yeni sürüm"), pageURL: page, commit: target,
+                zipURL: asset("Komikku-macos-arm64.zip"), checksumsURL: asset("SHA256SUMS")
+            ))
         } catch {
             return .unknown(error.localizedDescription)
         }

@@ -143,6 +143,9 @@ done < "$BUILD/copyleft-modules.txt"
 # Our code and upstream Komikku keep their sources (readable tracebacks in the log)
 "$PY" -m compileall -q -j 0 "$RES/backend" "$RES/upstream/komikku" >/dev/null || true
 
+echo "==> App localizations (Turkish source, English)"
+python3 "$ROOT/scripts/i18n.py" generate "$RES"
+
 echo "==> Info.plist and icon"
 BUILD_NUMBER="${GITHUB_RUN_NUMBER:-1}"
 COMMIT="$(git -C "$ROOT" rev-parse HEAD 2>/dev/null || echo unknown)"

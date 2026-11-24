@@ -120,6 +120,28 @@ def main():
 
         check('library empty', client.call('library.list') == [])
 
+        # Backup -> change -> restore (applied when the backend starts again)
+        client.call('categories.create', label='Yedek')
+        backup_path = os.path.join(home, 'test.komikku-backup')
+        manifest = client.call('backup.create', path=backup_path, app_preferences={'x': 1})
+        check(f'backup.create ({manifest["categories"]} category)', manifest['categories'] == 1 and os.path.getsize(backup_path) > 0)
+        for category in client.call('categories.list'):
+            client.call('categories.delete', category_id=category['id'])
+        client.call('settings.set', key='servers-languages', value=['fr'])
+        staged = client.call('backup.stage_restore', path=backup_path)
+        check('backup.stage_restore', staged['app_preferences'] == {'x': 1})
+        try:
+            client.call('backup.stage_restore', path=os.path.join(HERE, 'smoke_test.py'))
+            check('backup.stage_restore rejects non-backups', False)
+        except RuntimeError:
+            check('backup.stage_restore rejects non-backups', True)
+        client.call('backup.stage_restore', path=backup_path)
+        client.close()
+        client = Client(python, os.path.abspath(args.backend), env)
+        labels = [c['label'] for c in client.call('categories.list')]
+        check(f'restore applied on restart (categories {labels})', labels == ['Yedek'])
+        check('restore brought settings back', client.call('settings.get')['servers-languages'] == ['en'])
+
         if not args.live:
             return
 
@@ -148,6 +170,17 @@ def main():
             check('chapter.page downloaded', os.path.getsize(page) > 0)
             state = client.call('chapter.mark_pages_read', chapter_id=chapter['id'], indexes=[0])
             check('chapter.mark_pages_read', state['last_page_read_index'] == 0 or state['read'])
+
+            # Export (CBZ with ComicInfo.xml, PDF)
+            import zipfile
+            out_dir = os.path.join(home, 'export')
+            cbz = client.call('chapter.export', chapter_ids=[chapter['id']], format='cbz', directory=out_dir)[0]
+            with zipfile.ZipFile(cbz) as z:
+                names = z.namelist()
+            check(f'chapter.export cbz ({len(names) - 1} pages)', 'ComicInfo.xml' in names and len(names) - 1 == chapter['nb_pages'])
+            pdf = client.call('chapter.export', chapter_ids=[chapter['id']], format='pdf', directory=out_dir)[0]
+            with open(pdf, 'rb') as f:
+                check('chapter.export pdf', f.read(5) == b'%PDF-')
 
             # Download manager (upstream Downloader)
             target = chapters[-1]

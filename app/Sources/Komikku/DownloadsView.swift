@@ -62,7 +62,7 @@ struct DownloadsView: View {
             }
         }
         .navigationTitle("İndirmeler")
-        .navigationSubtitle(model.downloaderRunning ? "İndiriliyor" : (model.downloads.isEmpty ? "" : "Durduruldu"))
+        .navigationSubtitle(model.downloaderRunning ? String(localized: "İndiriliyor") : (model.downloads.isEmpty ? "" : String(localized: "Durduruldu")))
         .toolbar {
             ToolbarItemGroup {
                 if model.downloaderRunning {

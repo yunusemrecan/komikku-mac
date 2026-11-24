@@ -55,7 +55,7 @@ struct StatsView: View {
             }
         }
         .navigationTitle("İstatistikler")
-        .navigationSubtitle("Son 30 gün")
+        .navigationSubtitle(String(localized: "Son 30 gün"))
         .toolbar {
             Button {
                 Task { @MainActor in await reload() }
@@ -79,10 +79,10 @@ struct StatsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 HStack(spacing: 14) {
-                    StatTile(value: stats.last7Days, label: "Son 7 günde bölüm")
-                    StatTile(value: stats.last30Days, label: "Son 30 günde bölüm")
-                    StatTile(value: stats.streakDays, label: "Ardışık okuma günü")
-                    StatTile(value: stats.totalRead, label: "Toplam okunan bölüm")
+                    StatTile(value: stats.last7Days, label: String(localized: "Son 7 günde bölüm"))
+                    StatTile(value: stats.last30Days, label: String(localized: "Son 30 günde bölüm"))
+                    StatTile(value: stats.streakDays, label: String(localized: "Ardışık okuma günü"))
+                    StatTile(value: stats.totalRead, label: String(localized: "Toplam okunan bölüm"))
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -125,8 +125,8 @@ struct StatsView: View {
         Chart {
             ForEach(days) { day in
                 BarMark(
-                    x: .value("Gün", day.day, unit: .day),
-                    y: .value("Bölüm", day.chapters)
+                    x: .value(String(localized: "Gün"), day.day, unit: .day),
+                    y: .value(String(localized: "Bölüm"), day.chapters)
                 )
                 .foregroundStyle(Color.accentColor.opacity(
                     selectedDay == nil || Calendar.current.isDate(day.day, inSameDayAs: selectedDay!) ? 1 : 0.4
@@ -134,7 +134,7 @@ struct StatsView: View {
                 .cornerRadius(4)
             }
             if let selectedDay, let day = days.first(where: { Calendar.current.isDate($0.day, inSameDayAs: selectedDay) }) {
-                RuleMark(x: .value("Gün", day.day, unit: .day))
+                RuleMark(x: .value(String(localized: "Gün"), day.day, unit: .day))
                     .foregroundStyle(.secondary.opacity(0.3))
                     .annotation(position: .top, overflowResolution: .init(x: .fit, y: .disabled)) {
                         VStack(spacing: 2) {

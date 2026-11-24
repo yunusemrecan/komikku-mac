@@ -36,7 +36,7 @@ enum SpotlightIndex {
             var description = [String]()
             if let authors = manga.authors, !authors.isEmpty { description.append(authors.joined(separator: ", ")) }
             if let server = manga.serverName { description.append(server) }
-            if manga.nbUnreadChapters > 0 { description.append("\(manga.nbUnreadChapters) okunmamış bölüm") }
+            if manga.nbUnreadChapters > 0 { description.append(String(localized: "\(manga.nbUnreadChapters) okunmamış bölüm")) }
             attributes.contentDescription = description.joined(separator: " · ")
             attributes.keywords = ["manga", "komikku"] + (manga.genres ?? []) + (manga.authors ?? [])
             if let cover = manga.coverPath {

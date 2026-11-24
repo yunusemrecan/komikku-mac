@@ -48,6 +48,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 struct KomikkuApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var model = AppModel.shared
+    @AppStorage(MenuBarPreferences.enabledKey) private var showMenuBarItem = true
 
     var body: some Scene {
         // A single main window: links and Spotlight results always land in it
@@ -75,6 +76,14 @@ struct KomikkuApp: App {
 
         Settings {
             SettingsView()
+                .environment(model)
+        }
+
+        MenuBarExtra(isInserted: $showMenuBarItem) {
+            MenuBarContent()
+                .environment(model)
+        } label: {
+            MenuBarLabel()
                 .environment(model)
         }
     }
@@ -108,6 +117,13 @@ struct KomikkuCommands: Commands {
 
     var body: some Commands {
         CommandGroup(replacing: .newItem) {}
+
+        CommandGroup(after: .newItem) {
+            Button("Kütüphaneyi Yedekle…") { BackupUI.backup(model) }
+                .disabled(model.state != .ready)
+            Button("Yedekten Geri Yükle…") { BackupUI.restore(model) }
+                .disabled(model.state != .ready)
+        }
 
         CommandGroup(after: .appInfo) {
             Button("Güncellemeleri Denetle…") {
@@ -146,8 +162,9 @@ struct KomikkuCommands: Commands {
             Button("Komikku Web Sitesi") {
                 NSWorkspace.shared.open(URL(string: "https://codeberg.org/valos/Komikku")!)
             }
-            Button("Arka Uç Günlüğünü Göster") {
-                NSWorkspace.shared.activateFileViewerSelecting([Backend.logURL])
+            Button("Sorun Bildir…") { IssueReport.present(model: model) }
+            Button("Günlükleri Finder'da Göster") {
+                NSWorkspace.shared.activateFileViewerSelecting([Backend.logURL, AppLog.url])
             }
         }
     }

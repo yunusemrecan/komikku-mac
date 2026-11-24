@@ -140,9 +140,9 @@ struct DownloadItem: Codable, Identifiable, Hashable {
 
     var statusLabel: String {
         switch status {
-        case "pending": return "Bekliyor"
-        case "downloading": return "İndiriliyor"
-        case "error": return "Hata"
+        case "pending": return String(localized: "Bekliyor")
+        case "downloading": return String(localized: "İndiriliyor")
+        case "error": return String(localized: "Hata")
         default: return status
         }
     }
@@ -175,10 +175,10 @@ enum ReadingMode: String, CaseIterable, Identifiable {
 
     var label: String {
         switch self {
-        case .rightToLeft: return "Sağdan sola"
-        case .leftToRight: return "Soldan sağa"
-        case .vertical: return "Dikey (sayfalı)"
-        case .webtoon: return "Webtoon (kesintisiz)"
+        case .rightToLeft: return String(localized: "Sağdan sola")
+        case .leftToRight: return String(localized: "Soldan sağa")
+        case .vertical: return String(localized: "Dikey (sayfalı)")
+        case .webtoon: return String(localized: "Webtoon (kesintisiz)")
         }
     }
 
@@ -220,9 +220,9 @@ enum LibrarySortOrder: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .alphanumAsc: return "Ada göre (A–Z)"
-        case .latestReadDesc: return "Son okunana göre"
-        case .latestUpdatedDesc: return "Son güncellenene göre"
+        case .alphanumAsc: return String(localized: "Ada göre (A–Z)")
+        case .latestReadDesc: return String(localized: "Son okunana göre")
+        case .latestUpdatedDesc: return String(localized: "Son güncellenene göre")
         }
     }
 }

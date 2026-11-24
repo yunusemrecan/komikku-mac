@@ -78,7 +78,7 @@ struct GlobalSearchView: View {
         content
             .navigationTitle("Tüm Kaynaklarda Ara")
             .navigationSubtitle(subtitle)
-            .searchable(text: $term, isPresented: $searchPresented, placement: .toolbar, prompt: "Manga adı")
+            .searchable(text: $term, isPresented: $searchPresented, placement: .toolbar, prompt: String(localized: "Manga adı"))
             .onSubmit(of: .search) { start() }
             .onChange(of: searchFocusRequest) { _, _ in searchPresented = true }
             .toolbar {
@@ -115,7 +115,7 @@ struct GlobalSearchView: View {
             return "\(targets.count) sunucu"
         }
         let found = withResults.count
-        return "\(finishedCount)/\(order.count) sunucu tarandı · \(found) sunucuda sonuç"
+        return String(localized: "\(finishedCount)/\(order.count) sunucu tarandı · \(found) sunucuda sonuç")
     }
 
     @ViewBuilder

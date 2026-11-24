@@ -22,7 +22,7 @@ struct ServersView: View {
     }
 
     private func languageName(_ code: String) -> String {
-        code.isEmpty ? "Çok dilli" : (model.languages[code] ?? code)
+        code.isEmpty ? String(localized: "Çok dilli") : (model.languages[code] ?? code)
     }
 
     var body: some View {
@@ -52,7 +52,7 @@ struct ServersView: View {
         }
         .navigationTitle("Sunucular")
         .navigationSubtitle("\(model.servers.count) sunucu")
-        .searchable(text: $filter, isPresented: $searchPresented, placement: .toolbar, prompt: "Sunucu ara")
+        .searchable(text: $filter, isPresented: $searchPresented, placement: .toolbar, prompt: String(localized: "Sunucu ara"))
         .onChange(of: searchFocusRequest) { _, _ in searchPresented = true }
         .toolbar {
             SettingsLink {
@@ -107,9 +107,9 @@ struct ServerBrowseView: View {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .popular: return "Popüler"
-            case .latest: return "Son Güncellenenler"
-            case .search: return "Arama"
+            case .popular: return String(localized: "Popüler")
+            case .latest: return String(localized: "Son Güncellenenler")
+            case .search: return String(localized: "Arama")
             }
         }
     }
@@ -145,7 +145,7 @@ struct ServerBrowseView: View {
         content
             .navigationTitle(server?.name ?? serverID)
             .navigationSubtitle(server.map { model.languages[$0.lang] ?? $0.lang } ?? "")
-            .searchable(text: $term, isPresented: $searchPresented, placement: .toolbar, prompt: "\(server?.name ?? "") içinde ara")
+            .searchable(text: $term, isPresented: $searchPresented, placement: .toolbar, prompt: String(localized: "\(server?.name ?? "") içinde ara"))
             .onSubmit(of: .search) {
                 mode = .search
                 reload()

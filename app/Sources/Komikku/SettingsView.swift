@@ -30,6 +30,8 @@ struct GeneralSettings: View {
     @AppStorage(ReaderPreferences.dockBadgeKey) private var dockBadge = true
     @AppStorage(UpdateChecker.enabledKey) private var checkUpdates = true
     @AppStorage(SpotlightIndex.enabledKey) private var spotlight = true
+    @AppStorage(MenuBarPreferences.autoUpdateHoursKey) private var autoUpdateHours = 6
+    @AppStorage(MenuBarPreferences.enabledKey) private var menuBarItem = true
 
     private func boolBinding(_ key: String, reloadServers: Bool = false) -> Binding<Bool> {
         Binding(
@@ -47,6 +49,11 @@ struct GeneralSettings: View {
         Form {
             Section("Kütüphane") {
                 Toggle("Açılışta kütüphaneyi güncelle", isOn: boolBinding("update-at-startup"))
+                Picker("Kütüphaneyi düzenli güncelle", selection: $autoUpdateHours) {
+                    Text("Kapalı").tag(0)
+                    ForEach([1, 3, 6, 12, 24], id: \.self) { Text("Her \($0) saatte bir").tag($0) }
+                }
+                Toggle("Menü çubuğunda göster", isOn: $menuBarItem)
                 Toggle("Yeni bölümleri otomatik indir", isOn: boolBinding("new-chapters-auto-download"))
                 Toggle("Dock simgesinde okunmamış bölüm sayısını göster", isOn: $dockBadge)
                     .onChange(of: dockBadge) { _, _ in model.updateDockBadge() }
@@ -60,6 +67,8 @@ struct GeneralSettings: View {
             }
 
             StorageSection()
+
+            BackupSection()
 
             Section("İçerik") {
                 Toggle("Yetişkin (NSFW) içerikli sunucuları göster", isOn: boolBinding("nsfw-content", reloadServers: true))
@@ -136,6 +145,8 @@ struct AboutSettings: View {
             }
             .disabled(Self.licensesURL == nil)
             .padding(.top, 4)
+            Button("Sorun Bildir…") { IssueReport.present(model: model) }
+                .buttonStyle(.link)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -203,7 +214,7 @@ struct StorageSection: View {
         defer { clearing = false }
         _ = try? await model.backend.callRaw("cache.clear")
         await refresh()
-        model.showToast("Önbellek temizlendi")
+        model.showToast(String(localized: "Önbellek temizlendi"))
     }
 }
 
@@ -227,6 +238,7 @@ struct ShortcutsSettings: View {
                         }
                         .buttonStyle(.borderless)
                         .help("Kopyala")
+                        .accessibilityLabel("Kopyala")
                     }
                 }
             } header: {

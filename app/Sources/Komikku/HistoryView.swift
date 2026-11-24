@@ -47,7 +47,7 @@ struct HistoryView: View {
             }
         }
         .navigationTitle("Geçmiş")
-        .searchable(text: $search, isPresented: $searchPresented, placement: .toolbar, prompt: "Geçmişte ara")
+        .searchable(text: $search, isPresented: $searchPresented, placement: .toolbar, prompt: String(localized: "Geçmişte ara"))
         .onChange(of: searchFocusRequest) { _, _ in searchPresented = true }
         .toolbar {
             Button(role: .destructive) {
@@ -131,8 +131,8 @@ struct HistoryView: View {
         parser.dateFormat = "yyyy-MM-dd"
         guard let date = parser.date(from: iso) else { return iso }
         let calendar = Calendar.current
-        if calendar.isDateInToday(date) { return "Bugün" }
-        if calendar.isDateInYesterday(date) { return "Dün" }
+        if calendar.isDateInToday(date) { return String(localized: "Bugün") }
+        if calendar.isDateInYesterday(date) { return String(localized: "Dün") }
         return date.formatted(.dateTime.weekday(.wide).day().month(.wide).year())
     }
 

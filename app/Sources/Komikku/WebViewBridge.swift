@@ -49,7 +49,7 @@ final class WebViewBridge {
         case "webview.get_page_resources":
             return try await pageResources(params)
         default:
-            throw BackendError(code: "not_supported", message: "Desteklenmeyen istek: \(method)")
+            throw BackendError(code: "not_supported", message: String(localized: "Desteklenmeyen istek: \(method)"))
         }
     }
 
@@ -73,7 +73,7 @@ final class WebViewBridge {
 
     private func challenge(_ params: [String: Any]) async throws -> Any? {
         guard let urlString = params["url"] as? String, let url = URL(string: urlString) else {
-            throw BackendError(code: "bad_request", message: "Geçersiz URL")
+            throw BackendError(code: "bad_request", message: String(localized: "Geçersiz URL"))
         }
         let serverName = params["server_name"] as? String ?? url.host ?? ""
         let session = BrowserSession(userAgent: params["user_agent"] as? String)
@@ -94,14 +94,14 @@ final class WebViewBridge {
                 if title == "cf_captcha" { captchaReloads += 1 }
                 if captchaReloads > 3 { return true }
                 AppLog.write("webview: captcha needs a human, showing window")
-                session.showWindow(title: "Lütfen doğrulamayı tamamlayın — \(serverName)")
+                session.showWindow(title: String(localized: "Lütfen doğrulamayı tamamlayın — \(serverName)"))
             }
             return false
         }
 
         AppLog.write("webview: challenge finished with '\(finalTitle)'")
         if finalTitle != "ready" {
-            throw BackendError(code: "challenge_failed", message: "Doğrulama tamamlanamadı (\(serverName))")
+            throw BackendError(code: "challenge_failed", message: String(localized: "Doğrulama tamamlanamadı (\(serverName))"))
         }
 
         let cookies = await session.cookies(for: url)
@@ -113,7 +113,7 @@ final class WebViewBridge {
 
     private func pageHTML(_ params: [String: Any]) async throws -> Any? {
         guard let urlString = params["url"] as? String, let url = URL(string: urlString) else {
-            throw BackendError(code: "bad_request", message: "Geçersiz URL")
+            throw BackendError(code: "bad_request", message: String(localized: "Geçersiz URL"))
         }
         let session = BrowserSession(userAgent: nil)
         defer { session.close() }
@@ -129,12 +129,12 @@ final class WebViewBridge {
             _ = try? await session.evaluate(waitJS)
             let title = try await session.waitForTitle(timeout: 60) { $0 == "ready" || $0 == "abort" }
             if title == "abort" {
-                throw BackendError(code: "aborted", message: "Sayfa yüklenemedi: \(urlString)")
+                throw BackendError(code: "aborted", message: String(localized: "Sayfa yüklenemedi: \(urlString)"))
             }
         }
 
         guard let html = try await session.evaluate("document.documentElement.outerHTML") as? String else {
-            throw BackendError(code: "no_html", message: "Sayfa içeriği alınamadı: \(urlString)")
+            throw BackendError(code: "no_html", message: String(localized: "Sayfa içeriği alınamadı: \(urlString)"))
         }
 
         if params["with_cookies"] as? Bool == true {
@@ -176,7 +176,7 @@ final class WebViewBridge {
 
     private func pageResources(_ params: [String: Any]) async throws -> Any? {
         guard let urlString = params["url"] as? String, let url = URL(string: urlString) else {
-            throw BackendError(code: "bad_request", message: "Geçersiz URL")
+            throw BackendError(code: "bad_request", message: String(localized: "Geçersiz URL"))
         }
         let paths = params["paths"] as? [String] ?? []
         let timeout = params["timeout"] as? Double ?? 20
@@ -285,7 +285,7 @@ private final class BrowserSession: NSObject, WKNavigationDelegate, NSWindowDele
             }
             group.addTask {
                 try await Task.sleep(for: .seconds(timeout))
-                throw BackendError(code: "timeout", message: "Sayfa yükleme zaman aşımı")
+                throw BackendError(code: "timeout", message: String(localized: "Sayfa yükleme zaman aşımı"))
             }
             defer { group.cancelAll() }
             do {
@@ -311,7 +311,7 @@ private final class BrowserSession: NSObject, WKNavigationDelegate, NSWindowDele
                     self.titleWaiter = { title in
                         if title == "__closed__" {
                             self.titleWaiter = nil
-                            continuation.resume(throwing: BackendError(code: "cancelled", message: "Pencere kapatıldı"))
+                            continuation.resume(throwing: BackendError(code: "cancelled", message: String(localized: "Pencere kapatıldı")))
                         } else if accept(title) {
                             self.titleWaiter = nil
                             continuation.resume(returning: title)
@@ -321,7 +321,7 @@ private final class BrowserSession: NSObject, WKNavigationDelegate, NSWindowDele
             }
             group.addTask {
                 try await Task.sleep(for: .seconds(timeout))
-                throw BackendError(code: "timeout", message: "Zaman aşımı")
+                throw BackendError(code: "timeout", message: String(localized: "Zaman aşımı"))
             }
             defer { group.cancelAll() }
             do {

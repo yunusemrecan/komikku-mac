@@ -64,7 +64,13 @@ final class AppModel {
     /// Bumped whenever a manga's data changes, so open views can reload.
     var mangaRevision: [Int: Int] = [:]
 
-    private init() {}
+    private init() {
+        UserDefaults.standard.register(defaults: [
+            MenuBarPreferences.autoUpdateHoursKey: 6,
+            MenuBarPreferences.enabledKey: true,
+            Self.readAheadKey: 2,
+        ])
+    }
 
     // MARK: - Startup
 
@@ -82,6 +88,8 @@ final class AppModel {
             Task { await self.recoverFromCrash(status: status) }
         }
 
+        AppLog.write("ui: language=\(Bundle.main.preferredLocalizations.first ?? "?") sample=\(String(localized: "Kütüphane"))")
+
         // Show the last known library immediately; Python starts meanwhile
         restoreUICache()
 
@@ -98,7 +106,14 @@ final class AppModel {
             state = .ready
             saveUICache()
             _ = try? await backend.callRaw("library.fetch_missing_covers")
-            if UpdateChecker.isDue {
+            if ProcessInfo.processInfo.environment["KOMIKKU_AUTOTEST_UPDATE"] != nil {
+                // CI: install the published nightly over this copy and restart into it
+                Task {
+                    await checkForUpdates(manual: false)
+                    AppLog.write("updatetest: available=\(availableUpdate != nil) canSelfUpdate=\(AppUpdater.canSelfUpdate)")
+                    if availableUpdate != nil { installUpdate() }
+                }
+            } else if UpdateChecker.isDue {
                 Task { await checkForUpdates(manual: false) }
             }
             requestNotificationPermission()
@@ -107,6 +122,7 @@ final class AppModel {
             if settings["update-at-startup"] as? Bool == true {
                 Task { await updateLibrary() }
             }
+            startAutoUpdateLoop()
         } catch {
             state = .failed(error.localizedDescription)
         }
@@ -141,6 +157,8 @@ final class AppModel {
     // MARK: - App updates
 
     var availableUpdate: AvailableUpdate?
+    /// In-app update in progress (download, verification, restart)
+    var updateProgress: String?
 
     func checkForUpdates(manual: Bool) async {
         switch await UpdateChecker.check() {
@@ -150,10 +168,69 @@ final class AppModel {
         case .upToDate:
             availableUpdate = nil
             AppLog.write("update: up to date")
-            if manual { showToast("Komikku güncel") }
+            if manual { showToast(String(localized: "Komikku güncel")) }
         case .unknown(let reason):
             AppLog.write("update: check failed: \(reason)")
-            if manual { showToast("Güncelleme denetlenemedi: \(reason)") }
+            if manual { showToast(String(localized: "Güncelleme denetlenemedi: \(reason)")) }
+        }
+    }
+
+    // MARK: - Backup / restore
+
+    /// macOS-side preferences that go into a backup (window frames and caches excluded)
+    private func exportablePreferences() -> [String: Any] {
+        guard let id = Bundle.main.bundleIdentifier,
+              let domain = UserDefaults.standard.persistentDomain(forName: id) else { return [:] }
+        return domain.filter { key, value in
+            !key.hasPrefix("NS") && !key.hasPrefix("Apple") && key != UpdateChecker.lastCheckKey
+                && JSONSerialization.isValidJSONObject(["v": value])
+        }
+    }
+
+    func createBackup(at url: URL) async {
+        do {
+            let result = try await backend.callRaw("backup.create", [
+                "path": url.path, "app_preferences": exportablePreferences(),
+            ]) as? [String: Any]
+            let count = result?["library"] as? Int ?? 0
+            AppLog.write("backup: \(url.path) (\(count) mangas)")
+            showToast(String(localized: "Yedeklendi: \(count) manga"))
+        } catch {
+            report(error)
+        }
+    }
+
+    /// Validates and stages the backup, then restarts the backend, which applies it.
+    func restoreBackup(from url: URL) async {
+        do {
+            let staged = try await backend.callRaw("backup.stage_restore", ["path": url.path]) as? [String: Any]
+            if let prefs = staged?["app_preferences"] as? [String: Any] {
+                for (key, value) in prefs { UserDefaults.standard.set(value, forKey: key) }
+            }
+            AppLog.write("backup: restoring \(url.path)")
+            await restartBackend()
+            showToast(String(localized: "Yedek geri yüklendi"))
+        } catch {
+            report(error)
+        }
+    }
+
+    /// Planned restart (no crash accounting): stop, start, reload everything.
+    func restartBackend() async {
+        backend.stop()
+        do {
+            try backend.start()
+            try await backend.waitUntilReady()
+            await reloadSettings()
+            await reloadServers()
+            await reloadLibrary()
+            await reloadCategories()
+            await reloadDownloads()
+            for id in mangaRevision.keys { mangaRevision[id, default: 0] += 1 }
+            updateDockBadge()
+            _ = try? await backend.callRaw("library.fetch_missing_covers")
+        } catch {
+            state = .failed(String(localized: "Arka uç yeniden başlatılamadı: \(error.localizedDescription)"))
         }
     }
 
@@ -168,11 +245,11 @@ final class AppModel {
         let now = Date()
         crashTimes = crashTimes.filter { now.timeIntervalSince($0) < 60 } + [now]
         guard crashTimes.count <= 3 else {
-            state = .failed("Arka uç art arda çöktü (kod \(status)). Ayrıntılar: \(Backend.logURL.path)")
+            state = .failed(String(localized: "Arka uç art arda çöktü (kod \(status)). Ayrıntılar: \(Backend.logURL.path)"))
             return
         }
 
-        showToast("Arka uç yeniden başlatılıyor…")
+        showToast(String(localized: "Arka uç yeniden başlatılıyor…"))
         isUpdatingLibrary = false
         do {
             try await Task.sleep(for: .milliseconds(500))
@@ -186,9 +263,9 @@ final class AppModel {
             _ = try? await backend.callRaw("downloads.resume_if_needed")
             await reloadDownloads()
             for id in mangaRevision.keys { mangaRevision[id, default: 0] += 1 }
-            showToast("Arka uç yeniden başlatıldı")
+            showToast(String(localized: "Arka uç yeniden başlatıldı"))
         } catch {
-            state = .failed("Arka uç yeniden başlatılamadı: \(error.localizedDescription). Ayrıntılar: \(Backend.logURL.path)")
+            state = .failed(String(localized: "Arka uç yeniden başlatılamadı: \(error.localizedDescription). Ayrıntılar: \(Backend.logURL.path)"))
         }
     }
 
@@ -203,7 +280,7 @@ final class AppModel {
         switch method {
         case "updater.begin":
             isUpdatingLibrary = true
-            updateStatus = "Güncelleniyor: \(params["name"] as? String ?? "")"
+            updateStatus = String(localized: "Güncelleniyor: \(params["name"] as? String ?? "")")
         case "updater.end":
             if let id = params["manga_id"] as? Int {
                 mangaRevision[id, default: 0] += 1
@@ -214,7 +291,7 @@ final class AppModel {
             updateNewChapters += params["nb_recent_chapters"] as? Int ?? 0
         case "updater.finished":
             isUpdatingLibrary = false
-            updateStatus = updateNewChapters > 0 ? "\(updateNewChapters) yeni bölüm" : "Güncelleme bitti"
+            updateStatus = updateNewChapters > 0 ? String(localized: "\(updateNewChapters) yeni bölüm") : String(localized: "Güncelleme bitti")
             updateNewChapters = 0
             Task { await reloadLibrary() }
 
@@ -252,6 +329,12 @@ final class AppModel {
                 library[index].coverPath = path
                 mangaRevision[id, default: 0] += 1
             }
+        case "export.progress":
+            let chapter = params["chapter"] as? Int ?? 1, chapters = params["chapters"] as? Int ?? 1
+            let page = params["page"] as? Int ?? 0, pages = params["pages"] as? Int ?? 0
+            exportStatus = chapters > 1
+                ? String(localized: "Dışa aktarılıyor: bölüm \(chapter)/\(chapters), sayfa \(page)/\(pages)")
+                : String(localized: "Dışa aktarılıyor: sayfa \(page)/\(pages)")
         case "app.toast":
             showToast(params["message"] as? String ?? "")
         default:
@@ -367,6 +450,69 @@ final class AppModel {
         downloads.first { $0.chapterId == chapterID }
     }
 
+    // MARK: - Read-ahead downloads
+
+    static let readAheadKey = "read-ahead-chapters"
+    static let deleteFinishedKey = "delete-finished-downloads"
+
+    /// Library mangas only: download the next N chapters of the one being read,
+    /// and (optionally) delete the downloaded files of the chapter just finished.
+    func readerOpenedChapter(manga: Manga, chapterID: Int, finished previous: Chapter?) {
+        guard manga.inLibrary else { return }
+        let ordered = manga.chaptersInReadingOrder
+        let count = UserDefaults.standard.object(forKey: Self.readAheadKey) as? Int ?? 2
+        if count > 0, let i = ordered.firstIndex(where: { $0.id == chapterID }) {
+            let ahead = ordered.dropFirst(i + 1).prefix(count)
+                .filter { !$0.downloaded && download(forChapter: $0.id) == nil }
+                .map(\.id)
+            if !ahead.isEmpty {
+                AppLog.write("read-ahead: \(ahead.count) chapter(s) of manga \(manga.id)")
+                Task { await download(ahead, mangaID: manga.id) }
+            }
+        }
+        if let previous, previous.id != chapterID, previous.downloaded,
+           UserDefaults.standard.bool(forKey: Self.deleteFinishedKey) {
+            AppLog.write("read-ahead: deleting finished chapter \(previous.id)")
+            Task {
+                // let the reader save the last pages read first
+                try? await Task.sleep(for: .seconds(2))
+                await clearDownloads([previous.id], mangaID: manga.id)
+                await reloadLibrary()
+            }
+        }
+    }
+
+    // MARK: - Export (CBZ / PDF)
+
+    var exportStatus: String?
+
+    func exportChapters(_ chapterIDs: [Int], manga: Manga, format: String) {
+        let ordered = manga.chaptersInReadingOrder.map(\.id).filter { chapterIDs.contains($0) }
+        guard !ordered.isEmpty else { return }
+        let panel = NSOpenPanel()
+        panel.title = String(localized: "Dışa Aktarılacak Klasör")
+        panel.prompt = String(localized: "Dışa Aktar")
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.canCreateDirectories = true
+        panel.directoryURL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
+        guard panel.runModal() == .OK, let directory = panel.url else { return }
+        Task {
+            exportStatus = String(localized: "Dışa aktarılıyor…")
+            defer { exportStatus = nil }
+            do {
+                let paths = try await backend.callRaw("chapter.export", [
+                    "chapter_ids": ordered, "format": format, "directory": directory.path,
+                ]) as? [String] ?? []
+                AppLog.write("export: \(paths.count) \(format) file(s) in \(directory.path)")
+                showToast(String(localized: "\(paths.count) dosya dışa aktarıldı"))
+                NSWorkspace.shared.activateFileViewerSelecting(paths.map { URL(fileURLWithPath: $0) })
+            } catch {
+                report(error)
+            }
+        }
+    }
+
     // MARK: - Settings
 
     func reloadSettings() async {
@@ -439,13 +585,14 @@ final class AppModel {
             let result = try await backend.callRaw("library.update", params) as? [String: Any]
             if result?["started"] as? Bool == true {
                 isUpdatingLibrary = true
+                UserDefaults.standard.set(Date(), forKey: MenuBarPreferences.lastAutoUpdateKey)
                 updateNewChapters = 0
                 lastUpdatedMangaIDs = []
-                updateStatus = "Güncelleniyor…"
+                updateStatus = String(localized: "Güncelleniyor…")
             } else if result?["running"] as? Bool == true {
-                showToast("Güncelleme zaten sürüyor")
+                showToast(String(localized: "Güncelleme zaten sürüyor"))
             } else {
-                updateStatus = "Güncellenecek manga yok"
+                updateStatus = String(localized: "Güncellenecek manga yok")
             }
         } catch {
             updateStatus = nil

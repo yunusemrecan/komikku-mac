@@ -41,18 +41,18 @@ enum URLAction: Equatable {
     static func copyLink(forManga id: Int) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString("komikku://manga/\(id)", forType: .string)
-        AppModel.shared.showToast("Bağlantı kopyalandı: komikku://manga/\(id)")
+        AppModel.shared.showToast(String(localized: "Bağlantı kopyalandı: komikku://manga/\(id)"))
     }
 
     /// Documentation shown in Settings > Kısayollar
     static let examples: [(url: String, label: String)] = [
-        ("komikku://continue", "En son okunan mangaya kaldığın yerden devam et"),
-        ("komikku://update", "Kütüphaneyi güncelle (yeni bölümleri denetle)"),
-        ("komikku://search?q=one%20piece", "Tüm kaynaklarda ara"),
-        ("komikku://library", "Kütüphaneyi aç"),
-        ("komikku://history", "Geçmişi aç"),
-        ("komikku://downloads", "İndirmeleri aç"),
-        ("komikku://stats", "İstatistikleri aç"),
-        ("komikku://manga/42", "Belirli bir mangayı aç (bağlantısı: mangaya sağ tık → Kısayol Bağlantısını Kopyala)"),
+        ("komikku://continue", String(localized: "En son okunan mangaya kaldığın yerden devam et")),
+        ("komikku://update", String(localized: "Kütüphaneyi güncelle (yeni bölümleri denetle)")),
+        ("komikku://search?q=one%20piece", String(localized: "Tüm kaynaklarda ara")),
+        ("komikku://library", String(localized: "Kütüphaneyi aç")),
+        ("komikku://history", String(localized: "Geçmişi aç")),
+        ("komikku://downloads", String(localized: "İndirmeleri aç")),
+        ("komikku://stats", String(localized: "İstatistikleri aç")),
+        ("komikku://manga/42", String(localized: "Belirli bir mangayı aç (bağlantısı: mangaya sağ tık → Kısayol Bağlantısını Kopyala)")),
     ]
 }

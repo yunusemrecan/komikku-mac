@@ -12,7 +12,7 @@ extension ReaderModel {
     /// Human-friendly file name for a page.
     func exportName(for index: Int) -> String {
         let manga = manga?.name ?? "Manga"
-        let chapter = chapter?.title ?? "Bölüm"
+        let chapter = chapter?.title ?? String(localized: "Bölüm")
         let raw = "\(manga) – \(chapter) – s\(index + 1)"
         let cleaned = raw
             .replacingOccurrences(of: "/", with: "-")
@@ -54,7 +54,7 @@ extension ReaderModel {
         if let image { objects.append(image) }
         if let url = exportedFile(for: index) { objects.append(url as NSURL) }
         pasteboard.writeObjects(objects)
-        AppModel.shared.showToast("Sayfa \(index + 1) kopyalandı")
+        AppModel.shared.showToast(String(localized: "Sayfa \(index + 1) kopyalandı"))
     }
 
     func savePageAs(_ index: Int) {

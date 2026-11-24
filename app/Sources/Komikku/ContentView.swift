@@ -171,7 +171,7 @@ struct ContentView: View {
             // Most recently read library manga, at its resume chapter
             guard let last = model.library.filter({ $0.lastRead != nil })
                     .max(by: { ($0.lastRead ?? "") < ($1.lastRead ?? "") }) else {
-                model.showToast("Henüz okunan bir manga yok")
+                model.showToast(String(localized: "Henüz okunan bir manga yok"))
                 return
             }
             if let full: Manga = try? await model.backend.call("manga.get", ["manga_id": last.id]),
@@ -368,14 +368,24 @@ struct Sidebar: View {
                         Image(systemName: "arrow.down.app.fill").foregroundStyle(.tint)
                         VStack(alignment: .leading, spacing: 1) {
                             Text("Yeni sürüm var").font(.caption.bold())
-                            Text(update.title).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
+                            Text(model.updateProgress ?? update.title).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
                         }
                         Spacer()
-                        Button("İndir") { NSWorkspace.shared.open(update.pageURL) }
-                            .controlSize(.small)
+                        if model.updateProgress != nil {
+                            ProgressView().controlSize(.small)
+                        } else {
+                            Button(AppUpdater.canSelfUpdate ? "Güncelle" : "İndir") { model.installUpdate() }
+                                .controlSize(.small)
+                                .help(AppUpdater.canSelfUpdate
+                                      ? "İndirir, doğrular ve Komikku'yu yeni sürümle yeniden başlatır"
+                                      : "Sürüm sayfasını açar")
+                        }
                     }
                     .padding(8)
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                    .contextMenu {
+                        Button("Sürüm Notlarını Aç") { NSWorkspace.shared.open(update.pageURL) }
+                    }
                 }
                 if let toast = model.toast {
                     Text(toast)
@@ -394,10 +404,17 @@ struct Sidebar: View {
                     }
                     .buttonStyle(.borderless)
                     .help("Yeni kategori")
+                    .accessibilityLabel("Yeni kategori")
                     if model.isUpdatingLibrary {
                         ProgressView().controlSize(.mini)
                     }
-                    if let status = model.updateStatus {
+                    if let status = model.exportStatus {
+                        ProgressView().controlSize(.mini)
+                        Text(status)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    } else if let status = model.updateStatus {
                         Text(status)
                             .font(.caption)
                             .foregroundStyle(.secondary)

@@ -142,6 +142,23 @@ def app_hello():
     }
 
 
+@method('backup.create')
+def backup_create(path, app_preferences=None):
+    from komikku_mac import backup
+    return backup.create(path, app_preferences)
+
+
+@method('backup.stage_restore')
+def backup_stage_restore(path):
+    from komikku_mac import backup
+    try:
+        return backup.stage_restore(path)
+    except (ValueError, OSError) as e:
+        raise RPCError(str(e), 'restore')
+    except Exception as e:  # zipfile.BadZipFile, json errors…
+        raise RPCError(backup._t('Yedek okunamadı: ', "Couldn't read the backup: ") + str(e), 'restore')
+
+
 @method('settings.get')
 def settings_get():
     from gi.repository import Gio
@@ -935,6 +952,88 @@ def chapter_page(chapter_id, index):
     if path is None:
         raise RPCError('Failed to download page', 'server_error')
     return path
+
+
+_EXPORT_EXT = {'JPEG': 'jpg', 'PNG': 'png', 'WEBP': 'webp', 'GIF': 'gif', 'AVIF': 'avif', 'BMP': 'bmp'}
+
+
+def _safe_filename(name):
+    name = ''.join('-' if c in '/\\:*?"<>|' or ord(c) < 32 else c for c in name).strip(' .')
+    return name[:150] or 'chapter'
+
+
+@method('chapter.export')
+def chapter_export(chapter_ids, format, directory):
+    """Write each chapter as a CBZ (original images + ComicInfo.xml) or a PDF.
+
+    Missing pages are downloaded first. Progress: `export.progress` notifications.
+    Returns the paths written.
+    """
+    import zipfile
+    from xml.sax.saxutils import escape
+
+    from PIL import Image
+
+    from komikku_mac.rpc import notify
+
+    if format not in ('cbz', 'pdf'):
+        raise RPCError(f'Unknown format: {format}', 'bad_format')
+    os.makedirs(directory, exist_ok=True)
+    written = []
+    for n, chapter_id in enumerate(chapter_ids):
+        chapter = _get_chapter(chapter_id)
+        if not chapter.pages:
+            chapter_load(chapter_id)
+            chapter = _get_chapter(chapter_id)
+        manga = chapter.manga
+        total = len(chapter.pages)
+        paths = []
+        for i in range(total):
+            paths.append(chapter_page(chapter_id, i))
+            notify('export.progress', {
+                'chapter_id': chapter_id, 'chapter': n + 1, 'chapters': len(chapter_ids),
+                'page': i + 1, 'pages': total,
+            })
+        base = _safe_filename(f'{manga.name} - {chapter.title}')
+        target = os.path.join(directory, f'{base}.{format}')
+        k = 2
+        while os.path.exists(target):
+            target = os.path.join(directory, f'{base} ({k}).{format}')
+            k += 1
+        part = target + '.part'
+        if format == 'cbz':
+            with zipfile.ZipFile(part, 'w', zipfile.ZIP_STORED) as z:
+                width = max(3, len(str(total)))
+                for i, path in enumerate(paths):
+                    with Image.open(path) as im:
+                        ext = _EXPORT_EXT.get(im.format, 'jpg')
+                    z.write(path, f'{i + 1:0{width}d}.{ext}')
+                rtl = (manga.reading_mode or '') == 'right-to-left'
+                info = (
+                    '<?xml version="1.0" encoding="utf-8"?>\n<ComicInfo>\n'
+                    f'  <Series>{escape(manga.name)}</Series>\n'
+                    f'  <Title>{escape(chapter.title)}</Title>\n'
+                    + (f'  <Number>{escape(str(chapter.num))}</Number>\n' if chapter.num else '')
+                    + (f'  <Writer>{escape(", ".join(manga.authors))}</Writer>\n' if manga.authors else '')
+                    + f'  <PageCount>{total}</PageCount>\n'
+                    + ('  <Manga>YesAndRightToLeft</Manga>\n' if rtl else '')
+                    + '</ComicInfo>\n'
+                )
+                z.writestr('ComicInfo.xml', info)
+        else:
+            images = []
+            try:
+                for path in paths:
+                    with Image.open(path) as im:
+                        images.append(im.convert('RGB'))
+                images[0].save(part, 'PDF', save_all=True, append_images=images[1:],
+                               title=f'{manga.name} — {chapter.title}', author=', '.join(manga.authors or []))
+            finally:
+                for im in images:
+                    im.close()
+        os.replace(part, target)
+        written.append(target)
+    return written
 
 
 @method('chapter.mark_pages_read')

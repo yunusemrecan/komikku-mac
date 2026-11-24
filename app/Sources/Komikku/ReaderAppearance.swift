@@ -14,10 +14,10 @@ enum PageScaling: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .screen: return "Ekrana sığdır"
-        case .width: return "Genişliğe sığdır"
-        case .height: return "Yüksekliğe sığdır"
-        case .original: return "Orijinal boyut"
+        case .screen: return String(localized: "Ekrana sığdır")
+        case .width: return String(localized: "Genişliğe sığdır")
+        case .height: return String(localized: "Yüksekliğe sığdır")
+        case .original: return String(localized: "Orijinal boyut")
         }
     }
 }
@@ -29,10 +29,10 @@ enum ReaderBackground: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .systemStyle: return "Sistem görünümü"
-        case .white: return "Beyaz"
-        case .black: return "Siyah"
-        case .gray: return "Gri"
+        case .systemStyle: return String(localized: "Sistem görünümü")
+        case .white: return String(localized: "Beyaz")
+        case .black: return String(localized: "Siyah")
+        case .gray: return String(localized: "Gri")
         }
     }
 
@@ -64,12 +64,12 @@ struct PageFilterSpec: Identifiable {
     var id: String { key }
 
     static let all: [PageFilterSpec] = [
-        PageFilterSpec(key: "brightness", title: "Parlaklık", range: 0...200, defaultValue: 100),
-        PageFilterSpec(key: "contrast", title: "Kontrast", range: 0...200, defaultValue: 100),
-        PageFilterSpec(key: "grayscale", title: "Gri tonlama", range: 0...100, defaultValue: 100),
-        PageFilterSpec(key: "invert", title: "Ters çevir (gece)", range: 0...100, defaultValue: 100),
-        PageFilterSpec(key: "sepia", title: "Sepya", range: 0...100, defaultValue: 0),
-        PageFilterSpec(key: "saturate", title: "Doygunluk", range: 0...400, defaultValue: 100),
+        PageFilterSpec(key: "brightness", title: String(localized: "Parlaklık"), range: 0...200, defaultValue: 100),
+        PageFilterSpec(key: "contrast", title: String(localized: "Kontrast"), range: 0...200, defaultValue: 100),
+        PageFilterSpec(key: "grayscale", title: String(localized: "Gri tonlama"), range: 0...100, defaultValue: 100),
+        PageFilterSpec(key: "invert", title: String(localized: "Ters çevir (gece)"), range: 0...100, defaultValue: 100),
+        PageFilterSpec(key: "sepia", title: String(localized: "Sepya"), range: 0...100, defaultValue: 0),
+        PageFilterSpec(key: "saturate", title: String(localized: "Doygunluk"), range: 0...400, defaultValue: 100),
     ]
 }
 
@@ -317,6 +317,8 @@ struct ReaderSettings: View {
     @Environment(AppModel.self) private var model
     @AppStorage(ReaderPreferences.separateWindowKey) private var readerInSeparateWindow = false
     @AppStorage(ReaderPreferences.coverAloneKey) private var coverAlone = true
+    @AppStorage(AppModel.readAheadKey) private var readAhead = 2
+    @AppStorage(AppModel.deleteFinishedKey) private var deleteFinished = false
 
     private func boolBinding(_ key: String, _ fallback: Bool = false) -> Binding<Bool> {
         Binding(
@@ -365,6 +367,18 @@ struct ReaderSettings: View {
                         Text("\(model.settings["clamp-size"] as? Int ?? 960) pt").monospacedDigit()
                     }
                 }
+            }
+            Section {
+                Picker("Okurken sonraki bölümleri indir", selection: $readAhead) {
+                    Text("Kapalı").tag(0)
+                    ForEach(1...5, id: \.self) { Text("\($0) bölüm").tag($0) }
+                }
+                Toggle("Bitirilen bölümün indirilmiş dosyalarını sil", isOn: $deleteFinished)
+            } header: {
+                Text("İndirmeler")
+            } footer: {
+                Text("Yalnızca kütüphanedeki mangalar için. Bir bölümün son sayfasına gelip sonrakine geçince o bölüm \"bitirilmiş\" sayılır; okundu bilgisi silinmez.")
+                    .foregroundStyle(.secondary)
             }
             Section("Pencere") {
                 Toggle("Okuyucuyu ayrı pencerede aç", isOn: $readerInSeparateWindow)

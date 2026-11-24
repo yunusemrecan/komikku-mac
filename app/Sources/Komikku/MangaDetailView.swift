@@ -34,7 +34,7 @@ struct MangaDetailView: View {
                     Button("Yeniden Dene") { Task { @MainActor in await load() } }
                 }
             } else {
-                ProgressView("Yükleniyor…").frame(maxWidth: .infinity, maxHeight: .infinity)
+                ProgressView(String(localized: "Yükleniyor…")).frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .navigationTitle(manga?.name ?? title)
@@ -231,7 +231,7 @@ struct MangaDetailView: View {
                         Tag(text: server)
                     }
                     if manga.nbUnreadChapters > 0 {
-                        Tag(text: "\(manga.nbUnreadChapters) okunmamış")
+                        Tag(text: String(localized: "\(manga.nbUnreadChapters) okunmamış"))
                     }
                 }
 
@@ -270,10 +270,10 @@ struct MangaDetailView: View {
 
     private func statusLabel(_ status: String) -> String {
         switch status {
-        case "complete": return "Tamamlandı"
-        case "ongoing": return "Devam ediyor"
-        case "suspended": return "Askıda"
-        case "hiatus": return "Ara verildi"
+        case "complete": return String(localized: "Tamamlandı")
+        case "ongoing": return String(localized: "Devam ediyor")
+        case "suspended": return String(localized: "Askıda")
+        case "hiatus": return String(localized: "Ara verildi")
         default: return status
         }
     }
@@ -312,6 +312,12 @@ struct MangaDetailView: View {
             Button("İndirilenleri Sil") {
                 Task { @MainActor in await model.clearDownloads(ids, mangaID: manga.id) }
             }
+            Divider()
+            Menu("Dışa Aktar") {
+                Button("CBZ (çizgi roman arşivi)…") { model.exportChapters(ids, manga: manga, format: "cbz") }
+                Button("PDF…") { model.exportChapters(ids, manga: manga, format: "pdf") }
+            }
+            .disabled(model.exportStatus != nil)
         }
     }
 

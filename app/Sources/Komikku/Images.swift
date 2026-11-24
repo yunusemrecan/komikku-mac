@@ -72,6 +72,7 @@ struct CoverImage: View {
         Rectangle()
             .fill(.quaternary)
             .aspectRatio(180.0 / 256.0, contentMode: .fit)
+            .accessibilityHidden(true)
             .overlay {
                 if let image {
                     Image(nsImage: image)

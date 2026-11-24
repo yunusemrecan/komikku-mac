@@ -98,6 +98,17 @@ Alfred can drive it:
 
 Library mangas are also indexed in **Spotlight** (⌘Space, type a title); this can be turned off in Settings.
 
+## Everyday extras
+
+- **Read-ahead downloads** — while you read a library manga, the next chapters (2 by default) are downloaded; finished chapters' files can be deleted automatically (Settings › Reader).
+- **Backup / restore** — File › Back Up Library… saves library, categories, reading history and settings in one `.komikku-backup` file (also for moving to another Mac). Downloaded chapters are not included.
+- **Export** — right-click chapters → Export → CBZ (with `ComicInfo.xml`) or PDF.
+- **Menu bar** — unread count, manga with new chapters, continue reading; the library is updated every 6 hours (configurable) even with the window closed.
+- **In-app update** — "Update" in the sidebar downloads the new build, checks it against the release's `SHA256SUMS`, its signature and build commit, and restarts.
+- **Report a problem** — Help › Report a Problem… opens a pre-filled GitHub issue (version info + end of the logs, editable before sending).
+- **English or Turkish** — the interface follows the macOS language (Turkish texts are the source, `app/Localization/en.json` the English translation).
+- **Server health** — a weekly job tries every server and keeps the [Sunucu sağlık raporu](../../issues?q=is%3Aissue+%22Sunucu+sa%C4%9Fl%C4%B1k+raporu%22) issue up to date.
+
 ## Supply chain
 
 | What goes into the app | How it is controlled |
@@ -122,6 +133,8 @@ Library mangas are also indexed in **Spotlight** (⌘Space, type a title); this 
 | | Home / End | First / last page |
 | | ⌘] / ⌘[ | Next / previous chapter |
 | | F or ⌃⌘F | Full screen |
+| | D | Two-page view |
+| | hold ⌥ Option / M | Magnifier under the pointer (hold / toggle) |
 
 ## Building
 

@@ -24,6 +24,8 @@ jobs:
           python-version: '3.13'
       - run: pip install --require-hashes -r backend/requirements-mac.lock
       - run: python backend/tests/smoke_test.py
+      - name: Every Turkish UI text has an English translation
+        run: python scripts/i18n.py check
 
   build:
     name: Build Komikku.app (Apple Silicon)
@@ -96,6 +98,7 @@ jobs:
           grep "ui: library shown from cache" ~/Library/Logs/Komikku/app.log | tail -1
           grep -q "ui: library shown from cache ([1-9]" ~/Library/Logs/Komikku/app.log || { echo "Library not restored from cache"; exit 1; }
           grep -q "keytest: chapter end screen shown=true" ~/Library/Logs/Komikku/app.log || { echo "Chapter end screen not shown"; exit 1; }
+          grep -q "read-ahead: [1-9]" ~/Library/Logs/Komikku/app.log || { echo "Next chapters were not queued while reading"; exit 1; }
           grep -q "backend restarted" ~/Library/Logs/Komikku/app.log || { echo "Backend was not restarted after a crash"; exit 1; }
           grep -q "after restart library=1" ~/Library/Logs/Komikku/app.log || { echo "Library not reloaded after restart"; exit 1; }
           [ $RUNNING = 1 ] || { echo "App exited early"; exit 1; }
@@ -122,6 +125,50 @@ jobs:
           grep -q "stats: total=" ~/Library/Logs/Komikku/app.log || { echo "Statistics did not load"; exit 1; }
           grep -q "url: komikku://search?q=berserk" ~/Library/Logs/Komikku/app.log || { echo "Search link not received"; exit 1; }
           exit 0
+
+      - name: English interface check
+        run: |
+          set +e
+          : > ~/Library/Logs/Komikku/app.log
+          dist/Komikku.app/Contents/MacOS/Komikku -AppleLanguages '(en)' &
+          PID=$!
+          sleep 20; mkdir -p screenshots; screencapture -x screenshots/8-english.png
+          kill $PID; wait $PID 2>/dev/null
+          grep "ui: language" ~/Library/Logs/Komikku/app.log
+          grep -q "ui: language=en sample=Library" ~/Library/Logs/Komikku/app.log || { echo "English localization not used"; exit 1; }
+          # and Turkish stays Turkish
+          dist/Komikku.app/Contents/MacOS/Komikku -AppleLanguages '(tr)' &
+          PID=$!
+          sleep 8; kill $PID; wait $PID 2>/dev/null
+          grep -q "ui: language=tr sample=Kütüphane" ~/Library/Logs/Komikku/app.log || { echo "Turkish interface broken"; exit 1; }
+          exit 0
+
+      - name: In-app update check (installs the current nightly over a copy)
+        if: github.event_name == 'push'
+        continue-on-error: true   # depends on the GitHub API (rate limits on shared runners)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          NIGHTLY=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/nightly" -q .target_commitish)
+          echo "nightly: $NIGHTLY  this build: $GITHUB_SHA"
+          [ -n "$NIGHTLY" ] && [ "$NIGHTLY" != "$GITHUB_SHA" ] || { echo "No other nightly to update to"; exit 0; }
+          rm -rf /tmp/upd && mkdir -p /tmp/upd && ditto dist/Komikku.app /tmp/upd/Komikku.app
+          : > ~/Library/Logs/Komikku/app.log
+          KOMIKKU_AUTOTEST_UPDATE=1 /tmp/upd/Komikku.app/Contents/MacOS/Komikku &
+          for i in $(seq 1 40); do
+            sleep 5
+            NOW=$(/usr/libexec/PlistBuddy -c "Print :KomikkuCommit" /tmp/upd/Komikku.app/Contents/Info.plist 2>/dev/null)
+            [ "$NOW" = "$NIGHTLY" ] && break
+          done
+          sleep 10
+          grep -E "updatetest|update:" ~/Library/Logs/Komikku/app.log
+          pgrep -fl "/tmp/upd/Komikku.app/Contents/MacOS/Komikku"; RELAUNCHED=$?
+          pkill -f "/tmp/upd/Komikku.app/Contents/MacOS/Komikku"
+          codesign --verify --deep /tmp/upd/Komikku.app || { echo "Updated app signature invalid"; exit 1; }
+          [ "$NOW" = "$NIGHTLY" ] || { echo "App was not replaced by the nightly ($NOW)"; exit 1; }
+          [ $RELAUNCHED = 0 ] || { echo "Updated app did not start"; exit 1; }
+          ls /tmp/upd   # no leftovers (.old-*)
 
       - name: Cloudflare challenge check (informative)
         continue-on-error: true
