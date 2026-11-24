@@ -39,9 +39,15 @@ enum UpdateChecker {
         var request = URLRequest(url: releaseAPI)
         request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         request.timeoutInterval = 15
+        // CI only: shared runners hit the anonymous API rate limit
+        if let token = ProcessInfo.processInfo.environment["KOMIKKU_GITHUB_TOKEN"], !token.isEmpty {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
-            guard (response as? HTTPURLResponse)?.statusCode == 200,
+            let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+            if status != 200 { AppLog.write("update: GitHub API answered \(status)") }
+            guard status == 200,
                   let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                   let target = json["target_commitish"] as? String,
                   let page = (json["html_url"] as? String).flatMap(URL.init(string:)) else {

@@ -156,7 +156,7 @@ jobs:
           [ -n "$NIGHTLY" ] && [ "$NIGHTLY" != "$GITHUB_SHA" ] || { echo "No other nightly to update to"; exit 0; }
           rm -rf /tmp/upd && mkdir -p /tmp/upd && ditto dist/Komikku.app /tmp/upd/Komikku.app
           : > ~/Library/Logs/Komikku/app.log
-          KOMIKKU_AUTOTEST_UPDATE=1 /tmp/upd/Komikku.app/Contents/MacOS/Komikku &
+          KOMIKKU_AUTOTEST_UPDATE=1 KOMIKKU_GITHUB_TOKEN="$GH_TOKEN" /tmp/upd/Komikku.app/Contents/MacOS/Komikku &
           for i in $(seq 1 40); do
             sleep 5
             NOW=$(/usr/libexec/PlistBuddy -c "Print :KomikkuCommit" /tmp/upd/Komikku.app/Contents/Info.plist 2>/dev/null)
