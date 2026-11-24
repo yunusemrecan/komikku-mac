@@ -121,11 +121,41 @@ struct AboutSettings: View {
             if let commit = model.upstreamCommit {
                 Text("Upstream: \(commit)").font(.caption.monospaced())
             }
-            Text("GPL-3.0-or-later").font(.caption).foregroundStyle(.secondary)
+            if let commit = Self.buildCommit {
+                Link("Derleme: \(commit.prefix(8))",
+                     destination: URL(string: "https://github.com/yunusemrecan/komikku-mac/tree/\(commit)")!)
+                    .font(.caption.monospaced())
+            }
+            Text("GPL-3.0-or-later — özgür yazılım; kaynak kodu aşağıdaki depolarda.")
+                .font(.caption).foregroundStyle(.secondary)
+            Link("github.com/yunusemrecan/komikku-mac", destination: URL(string: "https://github.com/yunusemrecan/komikku-mac")!)
             Link("codeberg.org/valos/Komikku", destination: URL(string: "https://codeberg.org/valos/Komikku")!)
+            HStack {
+                Button("Üçüncü Taraf Lisansları") { Self.open("THIRD-PARTY-NOTICES.txt") }
+                Button("GPL Lisansı") { Self.open("LICENSE") }
+            }
+            .disabled(Self.licensesURL == nil)
+            .padding(.top, 4)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private static var buildCommit: String? {
+        guard let c = Bundle.main.object(forInfoDictionaryKey: "KomikkuCommit") as? String,
+              c.count >= 7, !c.hasPrefix("@"), c != "unknown" else { return nil }
+        return c
+    }
+
+    private static var licensesURL: URL? {
+        Bundle.main.resourceURL.map { $0.appendingPathComponent("Licenses") }
+            .flatMap { FileManager.default.fileExists(atPath: $0.path) ? $0 : nil }
+    }
+
+    private static func open(_ name: String) {
+        guard let url = licensesURL?.appendingPathComponent(name) else { return }
+        // Plain text: open in TextEdit (or the user's default text viewer)
+        NSWorkspace.shared.open(url)
     }
 }
 

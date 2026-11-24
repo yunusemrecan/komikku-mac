@@ -85,6 +85,12 @@ echo "==> Compiling upstream translations"
     --require-hashes -r "$ROOT/scripts/build-tools.lock"
 PYTHONPATH="$BUILD/tools" "$PY" "$ROOT/scripts/compile_translations.py" "$ROOT/upstream/po" "$RES/upstream/locale"
 
+echo "==> Third-party licenses"
+mkdir -p "$RES/Licenses"
+"$PY" -I "$ROOT/scripts/third_party_notices.py" "$RES/python/lib/python$PY_VERSION/site-packages" "$ROOT" \
+    "$RES/Licenses/THIRD-PARTY-NOTICES.txt" "$BUILD/copyleft-modules.txt"
+cp "$ROOT/LICENSE" "$RES/Licenses/LICENSE"
+
 echo "==> Trimming bundled Python (nothing the app uses at runtime)"
 LIB="$RES/python/lib/python$PY_VERSION"
 SITE="$LIB/site-packages"
@@ -107,10 +113,33 @@ echo "==> Precompiling Python (stdlib/packages bytecode-only; backend/upstream k
 # inside the bundle afterwards (that would break the code signature).
 # Stdlib and third-party packages ship as legacy .pyc next to where the .py was
 # (sourceless); os.py stays as the stdlib landmark Python looks for at startup.
+# Copyleft packages (GPL/AGPL/MPL, listed by third_party_notices.py) keep their
+# sources: they are set aside here and compiled normally afterwards.
+KEEP="$BUILD/keep-sources"
+rm -rf "$KEEP"; mkdir -p "$KEEP"
+while IFS= read -r mod; do
+    for p in "$SITE/$mod" "$SITE/$mod.py"; do
+        if [[ -e "$p" ]]; then mv "$p" "$KEEP/"; fi
+    done
+done < "$BUILD/copyleft-modules.txt"
 "$PY" -m compileall -q -j 0 -b "$LIB" >/dev/null || true
 find "$LIB" -name '*.py' ! -path "$LIB/os.py" -type f -delete
 find "$LIB" -name '__pycache__' -type d -prune -exec rm -rf {} +
 "$PY" -m compileall -q -j 0 "$LIB/os.py" >/dev/null || true
+for p in "$KEEP"/*; do
+    [[ -e "$p" ]] || continue
+    mv "$p" "$SITE/"
+    "$PY" -m compileall -q -j 0 "$SITE/$(basename "$p")" >/dev/null || true
+done
+# License compliance guard: notices present, copyleft sources really kept
+test -s "$RES/Licenses/THIRD-PARTY-NOTICES.txt" && test -s "$RES/Licenses/LICENSE"
+while IFS= read -r mod; do
+    if [[ -d "$SITE/$mod" ]]; then
+        find "$SITE/$mod" -name '*.py' | grep -q . || { echo "Sources of $mod missing" >&2; exit 1; }
+    elif [[ ! -f "$SITE/$mod.py" ]]; then
+        echo "Sources of $mod missing" >&2; exit 1
+    fi
+done < "$BUILD/copyleft-modules.txt"
 # Our code and upstream Komikku keep their sources (readable tracebacks in the log)
 "$PY" -m compileall -q -j 0 "$RES/backend" "$RES/upstream/komikku" >/dev/null || true
 

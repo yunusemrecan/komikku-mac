@@ -205,6 +205,8 @@ jobs:
           | Komikku-macos-arm64.dmg | \`${{ steps.sha.outputs.dmg_sha256 }}\` |
           | Komikku-macos-arm64.zip | \`${{ steps.sha.outputs.sha256 }}\` |
 
+          **Kaynak kodu / source code (GPL-3.0-or-later):** [${GITHUB_SHA::8}](${{ github.server_url }}/${{ github.repository }}/tree/${GITHUB_SHA}) — upstream Komikku: [$(git rev-parse --short HEAD:upstream)](${{ github.server_url }}/${{ github.repository }}/tree/$(git rev-parse HEAD:upstream)). Üçüncü taraf lisansları uygulamanın içinde / third-party licenses inside the app: Ayarlar › Hakkında (\`Contents/Resources/Licenses\`).
+
           Doğrulama / verify:
           \`\`\`
           shasum -a 256 Komikku-macos-arm64.dmg
@@ -223,4 +225,4 @@ jobs:
         run: |
           gh release create "$GITHUB_REF_NAME" dist/Komikku-macos-arm64.dmg dist/Komikku-macos-arm64.zip dist/SHA256SUMS \
             --generate-notes \
-            --notes "DMG SHA256: \`${{ steps.sha.outputs.dmg_sha256 }}\` — verify: \`gh attestation verify Komikku-macos-arm64.dmg -R ${{ github.repository }}\`"
+            --notes "Source: ${{ github.server_url }}/${{ github.repository }}/tree/${GITHUB_SHA} — DMG SHA256: \`${{ steps.sha.outputs.dmg_sha256 }}\` — verify: \`gh attestation verify Komikku-macos-arm64.dmg -R ${{ github.repository }}\`"

@@ -170,3 +170,13 @@ download manager queue UI, double-page spreads, server login UI.
 ## License
 
 GPL-3.0-or-later, like Komikku.
+
+The app bundles third-party software under its own licenses (MIT, BSD, Apache-2.0,
+PSF, MPL-2.0, GPL-2.0+, AGPL-3.0+ and others). Every license text is collected at
+build time by `scripts/third_party_notices.py` into
+`Komikku.app/Contents/Resources/Licenses/THIRD-PARTY-NOTICES.txt` (Settings › About ›
+Third-party licenses); the build fails if a package has no license text. Texts that
+are not shipped inside the Python wheels live in [`licenses/`](licenses/). Packages
+under copyleft licenses (Unidecode, EbookLib, certifi) keep their Python sources in
+the bundle. Source for any build: this repository at the commit shown in
+Settings › About and in the release notes.
