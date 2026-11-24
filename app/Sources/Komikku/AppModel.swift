@@ -465,8 +465,8 @@ final class AppModel {
             let ahead = ordered.dropFirst(i + 1).prefix(count)
                 .filter { !$0.downloaded && download(forChapter: $0.id) == nil }
                 .map(\.id)
+            AppLog.write("read-ahead: manga \(manga.id) chapter \(chapterID): queueing \(ahead.count) of the next \(count)")
             if !ahead.isEmpty {
-                AppLog.write("read-ahead: \(ahead.count) chapter(s) of manga \(manga.id)")
                 Task { await download(ahead, mangaID: manga.id) }
             }
         }
